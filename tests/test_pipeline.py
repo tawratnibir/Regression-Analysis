@@ -147,18 +147,34 @@ class TestModelsAndArtifacts(unittest.TestCase):
         index_path = REPORTS_DIR / "index.html"
         self.assertTrue(index_path.exists(), f"Missing grand index: {index_path}")
         html = index_path.read_text(encoding="utf-8")
-        self.assertIn("PREDICTOR_DATA", html)
-        self.assertIn("data:image/png;base64,", html)
+        # Lightweight shell (no 29MB inline base64 images)
+        self.assertLess(len(html), 500_000)
         self.assertIn("https://archive.ics.uci.edu/dataset/291", html)
-        self.assertIn('id="theory"', html)
+        for sec_id in ("overview", "datasets", "ols", "ridge", "lasso", "comparison", "methodology"):
+            self.assertIn(f'id="{sec_id}"', html)
+        self.assertIn("Aldo Solari", html)
+        self.assertIn(r"\tilde{\mathbf{X}}", html)
+        self.assertIn(r"\frac{1}{2n}", html)
+        self.assertNotIn("\x08", html)
+        self.assertNotIn("\x0c", html)
         self.assertNotIn("{{", html)
 
-        # Verify unstandardized JS prediction formula matches saved predictions_test.csv
+        # Verify lazy-loaded dataset bundles, plot files, and unstandardized predictor math
         for dataset_key in DATASETS:
+            js_bundle_path = REPORTS_DIR / "assets" / "data" / f"{dataset_key}.js"
+            self.assertTrue(js_bundle_path.exists(), f"Missing JS bundle: {js_bundle_path}")
+            js_text = js_bundle_path.read_text(encoding="utf-8")
+            prefix = f"window.__DATASET_STORE__[{json.dumps(dataset_key)}] = "
+            idx = js_text.index(prefix) + len(prefix)
+            bundle = json.loads(js_text[idx:].rstrip().rstrip(";"))
+
+            for model_key in MODEL_KEYS:
+                for p in bundle["models"][model_key]["plots"]:
+                    self.assertTrue((REPORTS_DIR / p["src"]).exists(), f"Missing plot asset: {p['src']}")
+
             payload = _build_predictor_payload(dataset_key)
             self.assertGreater(len(payload["samples"]), 0)
             sample = payload["samples"][0]
-            # Extract row_id from label "Test row #<id> ..."
             raw_id = int(sample["label"].split("#")[1].split(" ")[0])
 
             x_map = {}
@@ -200,7 +216,14 @@ class TestWebService(unittest.TestCase):
 
         r_root = client.get("/")
         self.assertEqual(r_root.status_code, 200)
-        self.assertIn("PREDICTOR_DATA", r_root.text)
+        self.assertIn("MASTER_SUMMARY", r_root.text)
+
+        r_bundle = client.get("/assets/data/airfoil.js")
+        self.assertEqual(r_bundle.status_code, 200)
+        self.assertIn("__DATASET_STORE__", r_bundle.text)
+
+        r_plot = client.get("/assets/plots/ols/airfoil/actual_vs_predicted.png")
+        self.assertEqual(r_plot.status_code, 200)
 
         r_sub = client.get("/ols/airfoil.html")
         self.assertEqual(r_sub.status_code, 200)
