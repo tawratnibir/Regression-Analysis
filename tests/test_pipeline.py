@@ -149,6 +149,8 @@ class TestModelsAndArtifacts(unittest.TestCase):
         html = index_path.read_text(encoding="utf-8")
         self.assertIn("PREDICTOR_DATA", html)
         self.assertIn("data:image/png;base64,", html)
+        self.assertIn("https://archive.ics.uci.edu/dataset/291", html)
+        self.assertIn('id="theory"', html)
         self.assertNotIn("{{", html)
 
         # Verify unstandardized JS prediction formula matches saved predictions_test.csv

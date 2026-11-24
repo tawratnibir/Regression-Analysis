@@ -39,15 +39,15 @@ REPORT_TEMPLATE = JINJA_ENV.from_string("""<!DOCTYPE html>
   <title>{{ model_title }} — {{ dataset_name }}</title>
   <style>
     :root {
-      --bg: #f8fafc;
+      --bg: #fafafa;
       --card: #ffffff;
-      --text: #1e293b;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --accent: #1d4ed8;
-      --accent-soft: #eff6ff;
-      --warn-bg: #fffbeb;
-      --warn-border: #f59e0b;
+      --text: #09090b;
+      --muted: #71717a;
+      --border: #e4e4e7;
+      --accent: #18181b;
+      --accent-soft: #f4f4f5;
+      --warn-bg: #f4f4f5;
+      --warn-border: #52525b;
     }
     * { box-sizing: border-box; }
     body {
@@ -91,9 +91,9 @@ REPORT_TEMPLATE = JINJA_ENV.from_string("""<!DOCTYPE html>
       font-size: 1.2rem;
       border-bottom: 1px solid var(--border);
       padding-bottom: 8px;
-      color: #0f172a;
+      color: #09090b;
     }
-    h3 { font-size: 1rem; margin-top: 16px; color: #334155; }
+    h3 { font-size: 1rem; margin-top: 16px; color: #27272a; }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -105,10 +105,10 @@ REPORT_TEMPLATE = JINJA_ENV.from_string("""<!DOCTYPE html>
       padding: 8px 10px;
       text-align: left;
     }
-    th { background: #f1f5f9; font-weight: 600; }
+    th { background: #f4f4f5; font-weight: 600; }
     td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-    tr.intercept-row { background: #eff6ff; font-weight: 600; }
-    tr.zero-row { color: #94a3b8; }
+    tr.intercept-row { background: #f4f4f5; font-weight: 600; }
+    tr.zero-row { color: #71717a; }
     .callout {
       background: var(--accent-soft);
       border-left: 4px solid var(--accent);
@@ -344,16 +344,16 @@ SUMMARY_TEMPLATE = JINJA_ENV.from_string("""<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ model_title }} — Cross-Dataset Summary</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #1e293b; margin: 0; padding: 24px; line-height: 1.5; }
-    .container { max-width: 1200px; margin: 0 auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fafafa; color: #09090b; margin: 0; padding: 24px; line-height: 1.5; }
+    .container { max-width: 1200px; margin: 0 auto; background: #fff; border: 1px solid #e4e4e7; border-radius: 8px; padding: 24px; }
     h1 { margin-top: 0; }
-    .warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 4px; margin: 14px 0; }
+    .warning { background: #f4f4f5; border-left: 4px solid #52525b; padding: 12px 16px; border-radius: 4px; margin: 14px 0; }
     table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.88rem; }
-    th, td { border: 1px solid #e2e8f0; padding: 8px 10px; text-align: left; }
-    th { background: #f1f5f9; }
+    th, td { border: 1px solid #e4e4e7; padding: 8px 10px; text-align: left; }
+    th { background: #f4f4f5; }
     td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-    a { color: #1d4ed8; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a { color: #09090b; text-decoration: none; border-bottom: 1px solid #a1a1aa; font-weight: 600; }
+    a:hover { border-bottom-color: #09090b; }
   </style>
 </head>
 <body>
