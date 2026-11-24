@@ -183,5 +183,89 @@ class TestModelsAndArtifacts(unittest.TestCase):
                 )
 
 
+class TestWebService(unittest.TestCase):
+    """Verify FastAPI Render web service endpoints and static report serving."""
+
+    def test_web_service_endpoints(self) -> None:
+        from fastapi.testclient import TestClient
+        from app import app
+
+        client = TestClient(app)
+
+        r_health = client.get("/health")
+        self.assertEqual(r_health.status_code, 200)
+        self.assertEqual(r_health.json()["status"], "ok")
+
+        r_root = client.get("/")
+        self.assertEqual(r_root.status_code, 200)
+        self.assertIn("PREDICTOR_DATA", r_root.text)
+
+        r_sub = client.get("/ols/airfoil.html")
+        self.assertEqual(r_sub.status_code, 200)
+        self.assertIn("Airfoil Self-Noise", r_sub.text)
+
+        r_ds = client.get("/api/datasets")
+        self.assertEqual(r_ds.status_code, 200)
+        self.assertEqual(len(r_ds.json()), 10)
+
+        r_res = client.get("/api/results/ols/airfoil")
+        self.assertEqual(r_res.status_code, 200)
+        self.assertIn("metrics", r_res.json())
+
+        # Numeric prediction check (airfoil)
+        r_pred_air = client.post(
+            "/api/predict",
+            json={
+                "dataset": "airfoil",
+                "inputs": {
+                    "frequency": 800,
+                    "attack-angle": 0.0,
+                    "chord-length": 0.3048,
+                    "free-stream-velocity": 71.3,
+                    "suction-side-displacement-thickness": 0.00266337,
+                },
+            },
+        )
+        self.assertEqual(r_pred_air.status_code, 200)
+        preds_air = r_pred_air.json()["predictions"]
+        self.assertIn("ols", preds_air)
+        self.assertIn("ridge", preds_air)
+        self.assertIn("lasso", preds_air)
+
+        # Categorical encoding check (auto_mpg origin='2')
+        r_pred_mpg = client.post(
+            "/api/predict",
+            json={
+                "dataset": "auto_mpg",
+                "inputs": {
+                    "cylinders": 4,
+                    "displacement": 120.0,
+                    "horsepower": 88.0,
+                    "weight": 2400,
+                    "acceleration": 15.0,
+                    "model_year": 80,
+                    "origin": "2",
+                },
+            },
+        )
+        self.assertEqual(r_pred_mpg.status_code, 200)
+
+        # Binary LPM check (diabetes with string labels)
+        r_pred_diab = client.post(
+            "/api/predict",
+            json={
+                "dataset": "diabetes",
+                "inputs": {
+                    "age": 45,
+                    "gender": "Male",
+                    "polyuria": "Yes",
+                    "polydipsia": "Yes",
+                },
+            },
+        )
+        self.assertEqual(r_pred_diab.status_code, 200)
+        self.assertIn("predicted_class", r_pred_diab.json()["predictions"]["ols"])
+
+
 if __name__ == "__main__":
     unittest.main()

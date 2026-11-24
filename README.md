@@ -83,3 +83,24 @@ All preprocessing transformers (`SimpleImputer`, `OneHotEncoder`, `StandardScale
 - Per-run artifacts: `results/<model>/<dataset>/` (`metrics.json`, `coefficients.csv`, `predictions_test.csv`, `predictions_train.csv`, `diagnostics.json`, `run_metadata.json`, `plots/*.png`).
 - Standalone HTML reports: `reports/<model>/<dataset>.html` and `reports/<model>/summary.html` (all plots embedded directly as base64 images so reports open offline via `file://` without a web server).
 - Grand interactive dashboard & live predictor: `reports/index.html` combines all 10 datasets × 3 models, all embedded diagrams, artifact-grounded explanations, and a client-side input prompt predictor for OLS, Ridge, and Lasso.
+
+## Web Service & Render Deployment
+
+Run locally as a FastAPI web service:
+
+```bash
+uvicorn app:app --host 0.0.0.0 --port 8000
+```
+
+Available endpoints:
+- `/` — Grand interactive dashboard (`reports/index.html`)
+- `/<model>/<dataset>.html`, `/<model>/summary.html` — Individual reports
+- `/docs` — Interactive Swagger API documentation
+- `/health` — Health check endpoint
+- `GET /api/datasets`, `GET /api/results/{model}/{dataset}` — Saved metrics and diagnostics
+- `POST /api/predict` — Live server-side OLS, Ridge, and Lasso predictions
+
+For **Render Web Service** deployment (configured in `render.yaml` with lean `requirements-render.txt`):
+- **Build Command:** `pip install -r requirements-render.txt`
+- **Start Command:** `uvicorn app:app --host 0.0.0.0 --port $PORT`
+- **Health Check Path:** `/health`
