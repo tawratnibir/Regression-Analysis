@@ -1,0 +1,20 @@
+{
+  "dataset": "wine_quality_red",
+  "target": "quality",
+  "target_units": "score (0-10 ordinal)",
+  "is_binary_classification": false,
+  "n_train": 1279,
+  "n_test": 320,
+  "train": {
+    "mae": 0.4996196411485788,
+    "mse": 0.42419115731399015,
+    "rmse": 0.6512995910592837,
+    "r2": 0.347992619352986
+  },
+  "test": {
+    "mae": 0.503530441552437,
+    "mse": 0.39002514396395577,
+    "rmse": 0.6245199307980137,
+    "r2": 0.40318034127962066
+  }
+}

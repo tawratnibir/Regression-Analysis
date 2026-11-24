@@ -1,0 +1,102 @@
+{
+  "exact_algebraic_properties": {
+    "note": "Exact mathematical consequences of least-squares projection with an unpenalized intercept (not statistical assumptions).",
+    "max_abs_Xt_residuals": 1.467181931502637e-11,
+    "residual_sum": 1.467093113660667e-11,
+    "mean_observed_train": 5.623924941360438,
+    "mean_fitted_train": 5.623924941360427,
+    "mean_fitted_identity_abs_diff": 1.1546319456101628e-14,
+    "sst": 832.1078967943706,
+    "ssr": 289.567406589777,
+    "sse": 542.5404902045934,
+    "anova_identity_abs_error": 2.2737367544323206e-13
+  },
+  "numerical_linear_algebra": {
+    "n_train": 1279,
+    "n_predictors": 11,
+    "n_augmented_columns": 12,
+    "matrix_rank": 12,
+    "is_rank_deficient": false,
+    "condition_number_standardized_with_intercept": 7.023747126639874,
+    "condition_number_unstandardized_with_intercept": 112411.68151695954,
+    "min_singular_value": 8.938793684699451,
+    "max_singular_value": 62.78382645853442,
+    "sklearn_max_abs_test_pred_diff": 1.509903313490213e-14
+  },
+  "multicollinearity": {
+    "max_vif": 7.3745536484670655,
+    "has_infinite_vif": false,
+    "n_vif_gt_10": 0,
+    "top_vifs": [
+      {
+        "feature": "fixed acidity",
+        "vif": 7.3745536484670655
+      },
+      {
+        "feature": "density",
+        "vif": 6.016487610562522
+      },
+      {
+        "feature": "pH",
+        "vif": 3.2751985502967433
+      },
+      {
+        "feature": "citric acid",
+        "vif": 3.211154336124038
+      },
+      {
+        "feature": "alcohol",
+        "vif": 2.9334654904045894
+      },
+      {
+        "feature": "total sulfur dioxide",
+        "vif": 2.2032591002872914
+      },
+      {
+        "feature": "free sulfur dioxide",
+        "vif": 1.9829132092465538
+      },
+      {
+        "feature": "volatile acidity",
+        "vif": 1.8131455007170252
+      },
+      {
+        "feature": "residual sugar",
+        "vif": 1.7316045148469537
+      },
+      {
+        "feature": "chlorides",
+        "vif": 1.519827193069345
+      }
+    ]
+  },
+  "heteroskedasticity_checks": {
+    "note": "Empirical assumption checks on training residuals (not guaranteed by OLS algebra).",
+    "breusch_pagan_lm_stat": 63.422175550220985,
+    "breusch_pagan_df": 11,
+    "breusch_pagan_pvalue": 2.1314488071392306e-09,
+    "spearman_abs_resid_vs_fitted_r": 0.19530946225439208,
+    "spearman_abs_resid_vs_fitted_pvalue": 1.8412677295279646e-12
+  },
+  "residual_normality_checks": {
+    "skewness": -0.19171808330044307,
+    "excess_kurtosis": 0.8468125829168116,
+    "jarque_bera_stat": 46.05012025181881,
+    "jarque_bera_pvalue": 1.0007911167989987e-10,
+    "shapiro_wilk_stat": 0.9885371522187122,
+    "shapiro_wilk_pvalue": 1.8128105848283428e-08,
+    "shapiro_wilk_n": 1279
+  },
+  "influence_diagnostics": {
+    "leverage_threshold_2p_over_n": 0.018764659890539485,
+    "n_high_leverage": 91,
+    "max_leverage": 0.11156653625503143,
+    "cooks_threshold_4_over_n": 0.003127443315089914,
+    "n_high_cooks_d": 72,
+    "max_cooks_d": 0.0767611685252037
+  },
+  "autocorrelation_checks": {
+    "durbin_watson": 1.8052549108396723,
+    "lag1_residual_corr": 0.09737039649322854
+  }
+}

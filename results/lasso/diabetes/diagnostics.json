@@ -1,0 +1,146 @@
+{
+  "penalty_tuning": {
+    "alpha_max": 0.31362396594005887,
+    "alpha_grid_min": 3.136239659400589e-05,
+    "alpha_grid_max": 0.31362396594005887,
+    "n_alphas": 60,
+    "cv_strategy": "StratifiedKFold(5, seed=42)",
+    "selected_alpha": 0.004633410385991599,
+    "best_cv_rmse": 0.3071817289860698,
+    "best_cv_rmse_std": 0.017871046396942022,
+    "best_cv_r2": 0.5999339484636848
+  },
+  "sparsity_and_shrinkage": {
+    "n_total_features": 16,
+    "n_nonzero_features": 15,
+    "n_zero_features": 1,
+    "sparsity_pct": 6.25,
+    "ols_coef_l1_norm": 0.8526516253410883,
+    "lasso_coef_l1_norm": 0.7786829056578831,
+    "l1_norm_ratio_lasso_over_ols": 0.9132486029641763,
+    "retained_features": [
+      {
+        "feature": "polydipsia",
+        "coef_std": 0.14576589017204108,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "polyuria",
+        "coef_std": 0.14360599850430303,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "gender",
+        "coef_std": -0.13514485281386776,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "genital_thrush",
+        "coef_std": 0.06646881086865773,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "itching",
+        "coef_std": -0.0615019860955254,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "irritability",
+        "coef_std": 0.06112268130227496,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "visual_blurring",
+        "coef_std": 0.031742374338255115,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "delayed_healing",
+        "coef_std": -0.02902774795931511,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "sudden_weight_loss",
+        "coef_std": 0.025727114096395505,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "polyphagia",
+        "coef_std": 0.022678650674151254,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "partial_paresis",
+        "coef_std": 0.020805601808784435,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "obesity",
+        "coef_std": -0.01833739544395533,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "muscle_stiffness",
+        "coef_std": -0.014350657667099864,
+        "cv_selection_freq": 0.8
+      },
+      {
+        "feature": "alopecia",
+        "coef_std": -0.0012019368346844993,
+        "cv_selection_freq": 0.8
+      },
+      {
+        "feature": "weakness",
+        "coef_std": 0.0012012070785719958,
+        "cv_selection_freq": 0.6
+      }
+    ],
+    "eliminated_features": [
+      {
+        "feature": "age",
+        "ols_coef_std": -0.00680805920334894,
+        "cv_selection_freq": 0.4,
+        "max_abs_corr_with_retained": 0.40112918215248355,
+        "most_correlated_retained_feature": "visual_blurring"
+      }
+    ]
+  },
+  "selection_stability": {
+    "n_always_selected_in_cv": 12,
+    "n_never_selected_in_cv": 0,
+    "n_unstable_across_cv_folds": 4,
+    "unstable_features": [
+      {
+        "feature": "muscle_stiffness",
+        "cv_selection_freq": 0.8,
+        "final_coef_std": -0.014350657667099864
+      },
+      {
+        "feature": "alopecia",
+        "cv_selection_freq": 0.8,
+        "final_coef_std": -0.0012019368346844993
+      },
+      {
+        "feature": "weakness",
+        "cv_selection_freq": 0.6,
+        "final_coef_std": 0.0012012070785719958
+      },
+      {
+        "feature": "age",
+        "cv_selection_freq": 0.4,
+        "final_coef_std": 0.0
+      }
+    ]
+  },
+  "convergence": {
+    "n_iter_final": 18,
+    "max_iter": 50000,
+    "converged_final": true,
+    "cv_convergence_warnings": 0
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": -0.20888482846311646,
+    "spearman_abs_resid_vs_fitted_pvalue": 1.746275172212229e-05,
+    "durbin_watson": 0.9808732443659502
+  }
+}

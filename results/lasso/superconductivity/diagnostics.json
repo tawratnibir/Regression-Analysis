@@ -1,0 +1,521 @@
+{
+  "penalty_tuning": {
+    "alpha_max": 24.724836429391097,
+    "alpha_grid_min": 0.0024724836429391096,
+    "alpha_grid_max": 24.724836429391097,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "selected_alpha": 0.0024724836429391096,
+    "best_cv_rmse": 17.707170938573803,
+    "best_cv_rmse_std": 0.22146234659841935,
+    "best_cv_r2": 0.7339137562744588
+  },
+  "sparsity_and_shrinkage": {
+    "n_total_features": 81,
+    "n_nonzero_features": 75,
+    "n_zero_features": 6,
+    "sparsity_pct": 7.407407407407407,
+    "ols_coef_l1_norm": 1123.2933239144425,
+    "lasso_coef_l1_norm": 812.2033054859247,
+    "l1_norm_ratio_lasso_over_ols": 0.7230554016430597,
+    "retained_features": [
+      {
+        "feature": "wtd_gmean_atomic_radius",
+        "coef_std": -65.0229258494881,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_mean_atomic_radius",
+        "coef_std": 63.386913412750694,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "std_ElectronAffinity",
+        "coef_std": 27.86217071954759,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_entropy_Valence",
+        "coef_std": -26.1962956348739,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "entropy_Valence",
+        "coef_std": 25.548721353951954,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_mean_ThermalConductivity",
+        "coef_std": 24.677971910827914,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_mean_atomic_mass",
+        "coef_std": -22.600863715189405,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "range_ElectronAffinity",
+        "coef_std": -22.42566422286988,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_mean_FusionHeat",
+        "coef_std": -20.77799648260329,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "mean_atomic_mass",
+        "coef_std": 19.70248557511027,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "range_fie",
+        "coef_std": 19.574878902023343,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_gmean_ElectronAffinity",
+        "coef_std": -18.929004525952156,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_mean_ElectronAffinity",
+        "coef_std": 17.602995151367665,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_entropy_atomic_radius",
+        "coef_std": 16.785594213586645,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "std_fie",
+        "coef_std": -16.69906265757419,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "std_ThermalConductivity",
+        "coef_std": 16.032942976428924,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "std_atomic_radius",
+        "coef_std": -15.699827854585408,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_gmean_atomic_mass",
+        "coef_std": 15.567272467892826,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_gmean_FusionHeat",
+        "coef_std": 15.204589695942275,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "range_atomic_radius",
+        "coef_std": 15.076148642922531,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_entropy_fie",
+        "coef_std": 14.758482740176516,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "entropy_fie",
+        "coef_std": -14.691928096582144,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "mean_FusionHeat",
+        "coef_std": 14.064545457063872,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_gmean_ThermalConductivity",
+        "coef_std": -13.809200032566917,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "range_ThermalConductivity",
+        "coef_std": -13.691008408626585,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "mean_Density",
+        "coef_std": -13.578144426509288,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "entropy_atomic_mass",
+        "coef_std": -11.980840578157276,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "range_atomic_mass",
+        "coef_std": 11.631197133320445,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_std_ElectronAffinity",
+        "coef_std": -11.295866038417138,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "gmean_FusionHeat",
+        "coef_std": -10.980468737869261,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "gmean_atomic_mass",
+        "coef_std": -10.22338351592011,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "std_Density",
+        "coef_std": 9.491297274445529,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_range_ThermalConductivity",
+        "coef_std": -9.43206092901418,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_entropy_FusionHeat",
+        "coef_std": 9.193079688257288,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "std_atomic_mass",
+        "coef_std": -8.639312145031353,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_std_Valence",
+        "coef_std": -8.333139244306123,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_gmean_Density",
+        "coef_std": 8.316389019942303,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "range_FusionHeat",
+        "coef_std": -7.761183612715528,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "gmean_atomic_radius",
+        "coef_std": -6.8781751781636835,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "range_Valence",
+        "coef_std": 6.4933602859467765,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "entropy_FusionHeat",
+        "coef_std": -6.427913047871795,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_range_FusionHeat",
+        "coef_std": 6.294806635759075,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_entropy_ElectronAffinity",
+        "coef_std": -6.265641087067833,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_std_fie",
+        "coef_std": -6.080961838448512,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "range_Density",
+        "coef_std": -6.016710993565932,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "gmean_ElectronAffinity",
+        "coef_std": 5.843640597932978,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_entropy_Density",
+        "coef_std": -5.8217909725918755,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_gmean_Valence",
+        "coef_std": -5.491543670241138,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "entropy_Density",
+        "coef_std": 5.125463208781949,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "number_of_elements",
+        "coef_std": -4.876693323376822,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "gmean_Valence",
+        "coef_std": 4.696472456052699,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "gmean_Density",
+        "coef_std": 4.55475612901909,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_range_ElectronAffinity",
+        "coef_std": -4.434683101117364,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_range_fie",
+        "coef_std": 4.404561522577646,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_mean_fie",
+        "coef_std": 3.8073769780015243,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "mean_ElectronAffinity",
+        "coef_std": -3.442329550753394,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_range_atomic_radius",
+        "coef_std": -3.38840826537065,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_std_FusionHeat",
+        "coef_std": 3.251825646334116,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "entropy_ThermalConductivity",
+        "coef_std": 3.1584504751877556,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "mean_ThermalConductivity",
+        "coef_std": -2.559478437038363,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "entropy_atomic_radius",
+        "coef_std": 2.3637712858510205,
+        "cv_selection_freq": 0.6
+      },
+      {
+        "feature": "wtd_std_Density",
+        "coef_std": -2.342377082297124,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "gmean_ThermalConductivity",
+        "coef_std": -1.7143644830594142,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_entropy_atomic_mass",
+        "coef_std": 1.7102416585872422,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "std_FusionHeat",
+        "coef_std": -1.684296825215616,
+        "cv_selection_freq": 0.8
+      },
+      {
+        "feature": "entropy_ElectronAffinity",
+        "coef_std": 1.4593641239717816,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_std_atomic_radius",
+        "coef_std": -1.1510249386505664,
+        "cv_selection_freq": 0.8
+      },
+      {
+        "feature": "wtd_std_atomic_mass",
+        "coef_std": -0.9066696502298774,
+        "cv_selection_freq": 0.8
+      },
+      {
+        "feature": "wtd_std_ThermalConductivity",
+        "coef_std": -0.8718765807760023,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_entropy_ThermalConductivity",
+        "coef_std": 0.6545337089353289,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "wtd_range_atomic_mass",
+        "coef_std": 0.5232800286142415,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "gmean_fie",
+        "coef_std": -0.16462409225950242,
+        "cv_selection_freq": 0.8
+      },
+      {
+        "feature": "wtd_mean_Density",
+        "coef_std": -0.06268043246847978,
+        "cv_selection_freq": 0.6
+      },
+      {
+        "feature": "wtd_range_Valence",
+        "coef_std": 0.017883873373338098,
+        "cv_selection_freq": 0.8
+      },
+      {
+        "feature": "wtd_range_Density",
+        "coef_std": -0.015420276023348604,
+        "cv_selection_freq": 0.8
+      }
+    ],
+    "eliminated_features": [
+      {
+        "feature": "mean_fie",
+        "ols_coef_std": 8.684215364012335,
+        "cv_selection_freq": 0.6,
+        "max_abs_corr_with_retained": 0.9693534933317708,
+        "most_correlated_retained_feature": "gmean_fie"
+      },
+      {
+        "feature": "wtd_gmean_fie",
+        "ols_coef_std": 10.01850888166619,
+        "cv_selection_freq": 0.2,
+        "max_abs_corr_with_retained": 0.9923233394745917,
+        "most_correlated_retained_feature": "wtd_mean_fie"
+      },
+      {
+        "feature": "mean_atomic_radius",
+        "ols_coef_std": -6.356274048273973,
+        "cv_selection_freq": 0.4,
+        "max_abs_corr_with_retained": 0.9159755962739891,
+        "most_correlated_retained_feature": "gmean_atomic_radius"
+      },
+      {
+        "feature": "mean_Valence",
+        "ols_coef_std": -18.06339954450832,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.9898737979193472,
+        "most_correlated_retained_feature": "gmean_Valence"
+      },
+      {
+        "feature": "wtd_mean_Valence",
+        "ols_coef_std": 27.257137706080478,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.9949237330572218,
+        "most_correlated_retained_feature": "wtd_gmean_Valence"
+      },
+      {
+        "feature": "std_Valence",
+        "ols_coef_std": 2.922797913632258,
+        "cv_selection_freq": 0.6,
+        "max_abs_corr_with_retained": 0.9736544060678854,
+        "most_correlated_retained_feature": "range_Valence"
+      }
+    ]
+  },
+  "selection_stability": {
+    "n_always_selected_in_cv": 67,
+    "n_never_selected_in_cv": 2,
+    "n_unstable_across_cv_folds": 12,
+    "unstable_features": [
+      {
+        "feature": "wtd_std_atomic_mass",
+        "cv_selection_freq": 0.8,
+        "final_coef_std": -0.9066696502298774
+      },
+      {
+        "feature": "gmean_fie",
+        "cv_selection_freq": 0.8,
+        "final_coef_std": -0.16462409225950242
+      },
+      {
+        "feature": "wtd_std_atomic_radius",
+        "cv_selection_freq": 0.8,
+        "final_coef_std": -1.1510249386505664
+      },
+      {
+        "feature": "wtd_range_Density",
+        "cv_selection_freq": 0.8,
+        "final_coef_std": -0.015420276023348604
+      },
+      {
+        "feature": "std_FusionHeat",
+        "cv_selection_freq": 0.8,
+        "final_coef_std": -1.684296825215616
+      },
+      {
+        "feature": "wtd_range_Valence",
+        "cv_selection_freq": 0.8,
+        "final_coef_std": 0.017883873373338098
+      },
+      {
+        "feature": "mean_fie",
+        "cv_selection_freq": 0.6,
+        "final_coef_std": 0.0
+      },
+      {
+        "feature": "entropy_atomic_radius",
+        "cv_selection_freq": 0.6,
+        "final_coef_std": 2.3637712858510205
+      },
+      {
+        "feature": "wtd_mean_Density",
+        "cv_selection_freq": 0.6,
+        "final_coef_std": -0.06268043246847978
+      },
+      {
+        "feature": "std_Valence",
+        "cv_selection_freq": 0.6,
+        "final_coef_std": 0.0
+      },
+      {
+        "feature": "mean_atomic_radius",
+        "cv_selection_freq": 0.4,
+        "final_coef_std": 0.0
+      },
+      {
+        "feature": "wtd_gmean_fie",
+        "cv_selection_freq": 0.2,
+        "final_coef_std": 0.0
+      }
+    ]
+  },
+  "convergence": {
+    "n_iter_final": 27186,
+    "max_iter": 50000,
+    "converged_final": true,
+    "cv_convergence_warnings": 0
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": 0.46866988850122815,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.0,
+    "durbin_watson": 1.0170898623345423
+  }
+}

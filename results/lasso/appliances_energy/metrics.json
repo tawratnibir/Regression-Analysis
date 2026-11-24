@@ -1,0 +1,20 @@
+{
+  "dataset": "appliances_energy",
+  "target": "Appliances",
+  "target_units": "Wh",
+  "is_binary_classification": false,
+  "n_train": 15788,
+  "n_test": 3947,
+  "train": {
+    "mae": 54.99705651691229,
+    "mse": 9450.913686635178,
+    "rmse": 97.21580985948313,
+    "r2": 0.14594873566299205
+  },
+  "test": {
+    "mae": 54.99225643456518,
+    "mse": 7629.524143658245,
+    "rmse": 87.34714731265265,
+    "r2": 0.07945085558942044
+  }
+}

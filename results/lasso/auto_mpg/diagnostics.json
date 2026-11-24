@@ -1,0 +1,100 @@
+{
+  "penalty_tuning": {
+    "alpha_max": 6.550900588022557,
+    "alpha_grid_min": 0.0006550900588022558,
+    "alpha_grid_max": 6.550900588022557,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "selected_alpha": 0.09678154133138972,
+    "best_cv_rmse": 3.4954177935359687,
+    "best_cv_rmse_std": 0.5723886970355927,
+    "best_cv_r2": 0.7946726597619576
+  },
+  "sparsity_and_shrinkage": {
+    "n_total_features": 8,
+    "n_nonzero_features": 5,
+    "n_zero_features": 3,
+    "sparsity_pct": 37.5,
+    "ols_coef_l1_norm": 14.135295761194975,
+    "lasso_coef_l1_norm": 9.314440829225195,
+    "l1_norm_ratio_lasso_over_ols": 0.6589491289454114,
+    "retained_features": [
+      {
+        "feature": "weight",
+        "coef_std": -4.900283888416046,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "model_year",
+        "coef_std": 2.800400312575574,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "origin_2",
+        "coef_std": 0.7262406607314583,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "origin_3",
+        "coef_std": 0.7252454940701965,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "horsepower",
+        "coef_std": -0.16227047343192108,
+        "cv_selection_freq": 0.6
+      }
+    ],
+    "eliminated_features": [
+      {
+        "feature": "cylinders",
+        "ols_coef_std": -0.2790238416944031,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.8938082364711649,
+        "most_correlated_retained_feature": "weight"
+      },
+      {
+        "feature": "displacement",
+        "ols_coef_std": 2.0357925785951476,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.9294791465233886,
+        "most_correlated_retained_feature": "weight"
+      },
+      {
+        "feature": "acceleration",
+        "ols_coef_std": 0.18567472523853212,
+        "cv_selection_freq": 0.2,
+        "max_abs_corr_with_retained": 0.6697243621901837,
+        "most_correlated_retained_feature": "horsepower"
+      }
+    ]
+  },
+  "selection_stability": {
+    "n_always_selected_in_cv": 4,
+    "n_never_selected_in_cv": 2,
+    "n_unstable_across_cv_folds": 2,
+    "unstable_features": [
+      {
+        "feature": "horsepower",
+        "cv_selection_freq": 0.6,
+        "final_coef_std": -0.16227047343192108
+      },
+      {
+        "feature": "acceleration",
+        "cv_selection_freq": 0.2,
+        "final_coef_std": 0.0
+      }
+    ]
+  },
+  "convergence": {
+    "n_iter_final": 45,
+    "max_iter": 50000,
+    "converged_final": true,
+    "cv_convergence_warnings": 0
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": 0.18285896391625558,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.001054142421943207,
+    "durbin_watson": 1.1744745045790015
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "dataset": "real_estate",
+  "target": "Y house price of unit area",
+  "target_units": "10,000 NTD/Ping",
+  "is_binary_classification": false,
+  "n_train": 331,
+  "n_test": 83,
+  "train": {
+    "mae": 6.339699267157377,
+    "mse": 83.11348248899608,
+    "rmse": 9.116659612434594,
+    "r2": 0.5581197274607089
+  },
+  "test": {
+    "mae": 5.305355690074044,
+    "mse": 53.505619124502076,
+    "rmse": 7.314753524521662,
+    "r2": 0.6810580555095946
+  }
+}

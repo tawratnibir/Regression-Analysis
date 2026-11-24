@@ -1,0 +1,102 @@
+{
+  "exact_algebraic_properties": {
+    "note": "Exact mathematical consequences of least-squares projection with an unpenalized intercept (not statistical assumptions).",
+    "max_abs_Xt_residuals": 2.0383694732117874e-13,
+    "residual_sum": -2.0250467969162855e-13,
+    "mean_observed_train": 0.6153846153846154,
+    "mean_fitted_train": 0.615384615384616,
+    "mean_fitted_identity_abs_diff": 5.551115123125783e-16,
+    "sst": 98.46153846153848,
+    "ssr": 62.80819758230124,
+    "sse": 35.65334087923726,
+    "anova_identity_abs_error": 2.842170943040401e-14
+  },
+  "numerical_linear_algebra": {
+    "n_train": 416,
+    "n_predictors": 16,
+    "n_augmented_columns": 17,
+    "matrix_rank": 17,
+    "is_rank_deficient": false,
+    "condition_number_standardized_with_intercept": 3.4415765974456183,
+    "condition_number_unstandardized_with_intercept": 230.85255471941537,
+    "min_singular_value": 11.527383186339843,
+    "max_singular_value": 39.67237220389531,
+    "sklearn_max_abs_test_pred_diff": 1.7763568394002505e-15
+  },
+  "multicollinearity": {
+    "max_vif": 1.9989213153900676,
+    "has_infinite_vif": false,
+    "n_vif_gt_10": 0,
+    "top_vifs": [
+      {
+        "feature": "polydipsia",
+        "vif": 1.9989213153900676
+      },
+      {
+        "feature": "polyuria",
+        "vif": 1.9569171324312855
+      },
+      {
+        "feature": "alopecia",
+        "vif": 1.7623643608615627
+      },
+      {
+        "feature": "visual_blurring",
+        "vif": 1.7273375826182953
+      },
+      {
+        "feature": "partial_paresis",
+        "vif": 1.634188126916498
+      },
+      {
+        "feature": "age",
+        "vif": 1.6335002769918094
+      },
+      {
+        "feature": "delayed_healing",
+        "vif": 1.5845342861558256
+      },
+      {
+        "feature": "sudden_weight_loss",
+        "vif": 1.5481621231888407
+      },
+      {
+        "feature": "itching",
+        "vif": 1.468728597730268
+      },
+      {
+        "feature": "polyphagia",
+        "vif": 1.445772601921135
+      }
+    ]
+  },
+  "heteroskedasticity_checks": {
+    "note": "Empirical assumption checks on training residuals (not guaranteed by OLS algebra).",
+    "breusch_pagan_lm_stat": 62.61022490966481,
+    "breusch_pagan_df": 16,
+    "breusch_pagan_pvalue": 1.8901690695983024e-07,
+    "spearman_abs_resid_vs_fitted_r": -0.16283388555310233,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.0008577494943587524
+  },
+  "residual_normality_checks": {
+    "skewness": 0.6493259202495665,
+    "excess_kurtosis": -0.12903458170439697,
+    "jarque_bera_stat": 29.52120645252851,
+    "jarque_bera_pvalue": 3.886435542955048e-07,
+    "shapiro_wilk_stat": 0.954624642053021,
+    "shapiro_wilk_pvalue": 5.206466344443037e-10,
+    "shapiro_wilk_n": 416
+  },
+  "influence_diagnostics": {
+    "leverage_threshold_2p_over_n": 0.08173076923076923,
+    "n_high_leverage": 2,
+    "max_leverage": 0.13203428320271193,
+    "cooks_threshold_4_over_n": 0.009615384615384616,
+    "n_high_cooks_d": 23,
+    "max_cooks_d": 0.033426144310548335
+  },
+  "autocorrelation_checks": {
+    "durbin_watson": 1.0334847765907191,
+    "lag1_residual_corr": 0.477283208847627
+  }
+}

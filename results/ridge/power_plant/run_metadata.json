@@ -1,0 +1,70 @@
+{
+  "dataset": "power_plant",
+  "dataset_name": "Combined Cycle Power Plant",
+  "uci_id": 294,
+  "target": "PE",
+  "target_units": "MW",
+  "split_reference": "processed/power_plant/split.json",
+  "split_strategy": "random",
+  "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+  "seed": 42,
+  "preprocessing": {
+    "n_raw": 9568,
+    "n_clean": 9568,
+    "dropped_summary_rows": 0,
+    "dropped_missing_target_rows": 0,
+    "duplicate_rows_in_clean": 41,
+    "missing_values_in_features": {},
+    "n_train": 7654,
+    "n_test": 1914,
+    "n_raw_features": 4,
+    "n_encoded_features": 4,
+    "numeric_columns": [
+      "AT",
+      "V",
+      "AP",
+      "RH"
+    ],
+    "categorical_columns": [],
+    "excluded_columns": [],
+    "feature_names": [
+      "AT",
+      "V",
+      "AP",
+      "RH"
+    ],
+    "split_strategy": "random",
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "target_stats_train": {
+      "mean": 454.4310399790959,
+      "std": 17.074209529536088,
+      "min": 420.26,
+      "max": 495.76
+    },
+    "target_stats_test": {
+      "mean": 454.10095611285266,
+      "std": 17.031088629660307,
+      "min": 425.11,
+      "max": 495.35
+    }
+  },
+  "algorithm": "ridge",
+  "objective_convention": "min_{beta0, beta} ||y - beta0 - X*beta||_2^2 + alpha * ||beta||_2^2 (intercept beta0 unpenalized)",
+  "penalty_settings": {
+    "penalty": "L2",
+    "selected_alpha": 0.3224590545296398,
+    "alpha_grid_min": 0.0001,
+    "alpha_grid_max": 100000.0,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)"
+  },
+  "dependencies": {
+    "python": "3.12.3",
+    "numpy": "2.5.5",
+    "pandas": "3.1.1",
+    "scikit_learn": "1.9.1",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "run_datetime_utc": "2026-11-24T18:42:37.266284+00:00"
+}

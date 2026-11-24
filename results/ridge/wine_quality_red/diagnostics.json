@@ -1,0 +1,94 @@
+{
+  "penalty_tuning": {
+    "alpha_grid_min": 0.0001,
+    "alpha_grid_max": 100000.0,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "selected_alpha": 88.95134973108236,
+    "best_cv_rmse": 0.6605131269592454,
+    "best_cv_rmse_std": 0.02888096514663133,
+    "best_cv_r2": 0.32749280666043246,
+    "svd_verification_max_abs_coef_diff": 6.106226635438361e-16
+  },
+  "shrinkage_and_degrees_of_freedom": {
+    "n_predictors": 11,
+    "effective_df_predictors": 9.4585632565949,
+    "effective_df_with_intercept": 10.4585632565949,
+    "ols_coef_l2_norm": 0.41703225727998977,
+    "ridge_coef_l2_norm": 0.38175156467667304,
+    "l2_norm_ratio_ridge_over_ols": 0.9154005667728725,
+    "top_coefficient_changes_vs_ols": [
+      {
+        "feature": "alcohol",
+        "ols_coef_std": 0.29662750267665283,
+        "ridge_coef_std": 0.26500476841655135,
+        "abs_change": 0.03162273426010148
+      },
+      {
+        "feature": "density",
+        "ols_coef_std": -0.01920443958524483,
+        "ridge_coef_std": -0.045451463986912355,
+        "abs_change": -0.026247024401667526
+      },
+      {
+        "feature": "citric acid",
+        "ols_coef_std": -0.02751248129379847,
+        "ridge_coef_std": -0.0060968997638598844,
+        "abs_change": 0.021415581529938586
+      },
+      {
+        "feature": "pH",
+        "ols_coef_std": -0.06061037420070311,
+        "ridge_coef_std": -0.03961464251684417,
+        "abs_change": 0.02099573168385894
+      },
+      {
+        "feature": "fixed acidity",
+        "ols_coef_std": 0.039789163505353144,
+        "ridge_coef_std": 0.053811493922594975,
+        "abs_change": -0.014022330417241831
+      },
+      {
+        "feature": "volatile acidity",
+        "ols_coef_std": -0.17943890687351283,
+        "ridge_coef_std": -0.16599452409798637,
+        "abs_change": 0.013444382775526453
+      },
+      {
+        "feature": "free sulfur dioxide",
+        "ols_coef_std": 0.05801491470413739,
+        "ridge_coef_std": 0.04591086378499136,
+        "abs_change": 0.012104050919146028
+      },
+      {
+        "feature": "total sulfur dioxide",
+        "ols_coef_std": -0.12000835569139869,
+        "ridge_coef_std": -0.10934125478106974,
+        "abs_change": 0.01066710091032895
+      },
+      {
+        "feature": "residual sugar",
+        "ols_coef_std": 0.009421284653994527,
+        "ridge_coef_std": 0.016220606103277975,
+        "abs_change": -0.006799321449283448
+      },
+      {
+        "feature": "sulphates",
+        "ols_coef_std": 0.14681502901160706,
+        "ridge_coef_std": 0.14095293335823128,
+        "abs_change": 0.005862095653375782
+      }
+    ]
+  },
+  "numerical_stability": {
+    "x_centered_eig_condition_ols": 49.3330236989819,
+    "x_centered_eig_condition_ridge": 23.871362008562496,
+    "min_singular_value_centered": 8.938793684699446,
+    "max_singular_value_centered": 62.78382645853439
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": 0.19219029124076428,
+    "spearman_abs_resid_vs_fitted_pvalue": 4.1694536828308315e-12,
+    "durbin_watson": 1.8085019286194308
+  }
+}

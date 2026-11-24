@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lasso Regression (L1 Regularization) — Cross-Dataset Summary</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #1e293b; margin: 0; padding: 24px; line-height: 1.5; }
+    .container { max-width: 1200px; margin: 0 auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; }
+    h1 { margin-top: 0; }
+    .warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 4px; margin: 14px 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.88rem; }
+    th, td { border: 1px solid #e2e8f0; padding: 8px 10px; text-align: left; }
+    th { background: #f1f5f9; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    a { color: #1d4ed8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Lasso Regression (L1 Regularization) — All-Dataset Summary</h1>
+  <div class="warning">
+    <strong>Unit Comparability Warning:</strong> Raw RMSE and MAE values below carry each dataset's specific target units (e.g., dB, MW, K, mpg, Wh, deg C). Never compare raw RMSE across datasets with different units. Use dimensionless <strong>Test R&sup2;</strong> and unit-free <strong>Normalized RMSE (Test RMSE / Test Target SD)</strong> for cross-dataset context.
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Dataset</th>
+        <th>Split</th>
+        <th class="num">Train / Test</th>
+        <th class="num">Features</th>
+        <th class="num">Train R&sup2;</th>
+        <th class="num">Test R&sup2;</th>
+        <th class="num">Test RMSE (Native Units)</th>
+        <th class="num">Norm. Test RMSE (RMSE/SD)</th>
+        <th>Key Model Diagnostic</th>
+        <th>Report</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td><strong>Airfoil Self-Noise</strong><br><small><code>airfoil</code></small></td>
+        <td><code>random</code></td>
+        <td class="num">1202 / 301</td>
+        <td class="num">5</td>
+        <td class="num">0.5034</td>
+        <td class="num">0.5583</td>
+        <td class="num">4.704 <small>dB</small></td>
+        <td class="num">0.6646</td>
+        <td>alpha=0.000281, retained=5/5</td>
+        <td><a href="airfoil.html">View report</a></td>
+      </tr>
+      
+      <tr>
+        <td><strong>Combined Cycle Power Plant</strong><br><small><code>power_plant</code></small></td>
+        <td><code>random</code></td>
+        <td class="num">7654 / 1914</td>
+        <td class="num">4</td>
+        <td class="num">0.9283</td>
+        <td class="num">0.9301</td>
+        <td class="num">4.503 <small>MW</small></td>
+        <td class="num">0.2644</td>
+        <td>alpha=0.00162, retained=4/4</td>
+        <td><a href="power_plant.html">View report</a></td>
+      </tr>
+      
+      <tr>
+        <td><strong>Real Estate Valuation</strong><br><small><code>real_estate</code></small></td>
+        <td><code>random</code></td>
+        <td class="num">331 / 83</td>
+        <td class="num">6</td>
+        <td class="num">0.5574</td>
+        <td class="num">0.6839</td>
+        <td class="num">7.282 <small>10,000 NTD/Ping</small></td>
+        <td class="num">0.5622</td>
+        <td>alpha=0.133, retained=5/6</td>
+        <td><a href="real_estate.html">View report</a></td>
+      </tr>
+      
+      <tr>
+        <td><strong>Wine Quality (Red Wine)</strong><br><small><code>wine_quality_red</code></small></td>
+        <td><code>random</code></td>
+        <td class="num">1279 / 320</td>
+        <td class="num">11</td>
+        <td class="num">0.3461</td>
+        <td class="num">0.3990</td>
+        <td class="num">0.6267 <small>score (0-10 ordinal)</small></td>
+        <td class="num">0.7753</td>
+        <td>alpha=0.009, retained=8/11</td>
+        <td><a href="wine_quality_red.html">View report</a></td>
+      </tr>
+      
+      <tr>
+        <td><strong>Parkinsons Telemonitoring</strong><br><small><code>parkinsons</code></small></td>
+        <td><code>group</code></td>
+        <td class="num">4640 / 1235</td>
+        <td class="num">19</td>
+        <td class="num">0.1571</td>
+        <td class="num">-0.2699</td>
+        <td class="num">10.26 <small>UPDRS points</small></td>
+        <td class="num">1.1269</td>
+        <td>alpha=1.27, retained=2/19</td>
+        <td><a href="parkinsons.html">View report</a></td>
+      </tr>
+      
+      <tr>
+        <td><strong>Superconductivity Data</strong><br><small><code>superconductivity</code></small></td>
+        <td><code>random</code></td>
+        <td class="num">17010 / 4253</td>
+        <td class="num">81</td>
+        <td class="num">0.7363</td>
+        <td class="num">0.7371</td>
+        <td class="num">17.4 <small>K</small></td>
+        <td class="num">0.5127</td>
+        <td>alpha=0.00247, retained=75/81</td>
+        <td><a href="superconductivity.html">View report</a></td>
+      </tr>
+      
+      <tr>
+        <td><strong>Auto MPG</strong><br><small><code>auto_mpg</code></small></td>
+        <td><code>random</code></td>
+        <td class="num">318 / 80</td>
+        <td class="num">8</td>
+        <td class="num">0.8143</td>
+        <td class="num">0.8410</td>
+        <td class="num">2.924 <small>mpg</small></td>
+        <td class="num">0.3987</td>
+        <td>alpha=0.0968, retained=5/8</td>
+        <td><a href="auto_mpg.html">View report</a></td>
+      </tr>
+      
+      <tr>
+        <td><strong>Appliances Energy Prediction</strong><br><small><code>appliances_energy</code></small></td>
+        <td><code>chronological</code></td>
+        <td class="num">15788 / 3947</td>
+        <td class="num">27</td>
+        <td class="num">0.1459</td>
+        <td class="num">0.0795</td>
+        <td class="num">87.35 <small>Wh</small></td>
+        <td class="num">0.9595</td>
+        <td>alpha=1.88, retained=15/27</td>
+        <td><a href="appliances_energy.html">View report</a></td>
+      </tr>
+      
+      <tr>
+        <td><strong>Early Stage Diabetes Risk Prediction</strong><br><small><code>diabetes</code></small></td>
+        <td><code>stratified</code></td>
+        <td class="num">416 / 104</td>
+        <td class="num">16</td>
+        <td class="num">0.6365</td>
+        <td class="num">0.7027</td>
+        <td class="num">0.2653 <small>probability P(Positive)</small></td>
+        <td class="num">0.5452</td>
+        <td>alpha=0.00463, retained=15/16</td>
+        <td><a href="diabetes.html">View report</a></td>
+      </tr>
+      
+      <tr>
+        <td><strong>Bias Correction of Numerical Prediction Model Temperature Forecast</strong><br><small><code>weather</code></small></td>
+        <td><code>chronological_date</code></td>
+        <td class="num">6185 / 1538</td>
+        <td class="num">21</td>
+        <td class="num">0.7374</td>
+        <td class="num">0.6837</td>
+        <td class="num">1.77 <small>deg C</small></td>
+        <td class="num">0.5624</td>
+        <td>alpha=0.291, retained=7/21</td>
+        <td><a href="weather.html">View report</a></td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

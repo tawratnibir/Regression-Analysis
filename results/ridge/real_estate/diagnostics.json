@@ -1,0 +1,70 @@
+{
+  "penalty_tuning": {
+    "alpha_grid_min": 0.0001,
+    "alpha_grid_max": 100000.0,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "selected_alpha": 10.811807510766078,
+    "best_cv_rmse": 9.210314919653953,
+    "best_cv_rmse_std": 1.5455998241440725,
+    "best_cv_r2": 0.5439057512270813,
+    "svd_verification_max_abs_coef_diff": 8.881784197001252e-15
+  },
+  "shrinkage_and_degrees_of_freedom": {
+    "n_predictors": 6,
+    "effective_df_predictors": 5.650497642272502,
+    "effective_df_with_intercept": 6.650497642272502,
+    "ols_coef_l2_norm": 7.994726219566359,
+    "ridge_coef_l2_norm": 7.584984141191739,
+    "l2_norm_ratio_ridge_over_ols": 0.9487484540281299,
+    "top_coefficient_changes_vs_ols": [
+      {
+        "feature": "X3 distance to the nearest MRT station",
+        "ols_coef_std": -5.786925608033049,
+        "ridge_coef_std": -5.276884946402328,
+        "abs_change": 0.5100406616307209
+      },
+      {
+        "feature": "X6 longitude",
+        "ols_coef_std": -0.44100860256121893,
+        "ridge_coef_std": -0.051200983722174374,
+        "abs_change": 0.3898076188390446
+      },
+      {
+        "feature": "X2 house age",
+        "ols_coef_std": -3.062694411809093,
+        "ridge_coef_std": -2.9597106100427633,
+        "abs_change": 0.10298380176632982
+      },
+      {
+        "feature": "X1 transaction date",
+        "ols_coef_std": 1.529631129338697,
+        "ridge_coef_std": 1.461039051461838,
+        "abs_change": 0.06859207787685895
+      },
+      {
+        "feature": "X5 latitude",
+        "ols_coef_std": 2.855107847927545,
+        "ridge_coef_std": 2.889856969467805,
+        "abs_change": -0.03474912154026022
+      },
+      {
+        "feature": "X4 number of convenience stores",
+        "ols_coef_std": 3.2188727017566343,
+        "ridge_coef_std": 3.2307975539718816,
+        "abs_change": -0.011924852215247306
+      }
+    ]
+  },
+  "numerical_stability": {
+    "x_centered_eig_condition_ols": 16.451351897870854,
+    "x_centered_eig_condition_ridge": 13.842382038259277,
+    "min_singular_value_centered": 7.295203553198321,
+    "max_singular_value_centered": 29.589539770271788
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": 0.035786573400370496,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.5164518471433995,
+    "durbin_watson": 2.1459766583545488
+  }
+}

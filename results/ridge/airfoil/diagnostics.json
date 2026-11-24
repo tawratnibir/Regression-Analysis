@@ -1,0 +1,64 @@
+{
+  "penalty_tuning": {
+    "alpha_grid_min": 0.0001,
+    "alpha_grid_max": 100000.0,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "selected_alpha": 5.355666917706907,
+    "best_cv_rmse": 4.8603866627073655,
+    "best_cv_rmse_std": 0.1485588162801286,
+    "best_cv_r2": 0.49278507943343275,
+    "svd_verification_max_abs_coef_diff": 2.042810365310288e-14
+  },
+  "shrinkage_and_degrees_of_freedom": {
+    "n_predictors": 5,
+    "effective_df_predictors": 4.957133689937794,
+    "effective_df_with_intercept": 5.957133689937794,
+    "ols_coef_l2_norm": 6.170610944787903,
+    "ridge_coef_l2_norm": 6.116227616091588,
+    "l2_norm_ratio_ridge_over_ols": 0.9911867189192586,
+    "top_coefficient_changes_vs_ols": [
+      {
+        "feature": "attack-angle",
+        "ols_coef_std": -2.3667367900365748,
+        "ridge_coef_std": -2.3210457799128115,
+        "abs_change": 0.04569101012376331
+      },
+      {
+        "feature": "chord-length",
+        "ols_coef_std": -3.219952149183501,
+        "ridge_coef_std": -3.1855896395412646,
+        "abs_change": 0.034362509642236194
+      },
+      {
+        "feature": "frequency",
+        "ols_coef_std": -4.059447042606656,
+        "ridge_coef_std": -4.030136842686914,
+        "abs_change": 0.02931019991974182
+      },
+      {
+        "feature": "free-stream-velocity",
+        "ols_coef_std": 1.5269010028407024,
+        "ridge_coef_std": 1.5136703372165843,
+        "abs_change": 0.01323066562411812
+      },
+      {
+        "feature": "suction-side-displacement-thickness",
+        "ols_coef_std": -1.8155901496175613,
+        "ridge_coef_std": -1.8275132085120116,
+        "abs_change": -0.011923058894450334
+      }
+    ]
+  },
+  "numerical_stability": {
+    "x_centered_eig_condition_ols": 12.425374198066962,
+    "x_centered_eig_condition_ridge": 12.135333366215946,
+    "min_singular_value_centered": 14.339328704410145,
+    "max_singular_value_centered": 50.54562356254859
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": 0.024232067665903353,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.40126068447374247,
+    "durbin_watson": 0.5834004146238873
+  }
+}

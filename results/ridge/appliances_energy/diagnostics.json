@@ -1,0 +1,94 @@
+{
+  "penalty_tuning": {
+    "alpha_grid_min": 0.0001,
+    "alpha_grid_max": 100000.0,
+    "n_alphas": 60,
+    "cv_strategy": "TimeSeriesSplit(5)",
+    "selected_alpha": 2099.1037201085546,
+    "best_cv_rmse": 97.18840544443,
+    "best_cv_rmse_std": 5.919238759643335,
+    "best_cv_r2": 0.08727135358270215,
+    "svd_verification_max_abs_coef_diff": 3.774758283725532e-14
+  },
+  "shrinkage_and_degrees_of_freedom": {
+    "n_predictors": 27,
+    "effective_df_predictors": 15.82651818950123,
+    "effective_df_with_intercept": 16.82651818950123,
+    "ols_coef_l2_norm": 108.43654943413573,
+    "ridge_coef_l2_norm": 45.85748422777079,
+    "l2_norm_ratio_ridge_over_ols": 0.4228969334331741,
+    "top_coefficient_changes_vs_ols": [
+      {
+        "feature": "T_out",
+        "ols_coef_std": -34.81852766220636,
+        "ridge_coef_std": -0.4064325525736058,
+        "abs_change": 34.41209510963275
+      },
+      {
+        "feature": "RH_2",
+        "ols_coef_std": -42.12868909825673,
+        "ridge_coef_std": -9.742599130068653,
+        "abs_change": 32.386089968188074
+      },
+      {
+        "feature": "T6",
+        "ols_coef_std": 35.626878063429345,
+        "ridge_coef_std": 7.731974509374091,
+        "abs_change": 27.894903554055254
+      },
+      {
+        "feature": "RH_1",
+        "ols_coef_std": 46.18640739930677,
+        "ridge_coef_std": 20.082086262560612,
+        "abs_change": 26.10432113674616
+      },
+      {
+        "feature": "T3",
+        "ols_coef_std": 41.520536199992215,
+        "ridge_coef_std": 21.78069514575551,
+        "abs_change": 19.739841054236706
+      },
+      {
+        "feature": "T2",
+        "ols_coef_std": -20.002524108945323,
+        "ridge_coef_std": 3.8311956432009486,
+        "abs_change": 16.171328465744374
+      },
+      {
+        "feature": "RH_3",
+        "ols_coef_std": 27.651064865016004,
+        "ridge_coef_std": 12.22990422688532,
+        "abs_change": 15.421160638130683
+      },
+      {
+        "feature": "RH_8",
+        "ols_coef_std": -31.175685352682265,
+        "ridge_coef_std": -16.60750089379483,
+        "abs_change": 14.568184458887437
+      },
+      {
+        "feature": "T9",
+        "ols_coef_std": -20.42828656066114,
+        "ridge_coef_std": -8.087534225641262,
+        "abs_change": 12.340752335019877
+      },
+      {
+        "feature": "Tdewpoint",
+        "ols_coef_std": 12.380213803372968,
+        "ridge_coef_std": -2.5555953293205933,
+        "abs_change": 9.824618474052375
+      }
+    ]
+  },
+  "numerical_stability": {
+    "x_centered_eig_condition_ols": "inf",
+    "x_centered_eig_condition_ridge": 63.56276891078563,
+    "min_singular_value_centered": 1.5401316973377288e-14,
+    "max_singular_value_centered": 362.38893603547274
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": 0.5567259088264079,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.0,
+    "durbin_watson": 0.590407774681665
+  }
+}

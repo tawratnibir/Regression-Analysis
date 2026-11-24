@@ -1,0 +1,128 @@
+{
+  "dataset": "weather",
+  "dataset_name": "Bias Correction of Numerical Prediction Model Temperature Forecast",
+  "uci_id": 514,
+  "target": "Next_Tmax",
+  "target_units": "deg C",
+  "split_reference": "processed/weather/split.json",
+  "split_strategy": "chronological_date",
+  "cv_strategy": "DateGroupedTimeSeriesSplit(5)",
+  "seed": 42,
+  "preprocessing": {
+    "n_raw": 7752,
+    "n_clean": 7723,
+    "dropped_summary_rows": 2,
+    "dropped_missing_target_rows": 27,
+    "duplicate_rows_in_clean": 0,
+    "missing_values_in_features": {
+      "Present_Tmax": 60,
+      "Present_Tmin": 60,
+      "LDAPS_RHmin": 75,
+      "LDAPS_RHmax": 75,
+      "LDAPS_Tmax_lapse": 75,
+      "LDAPS_Tmin_lapse": 75,
+      "LDAPS_WS": 75,
+      "LDAPS_LH": 75,
+      "LDAPS_CC1": 75,
+      "LDAPS_CC2": 75,
+      "LDAPS_CC3": 75,
+      "LDAPS_CC4": 75,
+      "LDAPS_PPT1": 75,
+      "LDAPS_PPT2": 75,
+      "LDAPS_PPT3": 75,
+      "LDAPS_PPT4": 75
+    },
+    "n_train": 6185,
+    "n_test": 1538,
+    "n_raw_features": 21,
+    "n_encoded_features": 21,
+    "numeric_columns": [
+      "Present_Tmax",
+      "Present_Tmin",
+      "LDAPS_RHmin",
+      "LDAPS_RHmax",
+      "LDAPS_Tmax_lapse",
+      "LDAPS_Tmin_lapse",
+      "LDAPS_WS",
+      "LDAPS_LH",
+      "LDAPS_CC1",
+      "LDAPS_CC2",
+      "LDAPS_CC3",
+      "LDAPS_CC4",
+      "LDAPS_PPT1",
+      "LDAPS_PPT2",
+      "LDAPS_PPT3",
+      "LDAPS_PPT4",
+      "lat",
+      "lon",
+      "DEM",
+      "Slope",
+      "Solar radiation"
+    ],
+    "categorical_columns": [],
+    "excluded_columns": [
+      "Date",
+      "station",
+      "Next_Tmin"
+    ],
+    "feature_names": [
+      "Present_Tmax",
+      "Present_Tmin",
+      "LDAPS_RHmin",
+      "LDAPS_RHmax",
+      "LDAPS_Tmax_lapse",
+      "LDAPS_Tmin_lapse",
+      "LDAPS_WS",
+      "LDAPS_LH",
+      "LDAPS_CC1",
+      "LDAPS_CC2",
+      "LDAPS_CC3",
+      "LDAPS_CC4",
+      "LDAPS_PPT1",
+      "LDAPS_PPT2",
+      "LDAPS_PPT3",
+      "LDAPS_PPT4",
+      "lat",
+      "lon",
+      "DEM",
+      "Slope",
+      "Solar radiation"
+    ],
+    "split_strategy": "chronological_date",
+    "cv_strategy": "DateGroupedTimeSeriesSplit(5)",
+    "target_stats_train": {
+      "mean": 30.345578011317702,
+      "std": 3.113172824911964,
+      "min": 17.4,
+      "max": 38.9
+    },
+    "target_stats_test": {
+      "mean": 29.993368010403124,
+      "std": 3.1476509243897293,
+      "min": 20.4,
+      "max": 37.2
+    },
+    "time_range_train": [
+      "2013-06-30 00:00:00",
+      "2016-08-30 00:00:00"
+    ],
+    "time_range_test": [
+      "2017-06-30 00:00:00",
+      "2017-08-30 00:00:00"
+    ]
+  },
+  "algorithm": "ols",
+  "objective_convention": "min_{beta0, beta} ||y - beta0 - X*beta||_2^2 via numpy.linalg.lstsq (intercept unscaled/unpenalized)",
+  "penalty_settings": {
+    "penalty": "none"
+  },
+  "dependencies": {
+    "python": "3.12.3",
+    "numpy": "2.5.5",
+    "pandas": "3.1.1",
+    "scikit_learn": "1.9.1",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "run_datetime_utc": "2026-11-24T18:44:18.583858+00:00"
+}

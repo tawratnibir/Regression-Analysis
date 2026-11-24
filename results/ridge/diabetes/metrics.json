@@ -1,0 +1,58 @@
+{
+  "dataset": "diabetes",
+  "target": "class",
+  "target_units": "probability P(Positive)",
+  "is_binary_classification": true,
+  "n_train": 416,
+  "n_test": 104,
+  "train": {
+    "mae": 0.2372938227805492,
+    "mse": 0.08607529696433577,
+    "rmse": 0.2933859181425308,
+    "r2": 0.6363318703256815
+  },
+  "test": {
+    "mae": 0.2159535127281685,
+    "mse": 0.07091054378561032,
+    "rmse": 0.26629033738686486,
+    "r2": 0.7004029525057964
+  },
+  "train_classification": {
+    "accuracy": 0.9230769230769231,
+    "precision": 0.9745762711864406,
+    "recall": 0.8984375,
+    "f1": 0.9349593495934959,
+    "roc_auc": 0.9746582031250001,
+    "confusion_matrix": {
+      "tn": 154,
+      "fp": 6,
+      "fn": 26,
+      "tp": 230
+    },
+    "pred_min": -0.04009334566311529,
+    "pred_max": 1.300153521364436,
+    "n_below_zero": 8,
+    "n_above_one": 88,
+    "n_outside_unit_interval": 96,
+    "pct_outside_unit_interval": 23.076923076923077
+  },
+  "test_classification": {
+    "accuracy": 0.9423076923076923,
+    "precision": 1.0,
+    "recall": 0.90625,
+    "f1": 0.9508196721311475,
+    "roc_auc": 0.9929687500000001,
+    "confusion_matrix": {
+      "tn": 40,
+      "fp": 0,
+      "fn": 6,
+      "tp": 58
+    },
+    "pred_min": -0.04187398296949618,
+    "pred_max": 1.3754462866549864,
+    "n_below_zero": 1,
+    "n_above_one": 29,
+    "n_outside_unit_interval": 30,
+    "pct_outside_unit_interval": 28.846153846153847
+  }
+}

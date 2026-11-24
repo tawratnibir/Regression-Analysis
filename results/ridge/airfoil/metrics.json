@@ -1,0 +1,20 @@
+{
+  "dataset": "airfoil",
+  "target": "scaled-sound-pressure",
+  "target_units": "dB",
+  "is_binary_classification": false,
+  "n_train": 1202,
+  "n_test": 301,
+  "train": {
+    "mae": 3.756735052752323,
+    "mse": 23.29755884614597,
+    "rmse": 4.82675448372361,
+    "r2": 0.5034160183819497
+  },
+  "test": {
+    "mae": 3.680030768111056,
+    "mse": 22.17262736890424,
+    "rmse": 4.708781941107938,
+    "r2": 0.5574200254074781
+  }
+}

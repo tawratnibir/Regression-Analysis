@@ -1,0 +1,102 @@
+{
+  "exact_algebraic_properties": {
+    "note": "Exact mathematical consequences of least-squares projection with an unpenalized intercept (not statistical assumptions).",
+    "max_abs_Xt_residuals": 2.528556919401126e-09,
+    "residual_sum": -8.576535037718713e-10,
+    "mean_observed_train": 34.533300974426815,
+    "mean_fitted_train": 34.53330097442685,
+    "mean_fitted_identity_abs_diff": 3.552713678800501e-14,
+    "sst": 20051395.45804771,
+    "ssr": 14774587.301282112,
+    "sse": 5276808.156765694,
+    "anova_identity_abs_error": 9.685754776000977e-08
+  },
+  "numerical_linear_algebra": {
+    "n_train": 17010,
+    "n_predictors": 81,
+    "n_augmented_columns": 82,
+    "matrix_rank": 82,
+    "is_rank_deficient": false,
+    "condition_number_standardized_with_intercept": 797.6516772466048,
+    "condition_number_unstandardized_with_intercept": 3197589.849296491,
+    "min_singular_value": 0.9181783673975078,
+    "max_singular_value": 732.3865147661714,
+    "sklearn_max_abs_test_pred_diff": 1.9468870959826745e-12
+  },
+  "multicollinearity": {
+    "max_vif": 8450.44840166865,
+    "has_infinite_vif": false,
+    "n_vif_gt_10": 81,
+    "top_vifs": [
+      {
+        "feature": "wtd_mean_fie",
+        "vif": 8450.44840166865
+      },
+      {
+        "feature": "wtd_gmean_fie",
+        "vif": 5764.004113038246
+      },
+      {
+        "feature": "wtd_mean_Valence",
+        "vif": 5101.592874110648
+      },
+      {
+        "feature": "wtd_gmean_atomic_radius",
+        "vif": 4916.979668663239
+      },
+      {
+        "feature": "wtd_gmean_Valence",
+        "vif": 4370.013236945536
+      },
+      {
+        "feature": "entropy_fie",
+        "vif": 4077.7469942749976
+      },
+      {
+        "feature": "wtd_mean_atomic_radius",
+        "vif": 3309.8825809373016
+      },
+      {
+        "feature": "entropy_atomic_radius",
+        "vif": 3030.8545690187566
+      },
+      {
+        "feature": "mean_Valence",
+        "vif": 2739.2945840772554
+      },
+      {
+        "feature": "gmean_Valence",
+        "vif": 2454.2040088252843
+      }
+    ]
+  },
+  "heteroskedasticity_checks": {
+    "note": "Empirical assumption checks on training residuals (not guaranteed by OLS algebra).",
+    "breusch_pagan_lm_stat": 2597.5237859191734,
+    "breusch_pagan_df": 81,
+    "breusch_pagan_pvalue": 0.0,
+    "spearman_abs_resid_vs_fitted_r": 0.46254731899094575,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.0
+  },
+  "residual_normality_checks": {
+    "skewness": -0.34979314259610955,
+    "excess_kurtosis": 1.7170497822891289,
+    "jarque_bera_stat": 2436.4563557980073,
+    "jarque_bera_pvalue": 0.0,
+    "shapiro_wilk_stat": 0.9836793849878316,
+    "shapiro_wilk_pvalue": 1.3614818170971843e-23,
+    "shapiro_wilk_n": 5000
+  },
+  "influence_diagnostics": {
+    "leverage_threshold_2p_over_n": 0.009641387419165197,
+    "n_high_leverage": 1748,
+    "max_leverage": 0.09049051572754964,
+    "cooks_threshold_4_over_n": 0.00023515579071134627,
+    "n_high_cooks_d": 636,
+    "max_cooks_d": 0.04195372647952784
+  },
+  "autocorrelation_checks": {
+    "durbin_watson": 1.0194465504935868,
+    "lag1_residual_corr": 0.49027513594954936
+  }
+}

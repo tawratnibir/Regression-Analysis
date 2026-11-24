@@ -1,0 +1,67 @@
+{
+  "penalty_tuning": {
+    "alpha_max": 2.8056981672562133,
+    "alpha_grid_min": 0.00028056981672562137,
+    "alpha_grid_max": 2.8056981672562133,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "selected_alpha": 0.00028056981672562137,
+    "best_cv_rmse": 4.860574704982571,
+    "best_cv_rmse_std": 0.15229483220786505,
+    "best_cv_r2": 0.49274451958434434
+  },
+  "sparsity_and_shrinkage": {
+    "n_total_features": 5,
+    "n_nonzero_features": 5,
+    "n_zero_features": 0,
+    "sparsity_pct": 0.0,
+    "ols_coef_l1_norm": 12.988627134284995,
+    "lasso_coef_l1_norm": 12.986172439807824,
+    "l1_norm_ratio_lasso_over_ols": 0.9998110120144498,
+    "retained_features": [
+      {
+        "feature": "frequency",
+        "coef_std": -4.058894000204659,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "chord-length",
+        "coef_std": -3.2192444593651213,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "attack-angle",
+        "coef_std": -2.3658321749161737,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "suction-side-displacement-thickness",
+        "coef_std": -1.8157065733340902,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "free-stream-velocity",
+        "coef_std": 1.5264952319877794,
+        "cv_selection_freq": 1.0
+      }
+    ],
+    "eliminated_features": []
+  },
+  "selection_stability": {
+    "n_always_selected_in_cv": 5,
+    "n_never_selected_in_cv": 0,
+    "n_unstable_across_cv_folds": 0,
+    "unstable_features": []
+  },
+  "convergence": {
+    "n_iter_final": 32,
+    "max_iter": 50000,
+    "converged_final": true,
+    "cv_convergence_warnings": 0
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": 0.028889163263376372,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.31694750836656493,
+    "durbin_watson": 0.5851001143849305
+  }
+}

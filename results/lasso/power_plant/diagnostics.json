@@ -1,0 +1,62 @@
+{
+  "penalty_tuning": {
+    "alpha_max": 16.18532142168481,
+    "alpha_grid_min": 0.0016185321421684812,
+    "alpha_grid_max": 16.18532142168481,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "selected_alpha": 0.0016185321421684812,
+    "best_cv_rmse": 4.572581272677162,
+    "best_cv_rmse_std": 0.1282886804376991,
+    "best_cv_r2": 0.9281355566119969
+  },
+  "sparsity_and_shrinkage": {
+    "n_total_features": 4,
+    "n_nonzero_features": 4,
+    "n_zero_features": 0,
+    "sparsity_pct": 0.0,
+    "ols_coef_l1_norm": 20.39553545683652,
+    "lasso_coef_l1_norm": 20.388511382220507,
+    "l1_norm_ratio_lasso_over_ols": 0.9996556072464546,
+    "retained_features": [
+      {
+        "feature": "AT",
+        "coef_std": -14.760013921595819,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "V",
+        "coef_std": -2.9503633004556864,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "RH",
+        "coef_std": -2.3086491091406263,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "AP",
+        "coef_std": 0.36948505102837287,
+        "cv_selection_freq": 1.0
+      }
+    ],
+    "eliminated_features": []
+  },
+  "selection_stability": {
+    "n_always_selected_in_cv": 4,
+    "n_never_selected_in_cv": 0,
+    "n_unstable_across_cv_folds": 0,
+    "unstable_features": []
+  },
+  "convergence": {
+    "n_iter_final": 39,
+    "max_iter": 50000,
+    "converged_final": true,
+    "cv_convergence_warnings": 0
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": -0.03181359935259158,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.005377075319051269,
+    "durbin_watson": 2.021667500967746
+  }
+}

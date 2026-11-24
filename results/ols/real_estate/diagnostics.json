@@ -1,0 +1,86 @@
+{
+  "exact_algebraic_properties": {
+    "note": "Exact mathematical consequences of least-squares projection with an unpenalized intercept (not statistical assumptions).",
+    "max_abs_Xt_residuals": 1.014655026665423e-11,
+    "residual_sum": -1.0132339411939029e-11,
+    "mean_observed_train": 38.3915407854985,
+    "mean_fitted_train": 38.39154078549852,
+    "mean_fitted_identity_abs_diff": 2.1316282072803006e-14,
+    "sst": 62257.95631419939,
+    "ssr": 34747.39361034164,
+    "sse": 27510.562703857704,
+    "anova_identity_abs_error": 5.093170329928398e-11
+  },
+  "numerical_linear_algebra": {
+    "n_train": 331,
+    "n_predictors": 6,
+    "n_augmented_columns": 7,
+    "matrix_rank": 7,
+    "is_rank_deficient": false,
+    "condition_number_standardized_with_intercept": 4.056026614541733,
+    "condition_number_unstandardized_with_intercept": 36497439.27510627,
+    "min_singular_value": 7.295203553198325,
+    "max_singular_value": 29.589539770271827,
+    "sklearn_max_abs_test_pred_diff": 6.039613253960852e-14
+  },
+  "multicollinearity": {
+    "max_vif": 4.060046472460784,
+    "has_infinite_vif": false,
+    "n_vif_gt_10": 0,
+    "top_vifs": [
+      {
+        "feature": "X3 distance to the nearest MRT station",
+        "vif": 4.060046472460784
+      },
+      {
+        "feature": "X6 longitude",
+        "vif": 2.742129749713496
+      },
+      {
+        "feature": "X4 number of convenience stores",
+        "vif": 1.6353776282227588
+      },
+      {
+        "feature": "X5 latitude",
+        "vif": 1.5389391586251187
+      },
+      {
+        "feature": "X2 house age",
+        "vif": 1.0130282375767405
+      },
+      {
+        "feature": "X1 transaction date",
+        "vif": 1.0087756549625757
+      }
+    ]
+  },
+  "heteroskedasticity_checks": {
+    "note": "Empirical assumption checks on training residuals (not guaranteed by OLS algebra).",
+    "breusch_pagan_lm_stat": 8.420192005004202,
+    "breusch_pagan_df": 6,
+    "breusch_pagan_pvalue": 0.20890620691222614,
+    "spearman_abs_resid_vs_fitted_r": 0.0318810824753615,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.5632788656991307
+  },
+  "residual_normality_checks": {
+    "skewness": 2.13757096205198,
+    "excess_kurtosis": 14.312669208468861,
+    "jarque_bera_stat": 3077.3254579706663,
+    "jarque_bera_pvalue": 0.0,
+    "shapiro_wilk_stat": 0.8637866168360998,
+    "shapiro_wilk_pvalue": 1.8343054693512824e-16,
+    "shapiro_wilk_n": 331
+  },
+  "influence_diagnostics": {
+    "leverage_threshold_2p_over_n": 0.04229607250755287,
+    "n_high_leverage": 12,
+    "max_leverage": 0.1548009671359245,
+    "cooks_threshold_4_over_n": 0.012084592145015106,
+    "n_high_cooks_d": 16,
+    "max_cooks_d": 0.22661801322185451
+  },
+  "autocorrelation_checks": {
+    "durbin_watson": 2.1486688383136525,
+    "lag1_residual_corr": -0.07686826188487918
+  }
+}

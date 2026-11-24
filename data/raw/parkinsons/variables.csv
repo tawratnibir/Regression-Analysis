@@ -1,0 +1,23 @@
+name,role,type,demographic,description,units,missing_values
+subject#,ID,Integer,,Integer that uniquely identifies each subject,,no
+age,Feature,Integer,Age,Subject age,,no
+test_time,Feature,Continuous,,Time since recruitment into the trial. The integer part is the number of days since recruitment. ,,no
+Jitter(%),Feature,Continuous,,Several measures of variation in fundamental frequency,,no
+Jitter(Abs),Feature,Continuous,,Several measures of variation in fundamental frequency,,no
+Jitter:RAP,Feature,Continuous,,Several measures of variation in fundamental frequency,,no
+Jitter:PPQ5,Feature,Continuous,,Several measures of variation in fundamental frequency,,no
+Jitter:DDP,Feature,Continuous,,Several measures of variation in fundamental frequency,,no
+Shimmer,Feature,Continuous,,Several measures of variation in amplitude,,no
+Shimmer(dB),Feature,Continuous,,Several measures of variation in amplitude,,no
+Shimmer:APQ3,Feature,Continuous,,Several measures of variation in amplitude,,no
+Shimmer:APQ5,Feature,Continuous,,Several measures of variation in amplitude,,no
+Shimmer:APQ11,Feature,Continuous,,Several measures of variation in amplitude,,no
+Shimmer:DDA,Feature,Continuous,,Several measures of variation in amplitude,,no
+NHR,Feature,Continuous,,Two measures of ratio of noise to tonal components in the voice,,no
+HNR,Feature,Continuous,,Two measures of ratio of noise to tonal components in the voice,,no
+RPDE,Feature,Continuous,,A nonlinear dynamical complexity measure,,no
+DFA,Feature,Continuous,,Signal fractal scaling exponent,,no
+PPE,Feature,Continuous,,A nonlinear measure of fundamental frequency variation ,,no
+motor_UPDRS,Target,Continuous,,"Clinician's motor UPDRS score, linearly interpolated",,no
+total_UPDRS,Target,Continuous,,"Clinician's total UPDRS score, linearly interpolated",,no
+sex,Feature,Binary,Sex,"Subject sex '0' - male, '1' - female",,no

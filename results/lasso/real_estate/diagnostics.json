@@ -1,0 +1,81 @@
+{
+  "penalty_tuning": {
+    "alpha_max": 9.010622762400754,
+    "alpha_grid_min": 0.0009010622762400754,
+    "alpha_grid_max": 9.010622762400754,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "selected_alpha": 0.13312092705166337,
+    "best_cv_rmse": 9.211899119866725,
+    "best_cv_rmse_std": 1.545314584567258,
+    "best_cv_r2": 0.543659857871076
+  },
+  "sparsity_and_shrinkage": {
+    "n_total_features": 6,
+    "n_nonzero_features": 5,
+    "n_zero_features": 1,
+    "sparsity_pct": 16.666666666666668,
+    "ols_coef_l1_norm": 16.894240301426237,
+    "lasso_coef_l1_norm": 15.624149670043565,
+    "l1_norm_ratio_lasso_over_ols": 0.9248210864340879,
+    "retained_features": [
+      {
+        "feature": "X3 distance to the nearest MRT station",
+        "coef_std": -5.357858834330337,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "X4 number of convenience stores",
+        "coef_std": 3.1605807433555064,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "X2 house age",
+        "coef_std": -2.9111902086467616,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "X5 latitude",
+        "coef_std": 2.813231423434054,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "X1 transaction date",
+        "coef_std": 1.3812884602769058,
+        "cv_selection_freq": 1.0
+      }
+    ],
+    "eliminated_features": [
+      {
+        "feature": "X6 longitude",
+        "ols_coef_std": -0.44100860256121893,
+        "cv_selection_freq": 0.4,
+        "max_abs_corr_with_retained": 0.7918266749817561,
+        "most_correlated_retained_feature": "X3 distance to the nearest MRT station"
+      }
+    ]
+  },
+  "selection_stability": {
+    "n_always_selected_in_cv": 5,
+    "n_never_selected_in_cv": 0,
+    "n_unstable_across_cv_folds": 1,
+    "unstable_features": [
+      {
+        "feature": "X6 longitude",
+        "cv_selection_freq": 0.4,
+        "final_coef_std": 0.0
+      }
+    ]
+  },
+  "convergence": {
+    "n_iter_final": 15,
+    "max_iter": 50000,
+    "converged_final": true,
+    "cv_convergence_warnings": 0
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": 0.029390866677339453,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.5941635735724347,
+    "durbin_watson": 2.147355801863102
+  }
+}

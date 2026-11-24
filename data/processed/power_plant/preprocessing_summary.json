@@ -1,0 +1,40 @@
+{
+  "n_raw": 9568,
+  "n_clean": 9568,
+  "dropped_summary_rows": 0,
+  "dropped_missing_target_rows": 0,
+  "duplicate_rows_in_clean": 41,
+  "missing_values_in_features": {},
+  "n_train": 7654,
+  "n_test": 1914,
+  "n_raw_features": 4,
+  "n_encoded_features": 4,
+  "numeric_columns": [
+    "AT",
+    "V",
+    "AP",
+    "RH"
+  ],
+  "categorical_columns": [],
+  "excluded_columns": [],
+  "feature_names": [
+    "AT",
+    "V",
+    "AP",
+    "RH"
+  ],
+  "split_strategy": "random",
+  "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+  "target_stats_train": {
+    "mean": 454.4310399790959,
+    "std": 17.074209529536088,
+    "min": 420.26,
+    "max": 495.76
+  },
+  "target_stats_test": {
+    "mean": 454.10095611285266,
+    "std": 17.031088629660307,
+    "min": 425.11,
+    "max": 495.35
+  }
+}

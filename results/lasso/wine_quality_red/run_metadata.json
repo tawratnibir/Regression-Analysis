@@ -1,0 +1,85 @@
+{
+  "dataset": "wine_quality_red",
+  "dataset_name": "Wine Quality (Red Wine)",
+  "uci_id": 186,
+  "target": "quality",
+  "target_units": "score (0-10 ordinal)",
+  "split_reference": "processed/wine_quality_red/split.json",
+  "split_strategy": "random",
+  "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+  "seed": 42,
+  "preprocessing": {
+    "n_raw": 1599,
+    "n_clean": 1599,
+    "dropped_summary_rows": 0,
+    "dropped_missing_target_rows": 0,
+    "duplicate_rows_in_clean": 240,
+    "missing_values_in_features": {},
+    "n_train": 1279,
+    "n_test": 320,
+    "n_raw_features": 11,
+    "n_encoded_features": 11,
+    "numeric_columns": [
+      "fixed acidity",
+      "volatile acidity",
+      "citric acid",
+      "residual sugar",
+      "chlorides",
+      "free sulfur dioxide",
+      "total sulfur dioxide",
+      "density",
+      "pH",
+      "sulphates",
+      "alcohol"
+    ],
+    "categorical_columns": [],
+    "excluded_columns": [],
+    "feature_names": [
+      "fixed acidity",
+      "volatile acidity",
+      "citric acid",
+      "residual sugar",
+      "chlorides",
+      "free sulfur dioxide",
+      "total sulfur dioxide",
+      "density",
+      "pH",
+      "sulphates",
+      "alcohol"
+    ],
+    "split_strategy": "random",
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "target_stats_train": {
+      "mean": 5.623924941360438,
+      "std": 0.8065931873105368,
+      "min": 3.0,
+      "max": 8.0
+    },
+    "target_stats_test": {
+      "mean": 5.684375,
+      "std": 0.8083970926314616,
+      "min": 3.0,
+      "max": 8.0
+    }
+  },
+  "algorithm": "lasso",
+  "objective_convention": "min_{beta0, beta} (1 / (2*n)) * ||y - beta0 - X*beta||_2^2 + alpha * ||beta||_1 (intercept beta0 unpenalized)",
+  "penalty_settings": {
+    "penalty": "L1",
+    "selected_alpha": 0.008997041324151512,
+    "alpha_max": 0.38125746798648613,
+    "alpha_grid_min": 3.8125746798648615e-05,
+    "alpha_grid_max": 0.38125746798648613,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)"
+  },
+  "dependencies": {
+    "python": "3.12.3",
+    "numpy": "2.5.5",
+    "pandas": "3.1.1",
+    "scikit_learn": "1.9.1",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "run_datetime_utc": "2026-11-24T18:40:59.487995+00:00"
+}

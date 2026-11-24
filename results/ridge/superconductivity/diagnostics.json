@@ -1,0 +1,94 @@
+{
+  "penalty_tuning": {
+    "alpha_grid_min": 0.0001,
+    "alpha_grid_max": 100000.0,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "selected_alpha": 0.11242100350620873,
+    "best_cv_rmse": 17.698002792497675,
+    "best_cv_rmse_std": 0.21990199187335813,
+    "best_cv_r2": 0.7341881933367977,
+    "svd_verification_max_abs_coef_diff": 4.140483511605453e-10
+  },
+  "shrinkage_and_degrees_of_freedom": {
+    "n_predictors": 81,
+    "effective_df_predictors": 80.60803049859709,
+    "effective_df_with_intercept": 81.60803049859709,
+    "ols_coef_l2_norm": 181.55844144439058,
+    "ridge_coef_l2_norm": 173.22651944402395,
+    "l2_norm_ratio_ridge_over_ols": 0.9541088702123575,
+    "top_coefficient_changes_vs_ols": [
+      {
+        "feature": "wtd_gmean_atomic_radius",
+        "ols_coef_std": -89.13930843855505,
+        "ridge_coef_std": -83.35304729649553,
+        "abs_change": 5.786261142059516
+      },
+      {
+        "feature": "wtd_mean_atomic_radius",
+        "ols_coef_std": 83.17011393039665,
+        "ridge_coef_std": 78.45475720956495,
+        "abs_change": 4.715356720831707
+      },
+      {
+        "feature": "wtd_mean_fie",
+        "ols_coef_std": -8.673922817559435,
+        "ridge_coef_std": -4.820648403958194,
+        "abs_change": 3.8532744136012402
+      },
+      {
+        "feature": "wtd_gmean_fie",
+        "ols_coef_std": 10.01850888166619,
+        "ridge_coef_std": 6.831447730894464,
+        "abs_change": 3.1870611507717257
+      },
+      {
+        "feature": "entropy_fie",
+        "ols_coef_std": -38.40567366268556,
+        "ridge_coef_std": -35.405823606983056,
+        "abs_change": 2.9998500557025025
+      },
+      {
+        "feature": "wtd_mean_Valence",
+        "ols_coef_std": 27.257137706080478,
+        "ridge_coef_std": 24.701717718190377,
+        "abs_change": 2.555419987890101
+      },
+      {
+        "feature": "entropy_atomic_radius",
+        "ols_coef_std": 23.969754096382378,
+        "ridge_coef_std": 21.514708801156196,
+        "abs_change": 2.4550452952261814
+      },
+      {
+        "feature": "wtd_gmean_Valence",
+        "ols_coef_std": -31.421405804027998,
+        "ridge_coef_std": -28.97321988532271,
+        "abs_change": 2.4481859187052883
+      },
+      {
+        "feature": "gmean_atomic_radius",
+        "ols_coef_std": -0.45793373260558745,
+        "ridge_coef_std": -2.4290913403498915,
+        "abs_change": -1.971157607744304
+      },
+      {
+        "feature": "mean_atomic_radius",
+        "ols_coef_std": -6.356274048273973,
+        "ridge_coef_std": -4.486853361766257,
+        "abs_change": 1.8694206865077163
+      }
+    ]
+  },
+  "numerical_stability": {
+    "x_centered_eig_condition_ols": 636248.1982143165,
+    "x_centered_eig_condition_ridge": 561387.2815850794,
+    "min_singular_value_centered": 0.9181783673975125,
+    "max_singular_value_centered": 732.3865147661721
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": 0.462901978520687,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.0,
+    "durbin_watson": 1.019260610662947
+  }
+}

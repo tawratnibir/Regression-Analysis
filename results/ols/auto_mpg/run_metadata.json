@@ -1,0 +1,77 @@
+{
+  "dataset": "auto_mpg",
+  "dataset_name": "Auto MPG",
+  "uci_id": 9,
+  "target": "mpg",
+  "target_units": "mpg",
+  "split_reference": "processed/auto_mpg/split.json",
+  "split_strategy": "random",
+  "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+  "seed": 42,
+  "preprocessing": {
+    "n_raw": 398,
+    "n_clean": 398,
+    "dropped_summary_rows": 0,
+    "dropped_missing_target_rows": 0,
+    "duplicate_rows_in_clean": 0,
+    "missing_values_in_features": {
+      "horsepower": 6
+    },
+    "n_train": 318,
+    "n_test": 80,
+    "n_raw_features": 7,
+    "n_encoded_features": 8,
+    "numeric_columns": [
+      "cylinders",
+      "displacement",
+      "horsepower",
+      "weight",
+      "acceleration",
+      "model_year"
+    ],
+    "categorical_columns": [
+      "origin"
+    ],
+    "excluded_columns": [
+      "car_name"
+    ],
+    "feature_names": [
+      "cylinders",
+      "displacement",
+      "horsepower",
+      "weight",
+      "acceleration",
+      "model_year",
+      "origin_2",
+      "origin_3"
+    ],
+    "split_strategy": "random",
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "target_stats_train": {
+      "mean": 23.60817610062893,
+      "std": 7.918094623048818,
+      "min": 9.0,
+      "max": 46.6
+    },
+    "target_stats_test": {
+      "mean": 23.1425,
+      "std": 7.33256051799097,
+      "min": 10.0,
+      "max": 44.0
+    }
+  },
+  "algorithm": "ols",
+  "objective_convention": "min_{beta0, beta} ||y - beta0 - X*beta||_2^2 via numpy.linalg.lstsq (intercept unscaled/unpenalized)",
+  "penalty_settings": {
+    "penalty": "none"
+  },
+  "dependencies": {
+    "python": "3.12.3",
+    "numpy": "2.5.5",
+    "pandas": "3.1.1",
+    "scikit_learn": "1.9.1",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "run_datetime_utc": "2026-11-24T18:43:56.430246+00:00"
+}

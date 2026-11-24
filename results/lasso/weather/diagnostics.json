@@ -1,0 +1,217 @@
+{
+  "penalty_tuning": {
+    "alpha_max": 2.584076911789199,
+    "alpha_grid_min": 0.0002584076911789199,
+    "alpha_grid_max": 2.584076911789199,
+    "n_alphas": 60,
+    "cv_strategy": "DateGroupedTimeSeriesSplit(5)",
+    "selected_alpha": 0.29050451956056633,
+    "best_cv_rmse": 1.849869567352871,
+    "best_cv_rmse_std": 0.22860470511300227,
+    "best_cv_r2": 0.5528584511198498
+  },
+  "sparsity_and_shrinkage": {
+    "n_total_features": 21,
+    "n_nonzero_features": 7,
+    "n_zero_features": 14,
+    "sparsity_pct": 66.66666666666667,
+    "ols_coef_l1_norm": 5.767671379972853,
+    "lasso_coef_l1_norm": 2.7972248538227946,
+    "l1_norm_ratio_lasso_over_ols": 0.4849833961649806,
+    "retained_features": [
+      {
+        "feature": "LDAPS_Tmax_lapse",
+        "coef_std": 1.808881755811608,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "Present_Tmax",
+        "coef_std": 0.5625327736177383,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "LDAPS_WS",
+        "coef_std": -0.1498357903120082,
+        "cv_selection_freq": 0.4
+      },
+      {
+        "feature": "LDAPS_CC4",
+        "coef_std": -0.10927218983926786,
+        "cv_selection_freq": 0.6
+      },
+      {
+        "feature": "LDAPS_CC1",
+        "coef_std": -0.08902549275246494,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "Present_Tmin",
+        "coef_std": 0.045281435347971244,
+        "cv_selection_freq": 0.2
+      },
+      {
+        "feature": "LDAPS_CC3",
+        "coef_std": -0.0323954161417362,
+        "cv_selection_freq": 0.4
+      }
+    ],
+    "eliminated_features": [
+      {
+        "feature": "LDAPS_RHmin",
+        "ols_coef_std": 0.43833983667481935,
+        "cv_selection_freq": 0.2,
+        "max_abs_corr_with_retained": 0.6799053136431981,
+        "most_correlated_retained_feature": "LDAPS_CC3"
+      },
+      {
+        "feature": "LDAPS_RHmax",
+        "ols_coef_std": -0.0980365261982892,
+        "cv_selection_freq": 0.2,
+        "max_abs_corr_with_retained": 0.43309249881428125,
+        "most_correlated_retained_feature": "LDAPS_CC1"
+      },
+      {
+        "feature": "LDAPS_Tmin_lapse",
+        "ols_coef_std": 0.08836834005179313,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.7517404672999437,
+        "most_correlated_retained_feature": "Present_Tmin"
+      },
+      {
+        "feature": "LDAPS_LH",
+        "ols_coef_std": 0.22545228366900988,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.2315791468346381,
+        "most_correlated_retained_feature": "LDAPS_CC3"
+      },
+      {
+        "feature": "LDAPS_CC2",
+        "ols_coef_std": -0.201437376391816,
+        "cv_selection_freq": 0.2,
+        "max_abs_corr_with_retained": 0.7764946456022976,
+        "most_correlated_retained_feature": "LDAPS_CC1"
+      },
+      {
+        "feature": "LDAPS_PPT1",
+        "ols_coef_std": -0.09143544904785823,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.42606808103728544,
+        "most_correlated_retained_feature": "LDAPS_CC1"
+      },
+      {
+        "feature": "LDAPS_PPT2",
+        "ols_coef_std": 0.17612363125387437,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.38005027560927895,
+        "most_correlated_retained_feature": "LDAPS_CC1"
+      },
+      {
+        "feature": "LDAPS_PPT3",
+        "ols_coef_std": -0.02364524431385294,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.35991561527456517,
+        "most_correlated_retained_feature": "LDAPS_CC3"
+      },
+      {
+        "feature": "LDAPS_PPT4",
+        "ols_coef_std": -0.02525242393438469,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.40314130095633716,
+        "most_correlated_retained_feature": "LDAPS_CC4"
+      },
+      {
+        "feature": "lat",
+        "ols_coef_std": -0.0569252649951854,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.08367684467850768,
+        "most_correlated_retained_feature": "Present_Tmin"
+      },
+      {
+        "feature": "lon",
+        "ols_coef_std": -0.12565739297237766,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.0919711901885598,
+        "most_correlated_retained_feature": "LDAPS_Tmax_lapse"
+      },
+      {
+        "feature": "DEM",
+        "ols_coef_std": -0.19178366746686423,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.25168072335603753,
+        "most_correlated_retained_feature": "Present_Tmin"
+      },
+      {
+        "feature": "Slope",
+        "ols_coef_std": 0.25309099807213586,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.16783963168856328,
+        "most_correlated_retained_feature": "LDAPS_WS"
+      },
+      {
+        "feature": "Solar radiation",
+        "ols_coef_std": 0.04120855570744751,
+        "cv_selection_freq": 0.2,
+        "max_abs_corr_with_retained": 0.259615293570302,
+        "most_correlated_retained_feature": "LDAPS_CC1"
+      }
+    ]
+  },
+  "selection_stability": {
+    "n_always_selected_in_cv": 3,
+    "n_never_selected_in_cv": 10,
+    "n_unstable_across_cv_folds": 8,
+    "unstable_features": [
+      {
+        "feature": "LDAPS_CC4",
+        "cv_selection_freq": 0.6,
+        "final_coef_std": -0.10927218983926786
+      },
+      {
+        "feature": "LDAPS_WS",
+        "cv_selection_freq": 0.4,
+        "final_coef_std": -0.1498357903120082
+      },
+      {
+        "feature": "LDAPS_CC3",
+        "cv_selection_freq": 0.4,
+        "final_coef_std": -0.0323954161417362
+      },
+      {
+        "feature": "Present_Tmin",
+        "cv_selection_freq": 0.2,
+        "final_coef_std": 0.045281435347971244
+      },
+      {
+        "feature": "LDAPS_RHmin",
+        "cv_selection_freq": 0.2,
+        "final_coef_std": 0.0
+      },
+      {
+        "feature": "LDAPS_RHmax",
+        "cv_selection_freq": 0.2,
+        "final_coef_std": 0.0
+      },
+      {
+        "feature": "LDAPS_CC2",
+        "cv_selection_freq": 0.2,
+        "final_coef_std": 0.0
+      },
+      {
+        "feature": "Solar radiation",
+        "cv_selection_freq": 0.2,
+        "final_coef_std": 0.0
+      }
+    ]
+  },
+  "convergence": {
+    "n_iter_final": 22,
+    "max_iter": 50000,
+    "converged_final": true,
+    "cv_convergence_warnings": 0
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": -0.15553963420258318,
+    "spearman_abs_resid_vs_fitted_pvalue": 8.528298820537495e-35,
+    "durbin_watson": 0.5529304599327837
+  }
+}

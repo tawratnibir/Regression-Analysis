@@ -1,0 +1,20 @@
+{
+  "dataset": "superconductivity",
+  "target": "critical_temp",
+  "target_units": "K",
+  "is_binary_classification": false,
+  "n_train": 17010,
+  "n_test": 4253,
+  "train": {
+    "mae": 13.317534436676537,
+    "mse": 310.79587654649845,
+    "rmse": 17.62940374903526,
+    "r2": 0.7363456388301332
+  },
+  "test": {
+    "mae": 13.198880961839812,
+    "mse": 302.5863035216605,
+    "rmse": 17.395008005794665,
+    "r2": 0.7371284496327886
+  }
+}

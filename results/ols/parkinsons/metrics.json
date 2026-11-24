@@ -1,0 +1,20 @@
+{
+  "dataset": "parkinsons",
+  "target": "total_UPDRS",
+  "target_units": "UPDRS points",
+  "is_binary_classification": false,
+  "n_train": 4640,
+  "n_test": 1235,
+  "train": {
+    "mae": 8.12292694185537,
+    "mse": 93.8966788026656,
+    "rmse": 9.690029865932592,
+    "r2": 0.2269956115945332
+  },
+  "test": {
+    "mae": 9.994754387881722,
+    "mse": 130.9058388389999,
+    "rmse": 11.441408953402544,
+    "r2": -0.5798145475733143
+  }
+}

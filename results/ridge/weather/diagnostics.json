@@ -1,0 +1,94 @@
+{
+  "penalty_tuning": {
+    "alpha_grid_min": 0.0001,
+    "alpha_grid_max": 100000.0,
+    "n_alphas": 60,
+    "cv_strategy": "DateGroupedTimeSeriesSplit(5)",
+    "selected_alpha": 731.8242219076182,
+    "best_cv_rmse": 1.7168752848221245,
+    "best_cv_rmse_std": 0.20028477362373748,
+    "best_cv_r2": 0.6115470952639341,
+    "svd_verification_max_abs_coef_diff": 4.933553565678039e-15
+  },
+  "shrinkage_and_degrees_of_freedom": {
+    "n_predictors": 21,
+    "effective_df_predictors": 16.567384728723805,
+    "effective_df_with_intercept": 17.567384728723805,
+    "ols_coef_l2_norm": 2.1265814569944306,
+    "ridge_coef_l2_norm": 1.5782868792771994,
+    "l2_norm_ratio_ridge_over_ols": 0.7421709025469664,
+    "top_coefficient_changes_vs_ols": [
+      {
+        "feature": "LDAPS_Tmax_lapse",
+        "ols_coef_std": 1.839079128302619,
+        "ridge_coef_std": 1.1784242833705312,
+        "abs_change": 0.6606548449320879
+      },
+      {
+        "feature": "LDAPS_RHmin",
+        "ols_coef_std": 0.43833983667481935,
+        "ridge_coef_std": 0.009045673008962975,
+        "abs_change": 0.4292941636658564
+      },
+      {
+        "feature": "LDAPS_Tmin_lapse",
+        "ols_coef_std": 0.08836834005179313,
+        "ridge_coef_std": 0.4768545220336616,
+        "abs_change": -0.38848618198186846
+      },
+      {
+        "feature": "Slope",
+        "ols_coef_std": 0.25309099807213586,
+        "ridge_coef_std": 0.18660574545790268,
+        "abs_change": 0.06648525261423319
+      },
+      {
+        "feature": "DEM",
+        "ols_coef_std": -0.19178366746686423,
+        "ridge_coef_std": -0.13616847124306594,
+        "abs_change": 0.05561519622379829
+      },
+      {
+        "feature": "LDAPS_CC3",
+        "ols_coef_std": -0.16168159269304086,
+        "ridge_coef_std": -0.21460960527707884,
+        "abs_change": -0.05292801258403798
+      },
+      {
+        "feature": "LDAPS_RHmax",
+        "ols_coef_std": -0.0980365261982892,
+        "ridge_coef_std": -0.05025399599881816,
+        "abs_change": 0.04778253019947104
+      },
+      {
+        "feature": "lon",
+        "ols_coef_std": -0.12565739297237766,
+        "ridge_coef_std": -0.08185578690923906,
+        "abs_change": 0.0438016060631386
+      },
+      {
+        "feature": "Solar radiation",
+        "ols_coef_std": 0.04120855570744751,
+        "ridge_coef_std": 0.08273323835700602,
+        "abs_change": -0.04152468264955851
+      },
+      {
+        "feature": "LDAPS_CC2",
+        "ols_coef_std": -0.201437376391816,
+        "ridge_coef_std": -0.24290532256819516,
+        "abs_change": -0.04146794617637917
+      }
+    ]
+  },
+  "numerical_stability": {
+    "x_centered_eig_condition_ols": 82.90973184091561,
+    "x_centered_eig_condition_ridge": 29.1196333108917,
+    "min_singular_value_centered": 19.55946837202279,
+    "max_singular_value_centered": 178.09831135089138
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": -0.14630692220069622,
+    "spearman_abs_resid_vs_fitted_pvalue": 6.110471286789703e-31,
+    "durbin_watson": 0.5051064208994052
+  }
+}

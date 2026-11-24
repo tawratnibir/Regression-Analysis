@@ -1,0 +1,94 @@
+{
+  "exact_algebraic_properties": {
+    "note": "Exact mathematical consequences of least-squares projection with an unpenalized intercept (not statistical assumptions).",
+    "max_abs_Xt_residuals": 4.401812248033821e-12,
+    "residual_sum": 4.362732397567015e-12,
+    "mean_observed_train": 23.60817610062893,
+    "mean_fitted_train": 23.608176100628917,
+    "mean_fitted_identity_abs_diff": 1.4210854715202004e-14,
+    "sst": 19937.398742138364,
+    "ssr": 16326.593341755479,
+    "sse": 3610.805400382863,
+    "anova_identity_abs_error": 2.1827872842550278e-11
+  },
+  "numerical_linear_algebra": {
+    "n_train": 318,
+    "n_predictors": 8,
+    "n_augmented_columns": 9,
+    "matrix_rank": 9,
+    "is_rank_deficient": false,
+    "condition_number_standardized_with_intercept": 11.836567929586366,
+    "condition_number_unstandardized_with_intercept": 89012.85108561855,
+    "min_singular_value": 3.2026392051351817,
+    "max_singular_value": 37.908256505539065,
+    "sklearn_max_abs_test_pred_diff": 2.1316282072803006e-14
+  },
+  "multicollinearity": {
+    "max_vif": 22.817422949112377,
+    "has_infinite_vif": false,
+    "n_vif_gt_10": 3,
+    "top_vifs": [
+      {
+        "feature": "displacement",
+        "vif": 22.817422949112377
+      },
+      {
+        "feature": "cylinders",
+        "vif": 11.025284403609728
+      },
+      {
+        "feature": "weight",
+        "vif": 10.507800395734142
+      },
+      {
+        "feature": "horsepower",
+        "vif": 9.12993250614884
+      },
+      {
+        "feature": "acceleration",
+        "vif": 2.500531605828185
+      },
+      {
+        "feature": "origin_3",
+        "vif": 1.8171288566794201
+      },
+      {
+        "feature": "origin_2",
+        "vif": 1.6542642292517198
+      },
+      {
+        "feature": "model_year",
+        "vif": 1.3155105905873885
+      }
+    ]
+  },
+  "heteroskedasticity_checks": {
+    "note": "Empirical assumption checks on training residuals (not guaranteed by OLS algebra).",
+    "breusch_pagan_lm_stat": 28.61725384632252,
+    "breusch_pagan_df": 8,
+    "breusch_pagan_pvalue": 0.00037005213517968423,
+    "spearman_abs_resid_vs_fitted_r": 0.14956584723367902,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.007547212334632342
+  },
+  "residual_normality_checks": {
+    "skewness": 0.4171101135302535,
+    "excess_kurtosis": 0.9375021646571935,
+    "jarque_bera_stat": 20.86654647165295,
+    "jarque_bera_pvalue": 2.943655655387538e-05,
+    "shapiro_wilk_stat": 0.9838020285058302,
+    "shapiro_wilk_pvalue": 0.0011932223109471698,
+    "shapiro_wilk_n": 318
+  },
+  "influence_diagnostics": {
+    "leverage_threshold_2p_over_n": 0.05660377358490566,
+    "n_high_leverage": 15,
+    "max_leverage": 0.24572050410984186,
+    "cooks_threshold_4_over_n": 0.012578616352201259,
+    "n_high_cooks_d": 23,
+    "max_cooks_d": 0.11448028506852848
+  },
+  "autocorrelation_checks": {
+    "durbin_watson": 1.220346261541493,
+    "lag1_residual_corr": 0.3892027260016679
+  }
+}

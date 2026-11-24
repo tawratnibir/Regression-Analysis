@@ -1,0 +1,193 @@
+{
+  "penalty_tuning": {
+    "alpha_max": 4.425604000441981,
+    "alpha_grid_min": 0.00044256040004419817,
+    "alpha_grid_max": 4.425604000441981,
+    "n_alphas": 60,
+    "cv_strategy": "GroupKFold(5, group=subject#)",
+    "selected_alpha": 1.26940343636614,
+    "best_cv_rmse": 10.353440172172258,
+    "best_cv_rmse_std": 1.9497677279580983,
+    "best_cv_r2": -0.09526839460826389
+  },
+  "sparsity_and_shrinkage": {
+    "n_total_features": 19,
+    "n_nonzero_features": 2,
+    "n_zero_features": 17,
+    "sparsity_pct": 89.47368421052632,
+    "ols_coef_l1_norm": 1929.1882126218063,
+    "lasso_coef_l1_norm": 3.527777467469538,
+    "l1_norm_ratio_lasso_over_ols": 0.0018286331237091773,
+    "retained_features": [
+      {
+        "feature": "age",
+        "coef_std": 3.112275091222288,
+        "cv_selection_freq": 1.0
+      },
+      {
+        "feature": "PPE",
+        "coef_std": 0.4155023762472503,
+        "cv_selection_freq": 1.0
+      }
+    ],
+    "eliminated_features": [
+      {
+        "feature": "sex",
+        "ols_coef_std": -0.10816934272755463,
+        "cv_selection_freq": 0.2,
+        "max_abs_corr_with_retained": 0.103196736960834,
+        "most_correlated_retained_feature": "age"
+      },
+      {
+        "feature": "test_time",
+        "ols_coef_std": 1.1958618174081108,
+        "cv_selection_freq": 0.4,
+        "max_abs_corr_with_retained": 0.020582370518185174,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "Jitter(%)",
+        "ols_coef_std": 2.160621306939191,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.7221931117073132,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "Jitter(Abs)",
+        "ols_coef_std": -2.814484387825591,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.759890414445874,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "Jitter:RAP",
+        "ols_coef_std": -166.63968660503917,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.6728226770250246,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "Jitter:PPQ5",
+        "ols_coef_std": -2.2580313373939624,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.6634238196580794,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "Jitter:DDP",
+        "ols_coef_std": 169.75064872615064,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.6728244185061264,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "Shimmer",
+        "ols_coef_std": 4.208959757204853,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.6221188642303224,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "Shimmer(dB)",
+        "ols_coef_std": -2.487063964316037,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.6400027545270044,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "Shimmer:APQ3",
+        "ols_coef_std": -783.7155003676304,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.5913519206394575,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "Shimmer:APQ5",
+        "ols_coef_std": -0.2622366418167911,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.6022356951671025,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "Shimmer:APQ11",
+        "ols_coef_std": 1.6748343432144173,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.6155974530793502,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "Shimmer:DDA",
+        "ols_coef_std": 779.5799154627477,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.5913489724350788,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "NHR",
+        "ols_coef_std": -1.6213853814803072,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.5973714609845144,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "HNR",
+        "ols_coef_std": -2.22063362751588,
+        "cv_selection_freq": 0.2,
+        "max_abs_corr_with_retained": 0.7693311920534497,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "RPDE",
+        "ols_coef_std": -0.7210006511700668,
+        "cv_selection_freq": 0.0,
+        "max_abs_corr_with_retained": 0.570206390904092,
+        "most_correlated_retained_feature": "PPE"
+      },
+      {
+        "feature": "DFA",
+        "ols_coef_std": -1.4777246293209014,
+        "cv_selection_freq": 0.2,
+        "max_abs_corr_with_retained": 0.3255363493898315,
+        "most_correlated_retained_feature": "PPE"
+      }
+    ]
+  },
+  "selection_stability": {
+    "n_always_selected_in_cv": 2,
+    "n_never_selected_in_cv": 13,
+    "n_unstable_across_cv_folds": 4,
+    "unstable_features": [
+      {
+        "feature": "test_time",
+        "cv_selection_freq": 0.4,
+        "final_coef_std": 0.0
+      },
+      {
+        "feature": "sex",
+        "cv_selection_freq": 0.2,
+        "final_coef_std": 0.0
+      },
+      {
+        "feature": "HNR",
+        "cv_selection_freq": 0.2,
+        "final_coef_std": 0.0
+      },
+      {
+        "feature": "DFA",
+        "cv_selection_freq": 0.2,
+        "final_coef_std": 0.0
+      }
+    ]
+  },
+  "convergence": {
+    "n_iter_final": 4,
+    "max_iter": 50000,
+    "converged_final": true,
+    "cv_convergence_warnings": 8
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": 0.0940682228650219,
+    "spearman_abs_resid_vs_fitted_pvalue": 1.3608653076467093e-10,
+    "durbin_watson": 0.04178249252985173
+  }
+}

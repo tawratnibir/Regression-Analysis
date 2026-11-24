@@ -1,0 +1,6 @@
+name,role,type,demographic,description,units,missing_values
+AT,Feature,Continuous,,in the range 1.81°C and 37.11°C,C,no
+V,Feature,Continuous,,in teh range 25.36-81.56 cm Hg,cm Hg,no
+AP,Feature,Continuous,,in the range 992.89-1033.30 milibar,milibar,no
+RH,Feature,Continuous,,in the range 25.56% to 100.16%,%,no
+PE,Target,Continuous,,420.26-495.76 MW,MW,no

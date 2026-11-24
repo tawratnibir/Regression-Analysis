@@ -1,0 +1,54 @@
+{
+  "n_raw": 1599,
+  "n_clean": 1599,
+  "dropped_summary_rows": 0,
+  "dropped_missing_target_rows": 0,
+  "duplicate_rows_in_clean": 240,
+  "missing_values_in_features": {},
+  "n_train": 1279,
+  "n_test": 320,
+  "n_raw_features": 11,
+  "n_encoded_features": 11,
+  "numeric_columns": [
+    "fixed acidity",
+    "volatile acidity",
+    "citric acid",
+    "residual sugar",
+    "chlorides",
+    "free sulfur dioxide",
+    "total sulfur dioxide",
+    "density",
+    "pH",
+    "sulphates",
+    "alcohol"
+  ],
+  "categorical_columns": [],
+  "excluded_columns": [],
+  "feature_names": [
+    "fixed acidity",
+    "volatile acidity",
+    "citric acid",
+    "residual sugar",
+    "chlorides",
+    "free sulfur dioxide",
+    "total sulfur dioxide",
+    "density",
+    "pH",
+    "sulphates",
+    "alcohol"
+  ],
+  "split_strategy": "random",
+  "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+  "target_stats_train": {
+    "mean": 5.623924941360438,
+    "std": 0.8065931873105368,
+    "min": 3.0,
+    "max": 8.0
+  },
+  "target_stats_test": {
+    "mean": 5.684375,
+    "std": 0.8083970926314616,
+    "min": 3.0,
+    "max": 8.0
+  }
+}

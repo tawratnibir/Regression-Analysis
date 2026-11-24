@@ -1,0 +1,7 @@
+name,role,type,demographic,description,units,missing_values
+frequency,Feature,Integer,,,Hz,no
+attack-angle,Feature,Binary,,,deg,no
+chord-length,Feature,Continuous,,,m,no
+free-stream-velocity,Feature,Continuous,,,m/s,no
+suction-side-displacement-thickness,Feature,Continuous,,,m,no
+scaled-sound-pressure,Target,Continuous,,,dB,no

@@ -1,0 +1,58 @@
+{
+  "penalty_tuning": {
+    "alpha_grid_min": 0.0001,
+    "alpha_grid_max": 100000.0,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "selected_alpha": 0.3224590545296398,
+    "best_cv_rmse": 4.572577898610872,
+    "best_cv_rmse_std": 0.1283187042015026,
+    "best_cv_r2": 0.9281356210101286,
+    "svd_verification_max_abs_coef_diff": 2.7977620220553945e-14
+  },
+  "shrinkage_and_degrees_of_freedom": {
+    "n_predictors": 4,
+    "effective_df_predictors": 3.9994500812407288,
+    "effective_df_with_intercept": 4.999450081240729,
+    "ols_coef_l2_norm": 15.23669477281522,
+    "ridge_coef_l2_norm": 15.2336474892606,
+    "l2_norm_ratio_ridge_over_ols": 0.9998000036359554,
+    "top_coefficient_changes_vs_ols": [
+      {
+        "feature": "AT",
+        "ols_coef_std": -14.763927385645434,
+        "ridge_coef_std": -14.760546693404153,
+        "abs_change": 0.0033806922412811247
+      },
+      {
+        "feature": "V",
+        "ols_coef_std": -2.9496320985616356,
+        "ridge_coef_std": -2.9516803352729855,
+        "abs_change": -0.0020482367113499045
+      },
+      {
+        "feature": "RH",
+        "ols_coef_std": -2.312195656068587,
+        "ridge_coef_std": -2.3109714585311085,
+        "abs_change": 0.0012241975374784886
+      },
+      {
+        "feature": "AP",
+        "ols_coef_std": 0.3697803165608615,
+        "ridge_coef_std": 0.3705013564197118,
+        "abs_change": -0.0007210398588503031
+      }
+    ]
+  },
+  "numerical_stability": {
+    "x_centered_eig_condition_ols": 23.733276965518908,
+    "x_centered_eig_condition_ridge": 23.72396467833846,
+    "min_singular_value_centered": 28.051181652429264,
+    "max_singular_value_centered": 136.65641213779645
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": -0.031756245208784534,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.005460881775368962,
+    "durbin_watson": 2.0216494066015827
+  }
+}

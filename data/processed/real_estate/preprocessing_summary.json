@@ -1,0 +1,46 @@
+{
+  "n_raw": 414,
+  "n_clean": 414,
+  "dropped_summary_rows": 0,
+  "dropped_missing_target_rows": 0,
+  "duplicate_rows_in_clean": 0,
+  "missing_values_in_features": {},
+  "n_train": 331,
+  "n_test": 83,
+  "n_raw_features": 6,
+  "n_encoded_features": 6,
+  "numeric_columns": [
+    "X1 transaction date",
+    "X2 house age",
+    "X3 distance to the nearest MRT station",
+    "X4 number of convenience stores",
+    "X5 latitude",
+    "X6 longitude"
+  ],
+  "categorical_columns": [],
+  "excluded_columns": [
+    "No"
+  ],
+  "feature_names": [
+    "X1 transaction date",
+    "X2 house age",
+    "X3 distance to the nearest MRT station",
+    "X4 number of convenience stores",
+    "X5 latitude",
+    "X6 longitude"
+  ],
+  "split_strategy": "random",
+  "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+  "target_stats_train": {
+    "mean": 38.3915407854985,
+    "std": 13.714609088844526,
+    "min": 7.6,
+    "max": 117.5
+  },
+  "target_stats_test": {
+    "mean": 36.339759036144585,
+    "std": 12.952210024557573,
+    "min": 11.2,
+    "max": 63.3
+  }
+}

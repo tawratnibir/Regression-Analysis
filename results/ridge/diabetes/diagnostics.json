@@ -1,0 +1,94 @@
+{
+  "penalty_tuning": {
+    "alpha_grid_min": 0.0001,
+    "alpha_grid_max": 100000.0,
+    "n_alphas": 60,
+    "cv_strategy": "StratifiedKFold(5, seed=42)",
+    "selected_alpha": 31.01168926574782,
+    "best_cv_rmse": 0.30691156013024723,
+    "best_cv_rmse_std": 0.016188410760574774,
+    "best_cv_r2": 0.6008834869600006,
+    "svd_verification_max_abs_coef_diff": 9.159339953157541e-16
+  },
+  "shrinkage_and_degrees_of_freedom": {
+    "n_predictors": 16,
+    "effective_df_predictors": 14.395291629343994,
+    "effective_df_with_intercept": 15.395291629343994,
+    "ols_coef_l2_norm": 0.28521729704404886,
+    "ridge_coef_l2_norm": 0.26616460999510905,
+    "l2_norm_ratio_ridge_over_ols": 0.9331993983310299,
+    "top_coefficient_changes_vs_ols": [
+      {
+        "feature": "gender",
+        "ols_coef_std": -0.13803730244979112,
+        "ridge_coef_std": -0.12593268521742598,
+        "abs_change": 0.012104617232365139
+      },
+      {
+        "feature": "polydipsia",
+        "ols_coef_std": 0.1446291082558663,
+        "ridge_coef_std": 0.13474526028805392,
+        "abs_change": 0.009883847967812387
+      },
+      {
+        "feature": "alopecia",
+        "ols_coef_std": -0.00023880960325751294,
+        "ridge_coef_std": -0.008579497133672748,
+        "abs_change": -0.008340687530415235
+      },
+      {
+        "feature": "itching",
+        "ols_coef_std": -0.06780657264812698,
+        "ridge_coef_std": -0.06015677951396666,
+        "abs_change": 0.007649793134160317
+      },
+      {
+        "feature": "genital_thrush",
+        "ols_coef_std": 0.0753360024457268,
+        "ridge_coef_std": 0.06828097633929145,
+        "abs_change": 0.0070550261064353526
+      },
+      {
+        "feature": "polyuria",
+        "ols_coef_std": 0.14262832863797528,
+        "ridge_coef_std": 0.13614693251556267,
+        "abs_change": 0.006481396122412608
+      },
+      {
+        "feature": "sudden_weight_loss",
+        "ols_coef_std": 0.02657665350171047,
+        "ridge_coef_std": 0.03183600604875334,
+        "abs_change": -0.005259352547042871
+      },
+      {
+        "feature": "delayed_healing",
+        "ols_coef_std": -0.03530016167024978,
+        "ridge_coef_std": -0.03085683964486807,
+        "abs_change": 0.004443322025381714
+      },
+      {
+        "feature": "irritability",
+        "ols_coef_std": 0.06669670690830529,
+        "ridge_coef_std": 0.06254478287905409,
+        "abs_change": 0.0041519240292512
+      },
+      {
+        "feature": "obesity",
+        "ols_coef_std": -0.02391214985362023,
+        "ridge_coef_std": -0.020013908958954777,
+        "abs_change": 0.0038982408946654536
+      }
+    ]
+  },
+  "numerical_stability": {
+    "x_centered_eig_condition_ols": 11.844449476085373,
+    "x_centered_eig_condition_ridge": 9.792462926963779,
+    "min_singular_value_centered": 11.527383186339833,
+    "max_singular_value_centered": 39.67237220389529
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": -0.2540211215205508,
+    "spearman_abs_resid_vs_fitted_pvalue": 1.5059103013273798e-07,
+    "durbin_watson": 0.9683395913364881
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "dataset": "airfoil",
+  "dataset_name": "Airfoil Self-Noise",
+  "uci_id": 291,
+  "target": "scaled-sound-pressure",
+  "target_units": "dB",
+  "split_reference": "processed/airfoil/split.json",
+  "split_strategy": "random",
+  "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+  "seed": 42,
+  "preprocessing": {
+    "n_raw": 1503,
+    "n_clean": 1503,
+    "dropped_summary_rows": 0,
+    "dropped_missing_target_rows": 0,
+    "duplicate_rows_in_clean": 0,
+    "missing_values_in_features": {},
+    "n_train": 1202,
+    "n_test": 301,
+    "n_raw_features": 5,
+    "n_encoded_features": 5,
+    "numeric_columns": [
+      "frequency",
+      "attack-angle",
+      "chord-length",
+      "free-stream-velocity",
+      "suction-side-displacement-thickness"
+    ],
+    "categorical_columns": [],
+    "excluded_columns": [],
+    "feature_names": [
+      "frequency",
+      "attack-angle",
+      "chord-length",
+      "free-stream-velocity",
+      "suction-side-displacement-thickness"
+    ],
+    "split_strategy": "random",
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "target_stats_train": {
+      "mean": 124.87696006655574,
+      "std": 6.849499771385181,
+      "min": 103.38,
+      "max": 140.987
+    },
+    "target_stats_test": {
+      "mean": 124.67214617940202,
+      "std": 7.078034895268006,
+      "min": 104.5,
+      "max": 138.423
+    }
+  },
+  "algorithm": "lasso",
+  "objective_convention": "min_{beta0, beta} (1 / (2*n)) * ||y - beta0 - X*beta||_2^2 + alpha * ||beta||_1 (intercept beta0 unpenalized)",
+  "penalty_settings": {
+    "penalty": "L1",
+    "selected_alpha": 0.00028056981672562137,
+    "alpha_max": 2.8056981672562133,
+    "alpha_grid_min": 0.00028056981672562137,
+    "alpha_grid_max": 2.8056981672562133,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)"
+  },
+  "dependencies": {
+    "python": "3.12.3",
+    "numpy": "2.5.5",
+    "pandas": "3.1.1",
+    "scikit_learn": "1.9.1",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "run_datetime_utc": "2026-11-24T18:40:51.212328+00:00"
+}

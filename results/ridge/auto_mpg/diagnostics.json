@@ -1,0 +1,82 @@
+{
+  "penalty_tuning": {
+    "alpha_grid_min": 0.0001,
+    "alpha_grid_max": 100000.0,
+    "n_alphas": 60,
+    "cv_strategy": "KFold(5, shuffle=True, seed=42)",
+    "selected_alpha": 0.6509675230458171,
+    "best_cv_rmse": 3.5081766040841735,
+    "best_cv_rmse_std": 0.520659589982041,
+    "best_cv_r2": 0.7930967370448248,
+    "svd_verification_max_abs_coef_diff": 2.6645352591003757e-14
+  },
+  "shrinkage_and_degrees_of_freedom": {
+    "n_predictors": 8,
+    "effective_df_predictors": 7.88071610053103,
+    "effective_df_with_intercept": 8.88071610053103,
+    "ols_coef_l2_norm": 7.125189964579279,
+    "ridge_coef_l2_norm": 6.939730336158432,
+    "l2_norm_ratio_ridge_over_ols": 0.9739712724372538,
+    "top_coefficient_changes_vs_ols": [
+      {
+        "feature": "displacement",
+        "ols_coef_std": 2.0357925785951476,
+        "ridge_coef_std": 1.85266077593444,
+        "abs_change": 0.1831318026607076
+      },
+      {
+        "feature": "weight",
+        "ols_coef_std": -5.912094708150226,
+        "ridge_coef_std": -5.764768988610178,
+        "abs_change": 0.14732571954004836
+      },
+      {
+        "feature": "cylinders",
+        "ols_coef_std": -0.2790238416944031,
+        "ridge_coef_std": -0.24608009403328227,
+        "abs_change": 0.03294374766112082
+      },
+      {
+        "feature": "acceleration",
+        "ols_coef_std": 0.18567472523853212,
+        "ridge_coef_std": 0.1563107948490005,
+        "abs_change": 0.02936393038953161
+      },
+      {
+        "feature": "horsepower",
+        "ols_coef_std": -0.5448387433677806,
+        "ridge_coef_std": -0.5711324628668843,
+        "abs_change": -0.02629371949910375
+      },
+      {
+        "feature": "origin_2",
+        "ols_coef_std": 1.1228552464981818,
+        "ridge_coef_std": 1.103126252790809,
+        "abs_change": 0.0197289937073728
+      },
+      {
+        "feature": "model_year",
+        "ols_coef_std": 2.970762207490741,
+        "ridge_coef_std": 2.9520123151185995,
+        "abs_change": 0.01874989237214164
+      },
+      {
+        "feature": "origin_3",
+        "ols_coef_std": 1.0842537101599616,
+        "ridge_coef_std": 1.0735449176702814,
+        "abs_change": 0.010708792489680263
+      }
+    ]
+  },
+  "numerical_stability": {
+    "x_centered_eig_condition_ols": 140.10434035171232,
+    "x_centered_eig_condition_ridge": 131.802770378841,
+    "min_singular_value_centered": 3.2026392051351826,
+    "max_singular_value_centered": 37.90825650553905
+  },
+  "residual_checks": {
+    "spearman_abs_resid_vs_fitted_r": 0.15098500443789828,
+    "spearman_abs_resid_vs_fitted_pvalue": 0.006989890120301829,
+    "durbin_watson": 1.215391358221991
+  }
+}
