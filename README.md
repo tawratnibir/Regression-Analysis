@@ -100,6 +100,10 @@ Available endpoints:
 - `GET /api/datasets`, `GET /api/results/{model}/{dataset}` — Saved metrics and diagnostics
 - `POST /api/predict` — Live server-side OLS, Ridge, and Lasso predictions
 
+For **Netlify** (static site, zero backend required—since `reports/index.html` and all reports/diagrams/live JS predictor are 100% self-contained):
+- Configured in `netlify.toml` (`publish = "reports"`, empty build command).
+- Connect your GitHub repo on Netlify and deploy directly (no Python build step needed).
+
 For **Render Web Service** deployment (configured in `render.yaml` with lean `requirements-render.txt`):
 - **Build Command:** `pip install -r requirements-render.txt`
 - **Start Command:** `uvicorn app:app --host 0.0.0.0 --port $PORT`
