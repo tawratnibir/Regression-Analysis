@@ -519,6 +519,27 @@ SHARED_DESIGN_CSS = r"""
       transition: background-color 160ms ease, color 160ms ease;
     }
     .topnav a:hover { background: var(--accent-soft); }
+    .brand-mini {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--heading) !important;
+      padding: 4px 8px !important;
+    }
+    .brand-mini img { width: 24px; height: 24px; object-fit: contain; display: block; background: #fff; border-radius: 6px; padding: 2px; border: 1px solid var(--border); }
+    .hero-logo-pill {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 5px 12px;
+      border-radius: 9px;
+      margin-bottom: 10px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+    }
+    .hero-logo-pill img { height: 26px; width: auto; display: block; }
     .theme-btn {
       display: inline-flex;
       align-items: center;
@@ -678,8 +699,7 @@ REPORT_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ model_title }} — {{ dataset_name }}</title>
-  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>DataMorph | {{ model_title }} — {{ dataset_name }}</title>
   <link rel="icon" type="image/png" sizes="64x64" href="../assets/images/favicon.png">
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="apple-touch-icon" href="../assets/images/favicon.png">
@@ -692,7 +712,8 @@ REPORT_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
 <header class="topbar">
   <div class="topbar-inner">
     <nav class="topnav" aria-label="Breadcrumb">
-      <a href="../index.html">&larr; Grand Dashboard</a>
+      <a class="brand-mini" href="../index.html"><img src="../assets/images/datamorph_mark.png" alt=""><span>DataMorph</span></a>
+      <a href="../index.html">&larr; Studio</a>
       <a href="summary.html">{{ model_key | upper }} Summary</a>
       <a href="{{ uci_url }}" target="_blank" rel="noopener noreferrer">UCI Dataset {{ metadata.uci_id }} &nearr;</a>
     </nav>
@@ -707,6 +728,7 @@ REPORT_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
   <header class="hero-card">
     <img class="hero-bg" src="../assets/images/hero_banner.jpg" alt="" aria-hidden="true">
     <div class="hero-inner">
+      <div class="hero-logo-pill"><img src="../assets/images/datamorph_logo.png" alt="DataMorph"></div>
       <div>
         <span class="badge">{{ model_key | upper }}</span>
         <span class="badge">UCI ID {{ metadata.uci_id }}</span>
@@ -869,7 +891,7 @@ REPORT_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
   </section>
 
   <footer>
-    Generated strictly from saved artifacts in <code>results/{{ model_key }}/{{ metadata.dataset }}/</code> &middot;
+    DataMorph &middot; Generated strictly from saved artifacts in <code>results/{{ model_key }}/{{ metadata.dataset }}/</code> &middot;
     Python {{ metadata.dependencies.python }}, NumPy {{ metadata.dependencies.numpy }}, scikit-learn {{ metadata.dependencies.scikit_learn }}
   </footer>
 </div>
@@ -941,8 +963,7 @@ SUMMARY_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ model_title }} — Cross-Dataset Summary</title>
-  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>DataMorph | {{ model_title }} — Cross-Dataset Summary</title>
   <link rel="icon" type="image/png" sizes="64x64" href="../assets/images/favicon.png">
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="apple-touch-icon" href="../assets/images/favicon.png">
@@ -955,7 +976,8 @@ SUMMARY_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
 <header class="topbar">
   <div class="topbar-inner">
     <nav class="topnav" aria-label="Breadcrumb">
-      <a href="../index.html">&larr; Grand Dashboard</a>
+      <a class="brand-mini" href="../index.html"><img src="../assets/images/datamorph_mark.png" alt=""><span>DataMorph</span></a>
+      <a href="../index.html">&larr; Studio</a>
       <a href="../ols/summary.html">OLS Summary</a>
       <a href="../ridge/summary.html">Ridge Summary</a>
       <a href="../lasso/summary.html">Lasso Summary</a>
@@ -971,6 +993,7 @@ SUMMARY_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
   <header class="hero-card">
     <img class="hero-bg" src="../assets/images/hero_banner.jpg" alt="" aria-hidden="true">
     <div class="hero-inner">
+      <div class="hero-logo-pill"><img src="../assets/images/datamorph_logo.png" alt="DataMorph"></div>
       <span class="badge">{{ model_key | upper }}</span>
       <span class="badge">{{ rows | length }} UCI Datasets</span>
       <h1>{{ model_title }} &mdash; All-Dataset Summary</h1>

@@ -23,7 +23,7 @@ from reporting.generate_report import (
 )
 
 JINJA_ENV = Environment(autoescape=select_autoescape(["html", "xml"]))
-GITHUB_REPO_URL = "https://github.com/tawratnibir/Regression-Analysis"
+GITHUB_REPO_URL = "https://github.com/tawratnibir/DataMorph"
 
 
 def _uci_url(uci_id: int) -> str:
@@ -215,8 +215,7 @@ DASHBOARD_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UCI Regression Studio — OLS, Ridge &amp; Lasso Interactive Workbench</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>DataMorph — OLS, Ridge &amp; Lasso Regression Studio</title>
   <link rel="icon" type="image/png" sizes="64x64" href="assets/images/favicon.png">
   <link rel="shortcut icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="assets/images/favicon.png">
@@ -376,15 +375,28 @@ DASHBOARD_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
     }
     .sidebar-close-btn:hover { background: var(--sidebar-surface); color: var(--sidebar-heading); }
     .brand-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #1e40af, #0d9488);
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: #ffffff;
+      border: 1px solid var(--border);
       display: grid;
       place-items: center;
-      color: #ffffff;
+      padding: 3px;
       flex-shrink: 0;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
     }
+    .brand-mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .hero-logo-pill {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 7px 14px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+    }
+    .hero-logo-pill img { height: 32px; width: auto; display: block; }
     .brand-title { font-size: 0.96rem; font-weight: 700; color: var(--sidebar-heading); line-height: 1.2; }
     .brand-sub { font-size: 0.7rem; color: var(--sidebar-muted); }
     .sidebar-group { padding: 12px 12px 6px; }
@@ -936,12 +948,10 @@ DASHBOARD_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
     <div class="sidebar-brand">
       <div class="brand-left">
         <div class="brand-mark" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-7"/><circle cx="7" cy="15" r="1.4" fill="currentColor"/><circle cx="19" cy="7" r="1.4" fill="currentColor"/>
-          </svg>
+          <img src="assets/images/datamorph_mark.png" alt="">
         </div>
         <div>
-          <div class="brand-title">Regression Studio</div>
+          <div class="brand-title">DataMorph</div>
           <div class="brand-sub">OLS &middot; Ridge &middot; Lasso</div>
         </div>
       </div>
@@ -1025,6 +1035,7 @@ DASHBOARD_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
           <img class="hero-bg" src="assets/images/hero_banner.jpg" alt="Geometric visualization of OLS hyperplane, L2 Ridge sphere, and L1 Lasso octahedron">
           <div class="hero-scrim"></div>
           <div class="hero-content">
+            <div class="hero-logo-pill"><img src="assets/images/datamorph_logo.png" alt="DataMorph"></div>
             <div class="hero-eyebrow">10 UCI Datasets &middot; 30 Reproducible Runs &middot; 80/20 Splits</div>
             <h1>Linear Regression &amp; Regularization Studio</h1>
             <p>OLS, Ridge (\(\ell_2\)), and Lasso (\(\ell_1\)) with leak-free training-only CV (\(\lambda \equiv \alpha\)).</p>
@@ -1415,7 +1426,7 @@ DASHBOARD_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
       </section>
 
       <footer class="dash-footer">
-        UCI Regression Studio &middot; Self-contained research workspace (<code>results/</code> &amp; <code>reports/</code>) &middot; Press <code>Esc</code> to close plot previews
+        DataMorph &middot; Self-contained regression benchmark (<code>results/</code> &amp; <code>reports/</code>) &middot; Press <code>Esc</code> to close plot previews
       </footer>
     </main>
   </div>

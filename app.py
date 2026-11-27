@@ -17,8 +17,8 @@ import uvicorn
 from config import DATASETS, MODEL_KEYS, REPORTS_DIR, RESULTS_DIR
 
 app = FastAPI(
-    title="UCI Regression Analysis API & Dashboard",
-    description="Serves standalone OLS, Ridge, and Lasso reports plus live Python prediction endpoints.",
+    title="DataMorph — UCI Regression Analysis API & Dashboard",
+    description="DataMorph web service serving standalone OLS, Ridge, and Lasso reports plus live Python prediction endpoints.",
     version="1.0.0",
 )
 

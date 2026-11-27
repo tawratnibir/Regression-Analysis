@@ -1,6 +1,10 @@
-# UCI Regression Analysis: OLS, Ridge, and Lasso
+# DataMorph — UCI Regression Analysis: OLS, Ridge, and Lasso
 
-A reproducible Python benchmark comparing **Ordinary Least Squares (OLS)**, **Ridge Regression (L2)**, and **Lasso Regression (L1)** across **10 fixed UCI datasets**, with dataset-specific preprocessing, persisted train/test splits, leak-free cross-validation, numerical diagnostics, and self-contained HTML reports.
+<p align="center">
+  <img src="reports/assets/images/datamorph_logo.png" alt="DataMorph" width="320">
+</p>
+
+A reproducible Python benchmark (**DataMorph**) comparing **Ordinary Least Squares (OLS)**, **Ridge Regression (L2)**, and **Lasso Regression (L1)** across **10 fixed UCI datasets**, with dataset-specific preprocessing, persisted train/test splits, leak-free cross-validation, numerical diagnostics, and self-contained HTML reports.
 
 ## Project Structure
 

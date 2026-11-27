@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: uci-regression-analysis
+    name: datamorph
     runtime: python
     buildCommand: pip install -r requirements-render.txt
     startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
