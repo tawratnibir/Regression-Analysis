@@ -561,6 +561,24 @@
       margin-bottom: 10px;
     }
     .chart-title { font-size: 0.82rem; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.04em; }
+    .ds-context-card {
+      background: var(--subtle);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+    }
+    .ds-context-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    .ds-context-top strong { font-family: "Space Grotesk", sans-serif; font-size: 0.98rem; color: var(--navy); }
+    .ds-context-desc { margin: 0 0 8px; font-size: 0.86rem; color: var(--text); }
     .chart-legend { display: flex; gap: 12px; font-size: 0.76rem; color: var(--muted); flex-wrap: wrap; }
     .legend-item { display: inline-flex; align-items: center; gap: 5px; font-weight: 600; }
     .legend-swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
@@ -2092,6 +2110,23 @@ function renderComparisonSection(bundle) {
   if (!ols || !ridge || !lasso) return;
 
   const units = escHtml(bundle.target_units);
+  const prep = bundle.preprocessing || {};
+  const firstNote = (bundle.notes && bundle.notes.length) ? bundle.notes[0] : "";
+  const contextHtml = `
+    <div class="ds-context-card">
+      <div class="ds-context-top">
+        <strong>${escHtml(bundle.name)}</strong>
+        <div class="pill-row" style="margin:0;">
+          <a class="pill pill-accent" style="text-decoration:none;" href="${escHtml(bundle.uci_url)}" target="_blank" rel="noopener noreferrer">UCI ${bundle.uci_id} &nearr;</a>
+          <span class="pill">Target: <code>${escHtml(bundle.target)}</code> (${units})</span>
+          <span class="pill">\\(n = ${ols.metrics.n_train}\\), \\(n_{\\mathrm{test}} = ${ols.metrics.n_test}\\), \\(p = ${prep.n_encoded_features ?? "—"}\\)</span>
+          <span class="pill">${escHtml(prep.split_strategy || "")} / ${escHtml(prep.cv_strategy || "")}</span>
+        </div>
+      </div>
+      <p class="ds-context-desc">${escHtml(bundle.description || "")}</p>
+      ${firstNote ? `<div class="symbol-note" style="margin-top:0;"><strong>Note:</strong> ${escHtml(firstNote)}</div>` : ""}
+    </div>
+  `;
   const olsRank = ols.diagnostics.numerical_linear_algebra.matrix_rank;
   const olsK = ols.diagnostics.numerical_linear_algebra.n_augmented_columns;
   const compTable = `
@@ -2171,6 +2206,7 @@ function renderComparisonSection(bundle) {
   `).join("");
 
   mount.innerHTML = `
+    ${contextHtml}
     ${renderComparisonSvg(ols, ridge, lasso, bundle.name, bundle.target_units)}
     ${compTable}
     <details>
