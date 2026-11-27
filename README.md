@@ -9,7 +9,7 @@ A reproducible Python benchmark (**DataMorph**) comparing **Ordinary Least Squar
 ## Project Structure
 
 ```text
-Regression-Analysis/
+DataMorph/
 ├── data/
 │   ├── raw/                  # Unmodified raw UCI CSVs and variable metadata
 │   └── processed/            # Persisted split indices (split.json) and summaries
