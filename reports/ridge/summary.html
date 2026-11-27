@@ -3,177 +3,481 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ridge Regression (L2 Regularization) — Cross-Dataset Summary</title>
+  <title>Ridge Regression (ℓ₂ Regularization) — Cross-Dataset Summary</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/images/favicon.png">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="apple-touch-icon" href="../assets/images/favicon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
   <style>
-    body { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 24px; line-height: 1.5; }
-    .container { max-width: 1200px; margin: 0 auto; background: #fff; border: 1px solid #e2e8f0; border-top: 4px solid #1e3a5f; border-radius: 8px; padding: 24px; }
-    h1 { margin-top: 6px; color: #1e3a5f; }
-    .topnav a { color: #1d4ed8; text-decoration: none; font-weight: 600; font-size: 0.88rem; }
-    .warning { background: #eff6ff; border-left: 4px solid #1d4ed8; padding: 12px 16px; border-radius: 4px; margin: 14px 0; font-size: 0.9rem; }
-    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.88rem; }
-    th, td { border: 1px solid #e2e8f0; padding: 8px 10px; text-align: left; }
-    th { background: #f1f5f9; color: #1e3a5f; }
-    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-    a { color: #1d4ed8; text-decoration: none; font-weight: 600; }
-    a:hover { text-decoration: underline; }
-  </style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+    :root {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --subtle: #f8fafc;
+      --muted-surface: #e2e8f0;
+      --text: #1e293b;
+      --heading: #0f172a;
+      --navy: #1e3a8a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --accent: #1e40af;
+      --accent-hover: #1e3a8a;
+      --accent-soft: #eff6ff;
+      --accent-border: #bfdbfe;
+      --amber: #b45309;
+      --amber-soft: #fffbeb;
+      --amber-border: #fde68a;
+      --green: #15803d;
+      --green-soft: #f0fdf4;
+      --green-border: #bbf7d0;
+      --danger: #dc2626;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --header-h: 58px;
+    }
+    [data-theme="dark"] {
+      --bg: #060b16;
+      --card: #0f172a;
+      --subtle: #162033;
+      --muted-surface: #1e293b;
+      --text: #e2e8f0;
+      --heading: #f8fafc;
+      --navy: #93c5fd;
+      --muted: #94a3b8;
+      --border: #1e293b;
+      --border-strong: #334155;
+      --accent: #3b82f6;
+      --accent-hover: #60a5fa;
+      --accent-soft: rgba(59, 130, 246, 0.14);
+      --accent-border: rgba(96, 165, 250, 0.35);
+      --amber: #fbbf24;
+      --amber-soft: rgba(245, 158, 11, 0.14);
+      --amber-border: rgba(251, 191, 36, 0.35);
+      --green: #4ade80;
+      --green-soft: rgba(34, 197, 94, 0.14);
+      --green-border: rgba(74, 222, 128, 0.35);
+      --shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.58;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4 { font-family: "Space Grotesk", "Inter", sans-serif; }
+    code, pre, .mono { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+    a:focus-visible, button:focus-visible, summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+    .topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 8px 24px;
+      min-height: var(--header-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .topnav { display: flex; gap: 10px; align-items: center; font-size: 0.84rem; flex-wrap: wrap; }
+    .topnav a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 6px;
+      transition: background-color 160ms ease, color 160ms ease;
+    }
+    .topnav a:hover { background: var(--accent-soft); }
+    .theme-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 7px;
+      border: 1px solid var(--border-strong);
+      background: var(--card);
+      color: var(--heading);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 160ms ease, border-color 160ms ease;
+    }
+    .theme-btn:hover { background: var(--subtle); }
+    .container { max-width: 1180px; margin: 0 auto; padding: 24px 24px 48px; }
+    header.hero-card {
+      position: relative;
+      overflow: hidden;
+      background: #060b16;
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 24px 26px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+      color: #f8fafc;
+    }
+    header.hero-card .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.35;
+    }
+    header.hero-card .hero-inner { position: relative; z-index: 2; }
+    header.hero-card h1 { margin: 8px 0 6px; font-size: 1.58rem; color: #ffffff; letter-spacing: -0.02em; }
+    .subtitle { color: #cbd5e1; font-size: 0.89rem; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(59, 130, 246, 0.22);
+      color: #93c5fd;
+      border: 1px solid rgba(96, 165, 250, 0.38);
+      border-radius: 999px;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 6px;
+    }
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+    }
+    h2 {
+      margin-top: 0;
+      font-size: 1.16rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      color: var(--heading);
+      letter-spacing: -0.01em;
+    }
+    h3 { font-size: 0.98rem; margin-top: 16px; color: var(--navy); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.86rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 9px 10px; text-align: left; }
+    th {
+      background: var(--subtle);
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: "JetBrains Mono", monospace; font-size: 0.81rem; }
+    tr.intercept-row { background: var(--accent-soft); font-weight: 600; }
+    tr.zero-row { color: var(--muted); opacity: 0.68; }
+    .math-box {
+      background: var(--subtle);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 12px 0;
+      overflow-x: auto;
+    }
+    .katex { text-transform: none !important; }
+    .katex-display { max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 4px 0; margin: 0.35em 0; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+    .plot-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      background: var(--card);
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+    .plot-card:hover { border-color: var(--accent); }
+    .plot-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 5px;
+      background: #ffffff;
+      cursor: zoom-in;
+    }
+    .plot-title { font-weight: 600; margin-top: 8px; font-size: 0.89rem; color: var(--heading); }
+    .plot-caption { color: var(--muted); font-size: 0.79rem; margin-top: 4px; }
+    code { background: var(--subtle); padding: 1px 5px; border-radius: 4px; font-size: 0.83em; }
+    .notice {
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin: 14px 0;
+      font-size: 0.87rem;
+    }
+    a.ext { color: var(--accent); text-decoration: none; font-weight: 600; }
+    a.ext:hover { text-decoration: underline; }
+    footer { color: var(--muted); font-size: 0.81rem; text-align: center; margin-top: 20px; }
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(6, 11, 22, 0.86);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner {
+      background: var(--card);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      max-width: min(1040px, 96vw);
+      max-height: 92vh;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .lightbox-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .lightbox-head strong { color: var(--heading); font-size: 0.98rem; }
+    .lightbox img { max-width: 100%; max-height: 74vh; object-fit: contain; background: #fff; border-radius: 6px; }
+    @media (max-width: 640px) {
+      .container { padding: 14px 12px 36px; }
+      section, header.hero-card { padding: 16px 14px; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+</style>
 </head>
 <body>
-<div class="container">
-  <div class="topnav"><a href="../index.html">&larr; Grand Dashboard</a></div>
-  <h1>Ridge Regression (L2 Regularization) &mdash; All-Dataset Summary</h1>
-  <div class="warning">
-    <strong>Unit Comparability:</strong> Raw RMSE and MAE carry each dataset's native target units and must not be compared across datasets with different units. Use dimensionless <strong>Test R&sup2;</strong> and unit-free <strong>Normalized RMSE (Test RMSE / Test Target SD)</strong> for cross-dataset comparisons.
+<header class="topbar">
+  <div class="topbar-inner">
+    <nav class="topnav" aria-label="Breadcrumb">
+      <a href="../index.html">&larr; Grand Dashboard</a>
+      <a href="../ols/summary.html">OLS Summary</a>
+      <a href="../ridge/summary.html">Ridge Summary</a>
+      <a href="../lasso/summary.html">Lasso Summary</a>
+    </nav>
+    <button type="button" class="theme-btn" id="theme-toggle" aria-label="Toggle dark mode" onclick="toggleTheme()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <span id="theme-label">Dark</span>
+    </button>
   </div>
-  <table>
-    <thead>
-      <tr>
-        <th>Dataset</th>
-        <th>Split</th>
-        <th class="num">Train / Test</th>
-        <th class="num">Predictors</th>
-        <th class="num">Train R&sup2;</th>
-        <th class="num">Test R&sup2;</th>
-        <th class="num">Test RMSE (Native Units)</th>
-        <th class="num">Norm. RMSE</th>
-        <th>Key Diagnostic</th>
-        <th>Report</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-      <tr>
-        <td><strong>Airfoil Self-Noise</strong><br><small><code>airfoil</code></small></td>
-        <td><code>random</code></td>
-        <td class="num">1202 / 301</td>
-        <td class="num">5</td>
-        <td class="num">0.5034</td>
-        <td class="num">0.5574</td>
-        <td class="num">4.709 <small>dB</small></td>
-        <td class="num">0.6653</td>
-        <td>alpha=5.36, df=5.0/5, L2_ratio=0.991</td>
-        <td><a href="airfoil.html">Report &nearr;</a></td>
-      </tr>
-      
-      <tr>
-        <td><strong>Combined Cycle Power Plant</strong><br><small><code>power_plant</code></small></td>
-        <td><code>random</code></td>
-        <td class="num">7654 / 1914</td>
-        <td class="num">4</td>
-        <td class="num">0.9283</td>
-        <td class="num">0.9301</td>
-        <td class="num">4.503 <small>MW</small></td>
-        <td class="num">0.2644</td>
-        <td>alpha=0.322, df=4.0/4, L2_ratio=1.000</td>
-        <td><a href="power_plant.html">Report &nearr;</a></td>
-      </tr>
-      
-      <tr>
-        <td><strong>Real Estate Valuation</strong><br><small><code>real_estate</code></small></td>
-        <td><code>random</code></td>
-        <td class="num">331 / 83</td>
-        <td class="num">6</td>
-        <td class="num">0.5576</td>
-        <td class="num">0.6837</td>
-        <td class="num">7.284 <small>10,000 NTD/Ping</small></td>
-        <td class="num">0.5624</td>
-        <td>alpha=10.8, df=5.7/6, L2_ratio=0.949</td>
-        <td><a href="real_estate.html">Report &nearr;</a></td>
-      </tr>
-      
-      <tr>
-        <td><strong>Wine Quality (Red Wine)</strong><br><small><code>wine_quality_red</code></small></td>
-        <td><code>random</code></td>
-        <td class="num">1279 / 320</td>
-        <td class="num">11</td>
-        <td class="num">0.3467</td>
-        <td class="num">0.3997</td>
-        <td class="num">0.6264 <small>score (0-10 ordinal)</small></td>
-        <td class="num">0.7748</td>
-        <td>alpha=89, df=9.5/11, L2_ratio=0.915</td>
-        <td><a href="wine_quality_red.html">Report &nearr;</a></td>
-      </tr>
-      
-      <tr>
-        <td><strong>Parkinsons Telemonitoring</strong><br><small><code>parkinsons</code></small></td>
-        <td><code>group</code></td>
-        <td class="num">4640 / 1235</td>
-        <td class="num">19</td>
-        <td class="num">0.1775</td>
-        <td class="num">-0.1900</td>
-        <td class="num">9.93 <small>UPDRS points</small></td>
-        <td class="num">1.0909</td>
-        <td>alpha=2.98e+03, df=5.8/19, L2_ratio=0.003</td>
-        <td><a href="parkinsons.html">Report &nearr;</a></td>
-      </tr>
-      
-      <tr>
-        <td><strong>Superconductivity Data</strong><br><small><code>superconductivity</code></small></td>
-        <td><code>random</code></td>
-        <td class="num">17010 / 4253</td>
-        <td class="num">81</td>
-        <td class="num">0.7368</td>
-        <td class="num">0.7375</td>
-        <td class="num">17.38 <small>K</small></td>
-        <td class="num">0.5124</td>
-        <td>alpha=0.112, df=80.6/81, L2_ratio=0.954</td>
-        <td><a href="superconductivity.html">Report &nearr;</a></td>
-      </tr>
-      
-      <tr>
-        <td><strong>Auto MPG</strong><br><small><code>auto_mpg</code></small></td>
-        <td><code>random</code></td>
-        <td class="num">318 / 80</td>
-        <td class="num">8</td>
-        <td class="num">0.8189</td>
-        <td class="num">0.8449</td>
-        <td class="num">2.888 <small>mpg</small></td>
-        <td class="num">0.3939</td>
-        <td>alpha=0.651, df=7.9/8, L2_ratio=0.974</td>
-        <td><a href="auto_mpg.html">Report &nearr;</a></td>
-      </tr>
-      
-      <tr>
-        <td><strong>Appliances Energy Prediction</strong><br><small><code>appliances_energy</code></small></td>
-        <td><code>chronological</code></td>
-        <td class="num">15788 / 3947</td>
-        <td class="num">27</td>
-        <td class="num">0.1493</td>
-        <td class="num">0.0922</td>
-        <td class="num">86.74 <small>Wh</small></td>
-        <td class="num">0.9528</td>
-        <td>alpha=2.1e+03, df=15.8/27, L2_ratio=0.423</td>
-        <td><a href="appliances_energy.html">Report &nearr;</a></td>
-      </tr>
-      
-      <tr>
-        <td><strong>Early Stage Diabetes Risk Prediction</strong><br><small><code>diabetes</code></small></td>
-        <td><code>stratified</code></td>
-        <td class="num">416 / 104</td>
-        <td class="num">16</td>
-        <td class="num">0.6363</td>
-        <td class="num">0.7004</td>
-        <td class="num">0.2663 <small>probability P(Positive)</small></td>
-        <td class="num">0.5474</td>
-        <td>alpha=31, df=14.4/16, L2_ratio=0.933</td>
-        <td><a href="diabetes.html">Report &nearr;</a></td>
-      </tr>
-      
-      <tr>
-        <td><strong>Bias Correction of Numerical Prediction Model Temperature Forecast</strong><br><small><code>weather</code></small></td>
-        <td><code>chronological_date</code></td>
-        <td class="num">6185 / 1538</td>
-        <td class="num">21</td>
-        <td class="num">0.7763</td>
-        <td class="num">0.6994</td>
-        <td class="num">1.726 <small>deg C</small></td>
-        <td class="num">0.5483</td>
-        <td>alpha=732, df=16.6/21, L2_ratio=0.742</td>
-        <td><a href="weather.html">Report &nearr;</a></td>
-      </tr>
-      
-    </tbody>
-  </table>
+</header>
+
+<div class="container">
+  <header class="hero-card">
+    <img class="hero-bg" src="../assets/images/hero_banner.jpg" alt="" aria-hidden="true">
+    <div class="hero-inner">
+      <span class="badge">RIDGE</span>
+      <span class="badge">10 UCI Datasets</span>
+      <h1>Ridge Regression (ℓ₂ Regularization) &mdash; All-Dataset Summary</h1>
+      <div class="subtitle">Cross-benchmark summary using persisted 80/20 splits and training-only preprocessing.</div>
+    </div>
+  </header>
+
+  <section>
+    <div class="notice">
+      <strong>Unit Comparability:</strong> Raw \(\mathrm{RMSE}\) and \(\mathrm{MAE}\) carry each dataset&rsquo;s native target units and must not be compared across datasets with different units. Use dimensionless <strong>Test \(R^2\)</strong> and unit-free <strong>Normalized \(\mathrm{RMSE}\)</strong> (\(\mathrm{RMSE}_{\mathrm{test}} / s_{y,\mathrm{test}}\)) for cross-dataset comparisons.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Dataset</th>
+            <th>Split</th>
+            <th class="num">\(n / n_{\mathrm{test}}\)</th>
+            <th class="num">\(p\)</th>
+            <th class="num">Train \(R^2\)</th>
+            <th class="num">Test \(R^2\)</th>
+            <th class="num">Test \(\mathrm{RMSE}\) (Units)</th>
+            <th class="num">Norm. \(\mathrm{RMSE}\)</th>
+            <th>Key Diagnostic</th>
+            <th>Report</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td><strong>Airfoil Self-Noise</strong><br><small><code>airfoil</code></small></td>
+            <td><code>random</code></td>
+            <td class="num">1202 / 301</td>
+            <td class="num">5</td>
+            <td class="num">0.5034</td>
+            <td class="num"><strong>0.5574</strong></td>
+            <td class="num">4.709 <small>dB</small></td>
+            <td class="num">0.6653</td>
+            <td>\(\alpha^* = 5.36\), \(\operatorname{df}(\alpha^*) = 5.0/5\), \(\ell_2\) ratio = 0.991</td>
+            <td><a class="ext" href="airfoil.html">Report &nearr;</a></td>
+          </tr>
+          
+          <tr>
+            <td><strong>Combined Cycle Power Plant</strong><br><small><code>power_plant</code></small></td>
+            <td><code>random</code></td>
+            <td class="num">7654 / 1914</td>
+            <td class="num">4</td>
+            <td class="num">0.9283</td>
+            <td class="num"><strong>0.9301</strong></td>
+            <td class="num">4.503 <small>MW</small></td>
+            <td class="num">0.2644</td>
+            <td>\(\alpha^* = 0.322\), \(\operatorname{df}(\alpha^*) = 4.0/4\), \(\ell_2\) ratio = 1.000</td>
+            <td><a class="ext" href="power_plant.html">Report &nearr;</a></td>
+          </tr>
+          
+          <tr>
+            <td><strong>Real Estate Valuation</strong><br><small><code>real_estate</code></small></td>
+            <td><code>random</code></td>
+            <td class="num">331 / 83</td>
+            <td class="num">6</td>
+            <td class="num">0.5576</td>
+            <td class="num"><strong>0.6837</strong></td>
+            <td class="num">7.284 <small>10,000 NTD/Ping</small></td>
+            <td class="num">0.5624</td>
+            <td>\(\alpha^* = 10.8\), \(\operatorname{df}(\alpha^*) = 5.7/6\), \(\ell_2\) ratio = 0.949</td>
+            <td><a class="ext" href="real_estate.html">Report &nearr;</a></td>
+          </tr>
+          
+          <tr>
+            <td><strong>Wine Quality (Red Wine)</strong><br><small><code>wine_quality_red</code></small></td>
+            <td><code>random</code></td>
+            <td class="num">1279 / 320</td>
+            <td class="num">11</td>
+            <td class="num">0.3467</td>
+            <td class="num"><strong>0.3997</strong></td>
+            <td class="num">0.6264 <small>score (0-10 ordinal)</small></td>
+            <td class="num">0.7748</td>
+            <td>\(\alpha^* = 89\), \(\operatorname{df}(\alpha^*) = 9.5/11\), \(\ell_2\) ratio = 0.915</td>
+            <td><a class="ext" href="wine_quality_red.html">Report &nearr;</a></td>
+          </tr>
+          
+          <tr>
+            <td><strong>Parkinsons Telemonitoring</strong><br><small><code>parkinsons</code></small></td>
+            <td><code>group</code></td>
+            <td class="num">4640 / 1235</td>
+            <td class="num">19</td>
+            <td class="num">0.1775</td>
+            <td class="num"><strong>-0.1900</strong></td>
+            <td class="num">9.93 <small>UPDRS points</small></td>
+            <td class="num">1.0909</td>
+            <td>\(\alpha^* = 2.98e+03\), \(\operatorname{df}(\alpha^*) = 5.8/19\), \(\ell_2\) ratio = 0.003</td>
+            <td><a class="ext" href="parkinsons.html">Report &nearr;</a></td>
+          </tr>
+          
+          <tr>
+            <td><strong>Superconductivity Data</strong><br><small><code>superconductivity</code></small></td>
+            <td><code>random</code></td>
+            <td class="num">17010 / 4253</td>
+            <td class="num">81</td>
+            <td class="num">0.7368</td>
+            <td class="num"><strong>0.7375</strong></td>
+            <td class="num">17.38 <small>K</small></td>
+            <td class="num">0.5124</td>
+            <td>\(\alpha^* = 0.112\), \(\operatorname{df}(\alpha^*) = 80.6/81\), \(\ell_2\) ratio = 0.954</td>
+            <td><a class="ext" href="superconductivity.html">Report &nearr;</a></td>
+          </tr>
+          
+          <tr>
+            <td><strong>Auto MPG</strong><br><small><code>auto_mpg</code></small></td>
+            <td><code>random</code></td>
+            <td class="num">318 / 80</td>
+            <td class="num">8</td>
+            <td class="num">0.8189</td>
+            <td class="num"><strong>0.8449</strong></td>
+            <td class="num">2.888 <small>mpg</small></td>
+            <td class="num">0.3939</td>
+            <td>\(\alpha^* = 0.651\), \(\operatorname{df}(\alpha^*) = 7.9/8\), \(\ell_2\) ratio = 0.974</td>
+            <td><a class="ext" href="auto_mpg.html">Report &nearr;</a></td>
+          </tr>
+          
+          <tr>
+            <td><strong>Appliances Energy Prediction</strong><br><small><code>appliances_energy</code></small></td>
+            <td><code>chronological</code></td>
+            <td class="num">15788 / 3947</td>
+            <td class="num">27</td>
+            <td class="num">0.1493</td>
+            <td class="num"><strong>0.0922</strong></td>
+            <td class="num">86.74 <small>Wh</small></td>
+            <td class="num">0.9528</td>
+            <td>\(\alpha^* = 2.1e+03\), \(\operatorname{df}(\alpha^*) = 15.8/27\), \(\ell_2\) ratio = 0.423</td>
+            <td><a class="ext" href="appliances_energy.html">Report &nearr;</a></td>
+          </tr>
+          
+          <tr>
+            <td><strong>Early Stage Diabetes Risk Prediction</strong><br><small><code>diabetes</code></small></td>
+            <td><code>stratified</code></td>
+            <td class="num">416 / 104</td>
+            <td class="num">16</td>
+            <td class="num">0.6363</td>
+            <td class="num"><strong>0.7004</strong></td>
+            <td class="num">0.2663 <small>probability P(Positive)</small></td>
+            <td class="num">0.5474</td>
+            <td>\(\alpha^* = 31\), \(\operatorname{df}(\alpha^*) = 14.4/16\), \(\ell_2\) ratio = 0.933</td>
+            <td><a class="ext" href="diabetes.html">Report &nearr;</a></td>
+          </tr>
+          
+          <tr>
+            <td><strong>Bias Correction of Numerical Prediction Model Temperature Forecast</strong><br><small><code>weather</code></small></td>
+            <td><code>chronological_date</code></td>
+            <td class="num">6185 / 1538</td>
+            <td class="num">21</td>
+            <td class="num">0.7763</td>
+            <td class="num"><strong>0.6994</strong></td>
+            <td class="num">1.726 <small>deg C</small></td>
+            <td class="num">0.5483</td>
+            <td>\(\alpha^* = 732\), \(\operatorname{df}(\alpha^*) = 16.6/21\), \(\ell_2\) ratio = 0.742</td>
+            <td><a class="ext" href="weather.html">Report &nearr;</a></td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </section>
 </div>
+<script>
+function applyTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  const lbl = document.getElementById("theme-label");
+  if (lbl) lbl.textContent = t === "dark" ? "Light" : "Dark";
+  try { localStorage.setItem("uci_reg_theme", t); } catch (e) {}
+}
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute("data-theme") || "light";
+  applyTheme(cur === "dark" ? "light" : "dark");
+}
+(function(){
+  try {
+    const saved = localStorage.getItem("uci_reg_theme");
+    if (saved === "dark" || saved === "light") applyTheme(saved);
+  } catch (e) {}
+})();
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof renderMathInElement === "function") {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\(", right: "\\)", display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
 </body>
 </html>

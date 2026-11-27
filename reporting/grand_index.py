@@ -215,99 +215,338 @@ DASHBOARD_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UCI Regression Analysis — OLS, Ridge &amp; Lasso Benchmark</title>
+  <title>UCI Regression Studio — OLS, Ridge &amp; Lasso Interactive Workbench</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/images/favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="assets/images/favicon.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
     :root {
-      --bg: #f8fafc;
+      --bg: #f1f5f9;
       --surface: #ffffff;
-      --subtle: #f1f5f9;
+      --subtle: #f8fafc;
+      --muted-surface: #e2e8f0;
+      --sidebar-bg: #ffffff;
+      --sidebar-surface: #f1f5f9;
+      --sidebar-border: #e2e8f0;
+      --sidebar-text: #334155;
+      --sidebar-heading: #0f172a;
+      --sidebar-muted: #64748b;
+      --sidebar-active-bg: #eff6ff;
+      --sidebar-active-border: #bfdbfe;
+      --sidebar-active-text: #1e40af;
+      --sidebar-r2: #1e40af;
       --border: #e2e8f0;
       --border-strong: #cbd5e1;
       --navy: #0f172a;
-      --navy-2: #1e3a5f;
-      --accent: #1d4ed8;
-      --accent-hover: #1e40af;
+      --navy-2: #1e3a8a;
+      --accent: #1e40af;
+      --accent-bright: #3b82f6;
+      --accent-hover: #1e3a8a;
       --accent-soft: #eff6ff;
+      --accent-border: #bfdbfe;
+      --ridge-color: #0d9488;
+      --ridge-soft: #f0fdfa;
+      --lasso-color: #d97706;
+      --lasso-soft: #fffbeb;
       --text: #1e293b;
       --muted: #475569;
       --green: #15803d;
       --green-soft: #f0fdf4;
+      --green-border: #bbf7d0;
       --amber: #b45309;
       --amber-soft: #fffbeb;
-      --radius: 8px;
-      --shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --amber-border: #fde68a;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 8px 24px -6px rgba(15, 23, 42, 0.12);
+      --sidebar-w: 274px;
+      --header-h: 56px;
+    }
+    [data-theme="dark"] {
+      --bg: #060b16;
+      --surface: #0f172a;
+      --subtle: #162033;
+      --muted-surface: #1e293b;
+      --sidebar-bg: #030712;
+      --sidebar-surface: #111827;
+      --sidebar-border: #1e293b;
+      --sidebar-text: #cbd5e1;
+      --sidebar-heading: #f8fafc;
+      --sidebar-muted: #94a3b8;
+      --sidebar-active-bg: rgba(59, 130, 246, 0.18);
+      --sidebar-active-border: rgba(96, 165, 250, 0.42);
+      --sidebar-active-text: #ffffff;
+      --sidebar-r2: #93c5fd;
+      --border: #1e293b;
+      --border-strong: #334155;
+      --navy: #f8fafc;
+      --navy-2: #93c5fd;
+      --accent: #3b82f6;
+      --accent-bright: #60a5fa;
+      --accent-hover: #60a5fa;
+      --accent-soft: rgba(59, 130, 246, 0.14);
+      --accent-border: rgba(96, 165, 250, 0.35);
+      --ridge-color: #2dd4bf;
+      --ridge-soft: rgba(45, 212, 191, 0.12);
+      --lasso-color: #fbbf24;
+      --lasso-soft: rgba(251, 191, 36, 0.12);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --green: #4ade80;
+      --green-soft: rgba(34, 197, 94, 0.14);
+      --green-border: rgba(74, 222, 128, 0.35);
+      --amber: #fbbf24;
+      --amber-soft: rgba(245, 158, 11, 0.14);
+      --amber-border: rgba(251, 191, 36, 0.35);
+      --shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+      --shadow-md: 0 12px 28px -6px rgba(0, 0, 0, 0.55);
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
     body {
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
       margin: 0;
-      line-height: 1.55;
+      line-height: 1.56;
       -webkit-font-smoothing: antialiased;
     }
-    a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible {
-      outline: 2px solid var(--accent);
+    h1, h2, h3, h4, .brand-title { font-family: "Space Grotesk", "Inter", sans-serif; }
+    code, pre, .mono, td.num, th.num, .kpi-val, .pred-val, .field-range {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible, tr[tabindex]:focus-visible {
+      outline: 2px solid var(--accent-bright);
       outline-offset: 2px;
     }
 
-    /* Sticky Top Navigation */
+    /* App Shell */
+    .app-shell {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      border-right: 1px solid var(--sidebar-border);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 80;
+      transition: margin-left 220ms ease, transform 220ms ease;
+    }
+    body.sidebar-collapsed .sidebar {
+      margin-left: calc(-1 * var(--sidebar-w));
+    }
+    .sidebar-brand {
+      padding: 14px 14px 14px 16px;
+      border-bottom: 1px solid var(--sidebar-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .brand-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .sidebar-close-btn {
+      background: transparent;
+      border: 1px solid var(--sidebar-border);
+      color: var(--sidebar-text);
+      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .sidebar-close-btn:hover { background: var(--sidebar-surface); color: var(--sidebar-heading); }
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #1e40af, #0d9488);
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+    .brand-title { font-size: 0.96rem; font-weight: 700; color: var(--sidebar-heading); line-height: 1.2; }
+    .brand-sub { font-size: 0.7rem; color: var(--sidebar-muted); }
+    .sidebar-group { padding: 12px 12px 6px; }
+    .sidebar-label {
+      font-size: 0.67rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-muted);
+      padding: 0 8px 6px;
+    }
+    .side-nav { display: flex; flex-direction: column; gap: 3px; }
+    .side-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--sidebar-text);
+      font-size: 0.83rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
+    }
+    .side-btn:hover { background: var(--sidebar-surface); color: var(--sidebar-heading); }
+    .side-btn.active {
+      background: var(--sidebar-active-bg);
+      border-color: var(--sidebar-active-border);
+      color: var(--sidebar-active-text);
+      font-weight: 600;
+    }
+    .side-btn-left { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+    .side-dot { width: 7px; height: 7px; border-radius: 999px; flex-shrink: 0; background: var(--sidebar-muted); }
+    .side-dot.ols { background: #3b82f6; }
+    .side-dot.ridge { background: #14b8a6; }
+    .side-dot.lasso { background: #f59e0b; }
+
+    .ds-list { display: flex; flex-direction: column; gap: 3px; flex: 1; overflow-y: auto; padding-right: 2px; }
+    .ds-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      width: 100%;
+      padding: 6px 9px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--sidebar-text);
+      font-size: 0.77rem;
+      cursor: pointer;
+      text-align: left;
+      transition: background-color 140ms ease, color 140ms ease;
+    }
+    .ds-item:hover { background: var(--sidebar-surface); color: var(--sidebar-heading); }
+    .ds-item.active {
+      background: var(--sidebar-active-bg);
+      border-color: var(--sidebar-active-border);
+      color: var(--sidebar-active-text);
+      font-weight: 600;
+    }
+    .ds-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ds-r2 { font-family: "JetBrains Mono", monospace; font-size: 0.69rem; color: var(--sidebar-r2); flex-shrink: 0; }
+
+    .main-shell { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+    /* Top Command Bar */
     .topbar {
       position: sticky;
       top: 0;
       z-index: 60;
+      height: var(--header-h);
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-    }
-    .topbar-inner {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 10px 24px;
+      padding: 0 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
-      flex-wrap: wrap;
+      gap: 12px;
     }
-    .brand {
-      font-size: 0.98rem;
-      font-weight: 700;
-      color: var(--navy);
-      text-decoration: none;
-      letter-spacing: -0.01em;
+    .topbar-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .menu-toggle { display: inline-flex; padding: 6px 8px; }
+    .crumb { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .crumb strong { color: var(--navy); }
+    .topbar-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    .container { max-width: 1280px; width: 100%; margin: 0 auto; padding: 20px 22px 52px; }
+
+    /* View Switching */
+    body.focus-mode section.sec { display: none; }
+    body.focus-mode section.sec.active-view { display: block; animation: fadeSlide 180ms ease; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .nav {
+
+    /* Hero Banner with Generated Image */
+    .hero-banner {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      min-height: 230px;
+      background: #060b16;
+      border: 1px solid var(--border-strong);
+      margin-bottom: 18px;
       display: flex;
+      align-items: flex-end;
+      box-shadow: var(--shadow-md);
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.88;
+    }
+    .hero-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(95deg, rgba(6, 11, 22, 0.94) 0%, rgba(15, 23, 42, 0.78) 54%, rgba(15, 23, 42, 0.28) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 26px 28px;
+      max-width: 740px;
+      color: #f8fafc;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
       align-items: center;
-      gap: 4px;
-      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #93c5fd;
+      margin-bottom: 8px;
     }
-    .nav a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 6px 10px;
-      border-radius: 6px;
-    }
-    .nav a:hover { background: var(--subtle); color: var(--navy); }
-    .nav a.nav-repo { color: var(--accent); border: 1px solid #bfdbfe; background: var(--accent-soft); }
+    .hero-content h1 { margin: 0 0 8px; font-size: 1.72rem; line-height: 1.18; color: #ffffff; letter-spacing: -0.02em; }
+    .hero-content p { margin: 0 0 16px; font-size: 0.92rem; color: #cbd5e1; max-width: 62ch; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
-    .container { max-width: 1320px; margin: 0 auto; padding: 24px 24px 56px; }
-
-    /* Sections & Cards */
+    /* Sections & Bento Cards */
     section.sec {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 22px 24px;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       box-shadow: var(--shadow);
     }
+    section.sec-ols { border-top: 3px solid var(--accent); }
+    section.sec-ridge { border-top: 3px solid var(--ridge-color); }
+    section.sec-lasso { border-top: 3px solid var(--lasso-color); }
     .sec-head {
       display: flex;
       align-items: center;
@@ -318,96 +557,194 @@ DASHBOARD_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
     }
-    .sec-head h1, .sec-head h2 {
-      margin: 0;
-      color: var(--navy);
-      letter-spacing: -0.01em;
+    .sec-head h1, .sec-head h2 { margin: 0; color: var(--navy); letter-spacing: -0.015em; font-size: 1.24rem; }
+    .lead { color: var(--muted); font-size: 0.9rem; margin: 0 0 14px; }
+
+    /* Bento 2-Col Formulation + Interactive Visual Lab */
+    .bento-lab {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.95fr);
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: stretch;
     }
-    .sec-head h1 { font-size: 1.4rem; }
-    .sec-head h2 { font-size: 1.15rem; }
-    .lead { color: var(--muted); font-size: 0.92rem; margin: 0 0 14px; }
+    .lab-card {
+      background: #0b1120;
+      color: #e2e8f0;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .lab-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .lab-title { font-family: "Space Grotesk", sans-serif; font-size: 0.86rem; font-weight: 700; color: #f8fafc; letter-spacing: 0.01em; }
+    .lab-tabs { display: inline-flex; gap: 4px; background: #162033; padding: 3px; border-radius: 7px; }
+    .lab-tab {
+      border: 0;
+      background: transparent;
+      color: #94a3b8;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .lab-tab.active { background: #1e40af; color: #ffffff; }
+    .lab-img-wrap { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid #1e293b; background: #060b16; }
+    .lab-img-wrap img { width: 100%; height: 210px; object-fit: cover; display: block; }
+    .lab-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.76rem;
+      color: #cbd5e1;
+      flex-wrap: wrap;
+    }
+    .lab-slider-row input[type="range"] { flex: 1; min-width: 120px; accent-color: #3b82f6; cursor: pointer; }
+    .lab-readout {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.73rem;
+      color: #93c5fd;
+      background: #111827;
+      padding: 7px 10px;
+      border-radius: 6px;
+      border: 1px solid #1e293b;
+    }
 
     /* KPI Strip */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-      gap: 12px;
+      gap: 10px;
       margin: 12px 0 16px;
     }
     .kpi-card {
-      background: var(--bg);
+      background: var(--subtle);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 8px;
       padding: 12px 14px;
+      transition: border-color 150ms ease, transform 150ms ease;
     }
-    .kpi-lbl { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
-    .kpi-val { font-size: 1.32rem; font-weight: 700; color: var(--navy); margin-top: 2px; font-variant-numeric: tabular-nums; }
+    .kpi-card:hover { border-color: var(--accent-border); }
+    .kpi-lbl { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+    .kpi-val { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-top: 3px; font-variant-numeric: tabular-nums; }
 
     /* Tables */
     .table-wrap { overflow-x: auto; }
-    .scroll-table { max-height: 360px; overflow-y: auto; border: 1px solid var(--border); border-radius: 6px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .scroll-table { max-height: 360px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
     th, td { border-bottom: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: middle; }
     th {
       background: var(--subtle);
       color: var(--navy-2);
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
-    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-    tr.clickable-row { cursor: pointer; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-size: 0.8rem; }
+    tr.clickable-row { cursor: pointer; transition: background-color 120ms ease; }
     tr.clickable-row:hover { background: var(--accent-soft); }
+    tr.active-row { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
     td.best-cell { background: var(--green-soft); color: var(--green); font-weight: 700; }
     tr.intercept-row { background: var(--accent-soft); font-weight: 600; }
-    tr.zero-row { color: #94a3b8; }
+    tr.zero-row { color: var(--muted); opacity: 0.65; }
 
-    /* Equations (responsive KaTeX) */
+    /* Equations (responsive KaTeX with non-overlapping equation numbers) */
+    .katex { text-transform: none !important; }
     .math-box {
       background: var(--subtle);
       border-left: 4px solid var(--accent);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 12px 16px;
-      margin: 12px 0;
-      overflow-x: auto;
+      margin: 0 0 12px;
       max-width: 100%;
     }
-    .katex-display { overflow-x: auto; overflow-y: hidden; padding: 4px 0; margin: 0.4em 0; }
-    .symbol-note { font-size: 0.84rem; color: var(--muted); margin: 6px 0 0; }
+    .sec-ridge .math-box { border-left-color: var(--ridge-color); }
+    .sec-lasso .math-box { border-left-color: var(--lasso-color); }
+    .eq-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 0;
+    }
+    .eq-row + .eq-row { border-top: 1px dashed var(--border); margin-top: 6px; padding-top: 10px; }
+    .eq-math { flex: 1; min-width: 0; overflow-x: auto; overflow-y: hidden; }
+    .eq-num {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .katex-display { margin: 0.25em 0 !important; text-align: left !important; }
+    .katex-display > .katex { white-space: nowrap; font-size: 0.96em; }
+    .symbol-note { font-size: 0.8rem; color: var(--muted); margin: 8px 0 0; line-height: 1.5; }
+    .kpi-lbl { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); line-height: 1.35; }
 
-    /* Controls & Badges */
+    /* Controls, Filters & Badges */
     .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 140ms ease;
+    }
+    .chip:hover { border-color: var(--accent); color: var(--navy); }
+    .chip.active { background: var(--accent); border-color: var(--accent); color: #ffffff; }
     select.ctrl, input.ctrl {
-      padding: 7px 10px;
+      padding: 6px 10px;
       border: 1px solid var(--border-strong);
       border-radius: 6px;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
+      font-family: inherit;
       background: var(--surface);
       color: var(--text);
     }
     .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       background: var(--accent);
       color: #ffffff;
       border: 1px solid var(--accent);
-      border-radius: 6px;
+      border-radius: 7px;
       padding: 7px 12px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
+      text-decoration: none;
+      transition: background-color 140ms ease, border-color 140ms ease;
     }
-    .btn:hover { background: var(--accent-hover); }
-    .btn-ghost {
-      background: var(--surface);
-      color: var(--navy);
-      border: 1px solid var(--border-strong);
-    }
-    .btn-ghost:hover { background: var(--subtle); }
+    .btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+    .btn-ghost { background: var(--surface); color: var(--navy); border: 1px solid var(--border-strong); }
+    .btn-ghost:hover { background: var(--subtle); border-color: var(--accent); }
+    .btn-glass { background: rgba(255, 255, 255, 0.12); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.25); backdrop-filter: blur(6px); }
+    .btn-glass:hover { background: rgba(255, 255, 255, 0.22); }
     .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
     .pill {
       display: inline-flex;
       align-items: center;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 600;
       padding: 3px 9px;
       border-radius: 999px;
@@ -415,367 +752,760 @@ DASHBOARD_TEMPLATE = JINJA_ENV.from_string(r"""<!DOCTYPE html>
       color: var(--navy);
       border: 1px solid var(--border);
     }
-    .pill-accent { background: var(--accent-soft); color: var(--accent); border-color: #bfdbfe; }
-    .pill-warn { background: var(--amber-soft); color: var(--amber); border-color: #fde68a; }
-    .pill-ok { background: var(--green-soft); color: var(--green); border-color: #bbf7d0; }
+    .pill-accent { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-border); }
+    .pill-warn { background: var(--amber-soft); color: var(--amber); border-color: var(--amber-border); }
+    .pill-ok { background: var(--green-soft); color: var(--green); border-color: var(--green-border); }
+
+    /* Charts */
+    .chart-card {
+      background: var(--subtle);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .chart-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .chart-title { font-size: 0.82rem; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.04em; }
+    .chart-legend { display: flex; gap: 12px; font-size: 0.76rem; color: var(--muted); flex-wrap: wrap; }
+    .legend-item { display: inline-flex; align-items: center; gap: 5px; font-weight: 600; }
+    .legend-swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
 
     /* Plots */
     .plots-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
       gap: 14px;
       margin-top: 12px;
     }
     .plot-card {
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 10px;
-      background: #ffffff;
+      background: var(--surface);
+      transition: border-color 150ms ease, box-shadow 150ms ease;
     }
-    .plot-card img { width: 100%; height: auto; display: block; border-radius: 4px; }
-    .plot-title { font-weight: 600; font-size: 0.86rem; color: var(--navy); margin-top: 8px; }
-    .plot-caption { font-size: 0.8rem; color: var(--muted); margin-top: 3px; }
+    .plot-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+    .plot-card img { width: 100%; height: auto; display: block; border-radius: 5px; background: #ffffff; cursor: zoom-in; }
+    .plot-title { font-weight: 600; font-size: 0.85rem; color: var(--navy); margin-top: 8px; }
+    .plot-caption { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
 
     /* Predictor */
+    .predictor-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(290px, 0.9fr);
+      gap: 16px;
+      margin-top: 12px;
+      align-items: start;
+    }
     .input-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
       gap: 8px;
-      max-height: 290px;
+      max-height: 320px;
       overflow-y: auto;
       padding: 2px;
-      margin: 10px 0;
     }
-    .field-card { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; }
+    .field-card { background: var(--subtle); border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px; }
     .field-top { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 4px; }
-    .field-top label { font-size: 0.77rem; font-weight: 600; word-break: break-word; }
-    .field-range { font-size: 0.69rem; color: var(--muted); white-space: nowrap; }
+    .field-top label { font-size: 0.76rem; font-weight: 600; word-break: break-word; color: var(--navy); }
+    .field-range { font-size: 0.67rem; color: var(--muted); white-space: nowrap; }
     .field-card input, .field-card select {
-      width: 100%; padding: 5px 7px; border: 1px solid var(--border-strong); border-radius: 4px; font-size: 0.83rem;
+      width: 100%; padding: 5px 7px; border: 1px solid var(--border-strong); border-radius: 5px; font-size: 0.81rem;
+      background: var(--surface); color: var(--text); font-family: "JetBrains Mono", monospace;
     }
     .pred-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-      margin-top: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
     }
     .pred-card {
-      background: var(--bg);
+      background: var(--subtle);
       border: 1px solid var(--border);
       border-top: 3px solid var(--accent);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 12px 14px;
     }
-    .pred-val { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin: 4px 0; font-variant-numeric: tabular-nums; }
+    .pred-card.pred-ridge { border-top-color: var(--ridge-color); }
+    .pred-card.pred-lasso { border-top-color: var(--lasso-color); }
+    .pred-val { font-size: 1.32rem; font-weight: 700; color: var(--navy); margin: 4px 0; font-variant-numeric: tabular-nums; }
 
-    details {
-      margin-top: 12px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 8px 12px;
-      background: var(--bg);
-    }
-    summary { cursor: pointer; font-weight: 600; font-size: 0.85rem; color: var(--navy); }
-    .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin-top: 12px; }
-    code { background: var(--subtle); padding: 1px 5px; border-radius: 4px; font-size: 0.84em; }
+    details { margin-top: 12px; border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; background: var(--subtle); }
+    summary { cursor: pointer; font-weight: 600; font-size: 0.84rem; color: var(--navy); }
+    .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 12px; }
+    code { background: var(--subtle); padding: 1px 5px; border-radius: 4px; font-size: 0.82em; }
     a.ext { color: var(--accent); text-decoration: none; font-weight: 600; }
     a.ext:hover { text-decoration: underline; }
     .notice {
       background: var(--accent-soft);
       border-left: 4px solid var(--accent);
       padding: 10px 14px;
-      border-radius: 4px;
-      font-size: 0.86rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
       margin: 10px 0;
     }
+    .dash-footer { text-align: center; color: var(--muted); font-size: 0.79rem; padding: 8px 0 0; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      background: rgba(6, 11, 22, 0.86);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner {
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      max-width: min(1060px, 96vw);
+      max-height: 92vh;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .lightbox-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .lightbox-head strong { color: var(--navy); font-size: 0.96rem; }
+    .lightbox img { max-width: 100%; max-height: 74vh; object-fit: contain; background: #ffffff; border-radius: 6px; }
+
+    .drawer-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 75;
+      background: rgba(6, 11, 22, 0.65);
+    }
+    .drawer-backdrop.open { display: block; }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        margin-left: 0 !important;
+        transform: translateX(-100%);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .bento-lab, .predictor-shell { grid-template-columns: 1fr; }
+    }
     @media (max-width: 640px) {
+      .topbar { padding: 0 12px; }
       .container { padding: 14px 12px 40px; }
       section.sec { padding: 16px 14px; }
+      .hero-content { padding: 18px 16px; }
+      .hero-content h1 { font-size: 1.38rem; }
       .plots-grid { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-<body>
-<header class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="#overview">UCI Regression Research Dashboard</a>
-    <nav class="nav" aria-label="Primary sections">
-      <a href="#overview">1. Overview</a>
-      <a href="#datasets">2. Datasets</a>
-      <a href="#ols">3. OLS</a>
-      <a href="#ridge">4. Ridge</a>
-      <a href="#lasso">5. Lasso</a>
-      <a href="#comparison">6. Comparison</a>
-      <a href="#methodology">7. Methodology &amp; References</a>
-      <a class="nav-repo" href="{{ github_repo_url }}" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
-    </nav>
+<body class="focus-mode">
+<div class="drawer-backdrop" id="drawer-backdrop" onclick="toggleSidebar(false)"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar" aria-label="Workspace navigation">
+    <div class="sidebar-brand">
+      <div class="brand-left">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-7"/><circle cx="7" cy="15" r="1.4" fill="currentColor"/><circle cx="19" cy="7" r="1.4" fill="currentColor"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">Regression Studio</div>
+          <div class="brand-sub">OLS &middot; Ridge &middot; Lasso</div>
+        </div>
+      </div>
+      <button type="button" class="sidebar-close-btn" aria-label="Collapse sidebar" title="Collapse sidebar" onclick="toggleSidebar(false)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-label">Views</div>
+      <nav class="side-nav" aria-label="Primary views">
+        <button type="button" class="side-btn active" data-view="overview" onclick="switchView('overview')">
+          <span class="side-btn-left"><span class="side-dot"></span>Overview</span>
+        </button>
+        <button type="button" class="side-btn" data-view="datasets" onclick="switchView('datasets')">
+          <span class="side-btn-left"><span class="side-dot"></span>Datasets</span>
+        </button>
+        <button type="button" class="side-btn" data-view="ols" onclick="switchView('ols')">
+          <span class="side-btn-left"><span class="side-dot ols"></span>OLS</span>
+        </button>
+        <button type="button" class="side-btn" data-view="ridge" onclick="switchView('ridge')">
+          <span class="side-btn-left"><span class="side-dot ridge"></span>Ridge (\(\ell_2\))</span>
+        </button>
+        <button type="button" class="side-btn" data-view="lasso" onclick="switchView('lasso')">
+          <span class="side-btn-left"><span class="side-dot lasso"></span>Lasso (\(\ell_1\))</span>
+        </button>
+        <button type="button" class="side-btn" data-view="comparison" onclick="switchView('comparison')">
+          <span class="side-btn-left"><span class="side-dot"></span>Compare &amp; Predict</span>
+        </button>
+        <button type="button" class="side-btn" data-view="methodology" onclick="switchView('methodology')">
+          <span class="side-btn-left"><span class="side-dot"></span>Methodology</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="sidebar-group" style="flex:1; display:flex; flex-direction:column; min-height:0; padding-bottom:14px;">
+      <div class="sidebar-label">Datasets ({{ master_rows | length }})</div>
+      <div class="ds-list" id="sidebar-ds-list">
+        {% for row in master_rows %}
+        <button type="button" class="ds-item" data-ds="{{ row.key }}" onclick="selectGlobalDataset('{{ row.key }}')" title="{{ row.name }} — Best: {{ row.best_model|upper }}">
+          <span class="ds-name">{{ row.name }}</span>
+          <span class="ds-r2">{{ "%.2f"|format([row.ols_r2, row.ridge_r2, row.lasso_r2]|max) }}</span>
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-shell">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button type="button" class="btn btn-ghost menu-toggle" id="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="true" onclick="toggleSidebar()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        </button>
+        <div class="crumb">
+          <strong id="crumb-view">Overview</strong>
+          <span>/</span>
+          <span id="crumb-ds">{{ master_rows[0].name }}</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <select id="sel-global" class="ctrl" aria-label="Select active UCI dataset" onchange="selectGlobalDataset(this.value)">
+          {% for row in master_rows %}<option value="{{ row.key }}">{{ row.name }}</option>{% endfor %}
+        </select>
+        <button type="button" class="btn btn-ghost" id="layout-mode-btn" onclick="toggleLayoutMode()" title="Switch between focused single-view tabs and full vertical report">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <span id="layout-mode-label">All Sections</span>
+        </button>
+        <button type="button" class="btn btn-ghost" id="theme-toggle" aria-label="Toggle dark mode" onclick="toggleTheme()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          <span id="theme-label">Dark</span>
+        </button>
+        <a class="btn btn-ghost" href="{{ github_repo_url }}" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- 1. OVERVIEW -->
+      <section class="sec active-view" id="overview">
+        <div class="hero-banner">
+          <img class="hero-bg" src="assets/images/hero_banner.jpg" alt="Geometric visualization of OLS hyperplane, L2 Ridge sphere, and L1 Lasso octahedron">
+          <div class="hero-scrim"></div>
+          <div class="hero-content">
+            <div class="hero-eyebrow">10 UCI Datasets &middot; 30 Reproducible Runs &middot; 80/20 Splits</div>
+            <h1>Linear Regression &amp; Regularization Studio</h1>
+            <p>OLS, Ridge (\(\ell_2\)), and Lasso (\(\ell_1\)) with leak-free training-only CV (\(\lambda \equiv \alpha\)).</p>
+            <div class="hero-actions">
+              <button type="button" class="btn" onclick="switchView('comparison')">Compare &amp; Predict &rarr;</button>
+              <button type="button" class="btn btn-glass" onclick="switchView('ridge')">\(\ell_2\) / \(\ell_1\) Simulators</button>
+              <a class="btn btn-glass" href="ols/summary.html">OLS</a>
+              <a class="btn btn-glass" href="ridge/summary.html">Ridge</a>
+              <a class="btn btn-glass" href="lasso/summary.html">Lasso</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-lbl">Benchmarks</div><div class="kpi-val">{{ master_rows | length }} UCI</div></div>
+          <div class="kpi-card"><div class="kpi-lbl">Model Runs</div><div class="kpi-val">30 (3 &times; 10)</div></div>
+          <div class="kpi-card"><div class="kpi-lbl">Median Best Test \(R^2\)</div><div class="kpi-val">{{ "%.4f"|format(global_stats.median_best_r2) }}</div></div>
+          <div class="kpi-card"><div class="kpi-lbl">Best \(R^2\) Wins (OLS / Ridge / Lasso)</div><div class="kpi-val">{{ global_stats.wins_summary }}</div></div>
+          <div class="kpi-card"><div class="kpi-lbl">Diagnostic Figures</div><div class="kpi-val">{{ global_stats.total_plots }}</div></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-head">
+            <div class="chart-title">Cross-Dataset Test \(R^2\) Profile (Click any dataset group to inspect)</div>
+            <div class="chart-legend">
+              <span class="legend-item"><span class="legend-swatch" style="background:var(--accent-bright);"></span>OLS</span>
+              <span class="legend-item"><span class="legend-swatch" style="background:var(--ridge-color);"></span>Ridge (\(\ell_2\))</span>
+              <span class="legend-item"><span class="legend-swatch" style="background:var(--lasso-color);"></span>Lasso (\(\ell_1\))</span>
+            </div>
+          </div>
+          <div id="overview-svg-mount"></div>
+        </div>
+
+        <div class="notice">
+          <strong>Unit Discipline:</strong> Compare native \(\mathrm{RMSE}\)/\(\mathrm{MAE}\) within a dataset row only; use dimensionless Test \(R^2\) across datasets. Click any row to inspect.
+        </div>
+
+        <div class="filter-bar">
+          <div class="chip-group" role="group" aria-label="Filter by split strategy">
+            <button type="button" class="chip active" onclick="setSplitFilter('all', this)">All Splits (10)</button>
+            <button type="button" class="chip" onclick="setSplitFilter('random', this)">Random</button>
+            <button type="button" class="chip" onclick="setSplitFilter('group', this)">Group</button>
+            <button type="button" class="chip" onclick="setSplitFilter('chronological', this)">Chronological</button>
+            <button type="button" class="chip" onclick="setSplitFilter('stratified', this)">Stratified</button>
+          </div>
+          <input type="search" id="master-search" class="ctrl" placeholder="Search dataset or target..." aria-label="Search datasets in overview table" oninput="filterMasterRows()">
+        </div>
+
+        <div class="table-wrap">
+          <table id="master-table">
+            <thead>
+              <tr>
+                <th>Dataset</th>
+                <th>UCI Repo</th>
+                <th>Target (Units)</th>
+                <th>Split / CV</th>
+                <th class="num">\(n / n_{\mathrm{test}}\) (\(p\))</th>
+                <th class="num">OLS Test \(R^2\) (\(\mathrm{RMSE}\))</th>
+                <th class="num">Ridge Test \(R^2\) (\(\mathrm{RMSE}\), \(\alpha^*\))</th>
+                <th class="num">Lasso Test \(R^2\) (\(\mathrm{RMSE}\), \(\alpha^*\), \(|A|\))</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in master_rows %}
+              <tr class="clickable-row" data-ds="{{ row.key }}" data-split="{{ row.split_strategy }}" data-search="{{ (row.name ~ ' ' ~ row.key ~ ' ' ~ row.target ~ ' ' ~ row.split_strategy)|lower }}" tabindex="0" onclick="jumpToDataset('{{ row.key }}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToDataset('{{ row.key }}');}">
+                <td><strong>{{ row.name }}</strong></td>
+                <td onclick="event.stopPropagation();"><a class="ext" href="{{ row.uci_url }}" target="_blank" rel="noopener noreferrer">UCI {{ row.uci_id }} &nearr;</a></td>
+                <td><code>{{ row.target }}</code> ({{ row.target_units }})</td>
+                <td><code>{{ row.split_strategy }}</code> / {{ row.cv_strategy }}</td>
+                <td class="num">{{ row.n_train }} / {{ row.n_test }} ({{ row.n_features }})</td>
+                <td class="num {% if row.best_model == 'ols' %}best-cell{% endif %}">{{ "%.4f"|format(row.ols_r2) }}<br><small>{{ "%.4g"|format(row.ols_rmse) }}</small></td>
+                <td class="num {% if row.best_model == 'ridge' %}best-cell{% endif %}">{{ "%.4f"|format(row.ridge_r2) }}<br><small>{{ "%.4g"|format(row.ridge_rmse) }} (&alpha;*={{ "%.3g"|format(row.ridge_alpha) }})</small></td>
+                <td class="num {% if row.best_model == 'lasso' %}best-cell{% endif %}">{{ "%.4f"|format(row.lasso_r2) }}<br><small>{{ "%.4g"|format(row.lasso_rmse) }} (&alpha;*={{ "%.3g"|format(row.lasso_alpha) }}, {{ row.lasso_nz }}/{{ row.n_features }})</small></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 2. DATASETS -->
+      <section class="sec" id="datasets">
+        <div class="sec-head">
+          <h2>2. Datasets &amp; Splits</h2>
+        </div>
+        <p class="lead">Train-only imputation, one-hot encoding, and standardization (80/20 persisted splits).</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Dataset</th>
+                <th>UCI Link</th>
+                <th>Target (Units)</th>
+                <th class="num">Clean Rows</th>
+                <th class="num">Predictors (\(p\))</th>
+                <th>Split &amp; CV Strategy</th>
+                <th>Domain Caveats &amp; Exclusions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for ds in dataset_inventory %}
+              <tr class="clickable-row" tabindex="0" onclick="jumpToDataset('{{ ds.key }}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToDataset('{{ ds.key }}');}">
+                <td><strong>{{ ds.name }}</strong><br><small><code>{{ ds.key }}</code></small></td>
+                <td onclick="event.stopPropagation();"><a class="ext" href="{{ ds.uci_url }}" target="_blank" rel="noopener noreferrer">UCI {{ ds.uci_id }} &nearr;</a></td>
+                <td><code>{{ ds.target }}</code> ({{ ds.target_units }})</td>
+                <td class="num">{{ ds.n_clean }}</td>
+                <td class="num">{{ ds.n_encoded }}</td>
+                <td><code>{{ ds.split_strategy }}</code><br><small>{{ ds.cv_strategy }}</small></td>
+                <td>{{ ds.caveat_summary }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. ORDINARY LEAST SQUARES -->
+      <section class="sec sec-ols" id="ols">
+        <div class="sec-head">
+          <h2>3. Ordinary Least Squares (OLS)</h2>
+          <div class="toolbar">
+            <label for="sel-ols"><strong>Dataset:</strong></label>
+            <select id="sel-ols" class="ctrl" onchange="selectGlobalDataset(this.value)">
+              {% for row in master_rows %}<option value="{{ row.key }}">{{ row.name }}</option>{% endfor %}
+            </select>
+            <button type="button" class="btn btn-ghost" onclick="downloadCoefficientsCSV('ols')">CSV</button>
+            <button type="button" class="btn btn-ghost" onclick="downloadRunJSON('ols')">JSON</button>
+          </div>
+        </div>
+        <p class="lead">Unpenalized SVD least squares (<code>numpy.linalg.lstsq</code>) on \(\tilde{\mathbf{X}}_{\mathrm{aug}} = [\mathbf{1}, \tilde{\mathbf{X}}]\).</p>
+
+        <div class="bento-lab">
+          <div>
+            <div class="math-box">
+              <div class="eq-row">
+                <div class="eq-math">$$\min_{\boldsymbol{\beta} \in \mathbb{R}^{k}} \|\mathbf{y} - \tilde{\mathbf{X}}_{\mathrm{aug}}\boldsymbol{\beta}\|_2^2 = \mathbf{e}^\top\mathbf{e}, \quad k = p + 1$$</div>
+                <span class="eq-num">(1)</span>
+              </div>
+              <div class="eq-row">
+                <div class="eq-math">$$(\tilde{\mathbf{X}}_{\mathrm{aug}}^\top \tilde{\mathbf{X}}_{\mathrm{aug}})\hat{\boldsymbol{\beta}} = \tilde{\mathbf{X}}_{\mathrm{aug}}^\top \mathbf{y} \implies \tilde{\mathbf{X}}_{\mathrm{aug}}^\top \mathbf{e} = \mathbf{0}$$</div>
+                <span class="eq-num">(2)</span>
+              </div>
+              <p class="symbol-note">
+                \(\mathbf{e} = \mathbf{y} - \tilde{\mathbf{X}}_{\mathrm{aug}}\hat{\boldsymbol{\beta}}\). If \(\operatorname{rank}(\tilde{\mathbf{X}}_{\mathrm{aug}}) \lt k\), SVD yields \(\hat{\boldsymbol{\beta}} = \tilde{\mathbf{X}}_{\mathrm{aug}}^{+}\mathbf{y}\).
+              </p>
+            </div>
+            <details>
+              <summary>Matrix Derivation: Hat Matrix \(\mathbf{H}\), \(\mathbf{M}\) &amp; Gauss-Markov</summary>
+              <div class="math-box" style="margin-top:8px;">
+                <div class="eq-row">
+                  <div class="eq-math">$$\mathbf{H} = \tilde{\mathbf{X}}_{\mathrm{aug}}(\tilde{\mathbf{X}}_{\mathrm{aug}}^\top\tilde{\mathbf{X}}_{\mathrm{aug}})^{-1}\tilde{\mathbf{X}}_{\mathrm{aug}}^\top, \quad \mathbf{M} = \mathbf{I}_n - \mathbf{H}$$</div>
+                </div>
+                <div class="eq-row">
+                  <div class="eq-math">$$\hat{\mathbf{y}} = \mathbf{H}\mathbf{y}, \quad \mathbf{e} = \mathbf{M}\mathbf{y}, \quad \operatorname{Var}(\hat{\boldsymbol{\beta}}) = \sigma^2(\tilde{\mathbf{X}}_{\mathrm{aug}}^\top\tilde{\mathbf{X}}_{\mathrm{aug}})^{-1}$$</div>
+                </div>
+              </div>
+              <p class="symbol-note">Under \(\mathbb{E}[\boldsymbol{\varepsilon}\mid \tilde{\mathbf{X}}_{\mathrm{aug}}] = \mathbf{0}\), \(\mathbb{E}[\boldsymbol{\varepsilon}\boldsymbol{\varepsilon}^\top \mid \tilde{\mathbf{X}}_{\mathrm{aug}}] = \sigma^2 \mathbf{I}_n\), OLS is BLUE (\(\hat{\sigma}^2 = \frac{\mathbf{e}^\top\mathbf{e}}{n - k}\)). Heteroskedasticity requires White&rsquo;s sandwich covariance.</p>
+            </details>
+          </div>
+          <div class="lab-card" aria-label="Interactive OLS Orthogonal Projection Diagram">
+            <div class="lab-head">
+              <span class="lab-title">Orthogonal Projection</span>
+              <div class="lab-tabs" role="group" aria-label="Highlight OLS projection elements">
+                <button type="button" class="lab-tab active" onclick="setOlsGeoMode('proj', this)">Projection Hy</button>
+                <button type="button" class="lab-tab" onclick="setOlsGeoMode('orth', this)">Orthogonality</button>
+              </div>
+            </div>
+            <svg id="ols-geo-svg" viewBox="0 0 360 195" width="100%" height="195" role="img" aria-label="Orthogonal projection of y onto column space of X_aug"></svg>
+            <div class="lab-readout" id="ols-geo-readout">
+              <span>ŷ = H y ∈ col(X̃_aug)</span>
+              <span>e = M y ⊥ col(X̃_aug)</span>
+            </div>
+          </div>
+        </div>
+        <div id="mount-ols"></div>
+      </section>
+
+      <!-- 4. RIDGE REGRESSION -->
+      <section class="sec sec-ridge" id="ridge">
+        <div class="sec-head">
+          <h2>4. Ridge Regression (\(\ell_2\))</h2>
+          <div class="toolbar">
+            <label for="sel-ridge"><strong>Dataset:</strong></label>
+            <select id="sel-ridge" class="ctrl" onchange="selectGlobalDataset(this.value)">
+              {% for row in master_rows %}<option value="{{ row.key }}">{{ row.name }}</option>{% endfor %}
+            </select>
+            <button type="button" class="btn btn-ghost" onclick="downloadCoefficientsCSV('ridge')">CSV</button>
+            <button type="button" class="btn btn-ghost" onclick="downloadRunJSON('ridge')">JSON</button>
+          </div>
+        </div>
+        <p class="lead">Smooth \(\ell_2\) shrinkage on standardized slopes (unpenalized \(\beta_0\)); retains all \(p\) predictors.</p>
+
+        <div class="bento-lab">
+          <div>
+            <div class="math-box">
+              <div class="eq-row">
+                <div class="eq-math">$$\min_{\beta_0 \in \mathbb{R},\, \boldsymbol{\beta} \in \mathbb{R}^p} \|\mathbf{y} - \beta_0\mathbf{1} - \tilde{\mathbf{X}}\boldsymbol{\beta}\|_2^2 + \alpha\|\boldsymbol{\beta}\|_2^2 \quad (\lambda \equiv \alpha \ge 0)$$</div>
+                <span class="eq-num">(3)</span>
+              </div>
+              <div class="eq-row">
+                <div class="eq-math">$$\hat{\boldsymbol{\beta}}_\alpha = (\tilde{\mathbf{X}}^\top\tilde{\mathbf{X}} + \alpha \mathbf{I}_p)^{-1}\tilde{\mathbf{X}}^\top\tilde{\mathbf{y}}, \quad \kappa(\tilde{\mathbf{X}}^\top\tilde{\mathbf{X}} + \alpha\mathbf{I}_p) = \frac{d_1^2 + \alpha}{d_p^2 + \alpha}$$</div>
+                <span class="eq-num">(4)</span>
+              </div>
+              <p class="symbol-note">
+                \(\tilde{\mathbf{y}} = \mathbf{y} - \bar{y}\mathbf{1}\), \(\hat{\beta}_0 = \bar{y}\), singular values \(d_1 \ge \dots \ge d_p \ge 0\). <code>sklearn.Ridge</code> omits \(\frac{1}{2n}\).
+              </p>
+            </div>
+            <details>
+              <summary>SVD Shrinkage &amp; Effective Degrees of Freedom</summary>
+              <div class="math-box" style="margin-top:8px;">
+                <div class="eq-row">
+                  <div class="eq-math">$$\hat{\boldsymbol{\beta}}_\alpha = \sum_{d_j \gt 0} \mathbf{v}_j \frac{d_j}{d_j^2 + \alpha}\mathbf{u}_j^\top\tilde{\mathbf{y}}, \quad \operatorname{df}(\alpha) = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \alpha}$$</div>
+                </div>
+                <div class="eq-row">
+                  <div class="eq-math">$$\operatorname{Var}(\hat{\boldsymbol{\beta}}_\alpha) = \sigma^2\sum_{j=1}^p \frac{d_j^2}{(d_j^2+\alpha)^2}\mathbf{v}_j\mathbf{v}_j^\top \preceq \sigma^2(\tilde{\mathbf{X}}^\top\tilde{\mathbf{X}})^{-1}$$</div>
+                </div>
+              </div>
+              <p class="symbol-note">Unstandardized recovery: \(\hat{\beta}_{\mathrm{unstd}, j} = \hat{\beta}_{\alpha, j} / s_j\), \(\hat{\beta}_{0,\mathrm{unstd}} = \bar{y} - \sum_{j=1}^p \hat{\beta}_{\mathrm{unstd}, j}\bar{x}_j\).</p>
+            </details>
+          </div>
+          <div class="lab-card" aria-label="Interactive Ridge L2 Regularization Simulator">
+            <div class="lab-head">
+              <span class="lab-title">Interactive \(\ell_2\) Tangency Simulator</span>
+              <span style="font-size:0.72rem; color:#5eead4;">Smooth Shrinkage</span>
+            </div>
+            <svg id="ridge-geo-svg" viewBox="0 0 360 185" width="100%" height="185" role="img" aria-label="Interactive L2 Ridge circular constraint tangent to elliptical contours"></svg>
+            <div class="lab-slider-row">
+              <label for="ridge-alpha-slider">\(\alpha\) (\(\lambda\)):</label>
+              <input type="range" id="ridge-alpha-slider" min="0" max="100" value="35" oninput="updateRidgeSim(this.value)">
+              <span class="mono" id="ridge-alpha-val">α = 0.80</span>
+            </div>
+            <div class="lab-readout" id="ridge-sim-readout"></div>
+          </div>
+        </div>
+        <div id="mount-ridge"></div>
+      </section>
+
+      <!-- 5. LASSO REGRESSION -->
+      <section class="sec sec-lasso" id="lasso">
+        <div class="sec-head">
+          <h2>5. Lasso Regression (\(\ell_1\))</h2>
+          <div class="toolbar">
+            <label for="sel-lasso"><strong>Dataset:</strong></label>
+            <select id="sel-lasso" class="ctrl" onchange="selectGlobalDataset(this.value)">
+              {% for row in master_rows %}<option value="{{ row.key }}">{{ row.name }}</option>{% endfor %}
+            </select>
+            <button type="button" class="btn btn-ghost" onclick="downloadCoefficientsCSV('lasso')">CSV</button>
+            <button type="button" class="btn btn-ghost" onclick="downloadRunJSON('lasso')">JSON</button>
+          </div>
+        </div>
+        <p class="lead">Convex \(\ell_1\) penalty yielding continuous shrinkage and exact sparsity via coordinate-wise soft-thresholding.</p>
+
+        <div class="bento-lab">
+          <div>
+            <div class="math-box">
+              <div class="eq-row">
+                <div class="eq-math">$$\min_{\beta_0 \in \mathbb{R},\, \boldsymbol{\beta} \in \mathbb{R}^p} \frac{1}{2n}\|\mathbf{y} - \beta_0\mathbf{1} - \tilde{\mathbf{X}}\boldsymbol{\beta}\|_2^2 + \alpha\|\boldsymbol{\beta}\|_1 \quad (\lambda \equiv \alpha \ge 0)$$</div>
+                <span class="eq-num">(5)</span>
+              </div>
+              <div class="eq-row">
+                <div class="eq-math">$$\hat{\beta}_j = \frac{1}{g_j}\mathcal{S}\!\left(\frac{1}{n}\tilde{\mathbf{x}}_j^\top \mathbf{r}^{(-j)},\, \alpha\right), \quad \alpha_{\max} = \frac{1}{n}\|\tilde{\mathbf{X}}^\top\tilde{\mathbf{y}}\|_\infty$$</div>
+                <span class="eq-num">(6)</span>
+              </div>
+              <p class="symbol-note">
+                \(g_j = \frac{1}{n}\|\tilde{\mathbf{x}}_j\|_2^2 = 1\), \(\mathcal{S}(z, \alpha) = \operatorname{sign}(z)\max(|z| - \alpha, 0)\), \(\mathbf{r}^{(-j)} = \tilde{\mathbf{y}} - \sum_{k \ne j}\tilde{\mathbf{x}}_k \hat{\beta}_k\).
+              </p>
+            </div>
+            <details>
+              <summary>KKT Optimality &amp; Active Set \(|A(\alpha)|\)</summary>
+              <div class="math-box" style="margin-top:8px;">
+                <div class="eq-row">
+                  <div class="eq-math">$$\frac{1}{n}\tilde{\mathbf{X}}^\top(\tilde{\mathbf{y}} - \tilde{\mathbf{X}}\hat{\boldsymbol{\beta}}) = \alpha \hat{\mathbf{s}}, \quad \hat{s}_j \in \partial|\hat{\beta}_j|$$</div>
+                  <span class="eq-num">(7)</span>
+                </div>
+                <div class="eq-row">
+                  <div class="eq-math">$$\left|\frac{1}{n}\tilde{\mathbf{x}}_j^\top \hat{\mathbf{r}}\right| = \alpha \ (\hat{\beta}_j \ne 0), \quad \le \alpha \ (\hat{\beta}_j = 0), \quad \operatorname{df}(\alpha) = |A(\alpha)|$$</div>
+                </div>
+              </div>
+              <p class="symbol-note">Under collinearity, correlated predictors can trade places across CV folds while preserving the KKT correlation bound \(\alpha\).</p>
+            </details>
+          </div>
+          <div class="lab-card" aria-label="Lasso L1 Sparsity Artwork and Interactive Simulator">
+            <div class="lab-head">
+              <span class="lab-title">\(\ell_1\) Polytope Geometry</span>
+              <div class="lab-tabs" role="tablist">
+                <button type="button" class="lab-tab active" onclick="setLassoVisual('sim', this)">Interactive α Sim</button>
+                <button type="button" class="lab-tab" onclick="setLassoVisual('art', this)">3D Art</button>
+              </div>
+            </div>
+            <div id="lasso-sim-pane">
+              <svg id="lasso-geo-svg" viewBox="0 0 360 185" width="100%" height="185" role="img" aria-label="Interactive L1 Lasso diamond constraint snapping to sparse corner"></svg>
+              <div class="lab-slider-row">
+                <label for="lasso-alpha-slider">\(\alpha\) (\(\lambda\)):</label>
+                <input type="range" id="lasso-alpha-slider" min="0" max="100" value="32" oninput="updateLassoSim(this.value)">
+                <span class="mono" id="lasso-alpha-val">α / α_max = 0.32</span>
+              </div>
+              <div class="lab-readout" id="lasso-sim-readout" style="color:#fcd34d;"></div>
+            </div>
+            <div id="lasso-art-pane" style="display:none;">
+              <div class="lab-img-wrap">
+                <img src="assets/images/lasso_geometry.jpg" alt="3D amber L1 diamond intersecting elliptical SSE contours at a sparse corner">
+              </div>
+              <div class="lab-readout" style="margin-top:8px; color:#fcd34d;">
+                <span>Vertex intersection pins \(\hat{\beta}_j = 0\) (\(A(\alpha)\)).</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="mount-lasso"></div>
+      </section>
+
+      <!-- 6. ALGORITHM COMPARISON + INTERACTIVE PREDICTOR -->
+      <section class="sec" id="comparison">
+        <div class="sec-head">
+          <h2>6. Compare &amp; Predict</h2>
+          <div class="toolbar">
+            <label for="sel-comp"><strong>Dataset:</strong></label>
+            <select id="sel-comp" class="ctrl" onchange="selectGlobalDataset(this.value)">
+              {% for row in master_rows %}<option value="{{ row.key }}">{{ row.name }}</option>{% endfor %}
+            </select>
+          </div>
+        </div>
+        <div id="mount-comparison"></div>
+
+        <h3 style="margin-top:20px; color:var(--navy);">Interactive Prediction Studio</h3>
+        <p class="lead">\(\hat{y} = \hat{\beta}_{0,\mathrm{unstd}} + \sum_{j=1}^p \hat{\beta}_{\mathrm{unstd}, j} x_j\)</p>
+        <div class="toolbar">
+          <label for="pred-sample-select"><strong>Sample:</strong></label>
+          <select id="pred-sample-select" class="ctrl" onchange="loadSelectedSample()"></select>
+          <button type="button" class="btn" onclick="computePredictions()">Predict</button>
+          <button type="button" class="btn btn-ghost" onclick="promptInputsSequential()">Prompt Inputs</button>
+          <button type="button" class="btn btn-ghost" onclick="resetPredictorDefaults()">Reset Medians</button>
+          <input type="search" id="pred-filter" class="ctrl" placeholder="Filter predictors..." aria-label="Filter predictor inputs" oninput="filterPredictorFields(this.value)">
+        </div>
+
+        <div class="predictor-shell">
+          <div>
+            <div id="pred-inputs-grid" class="input-grid"></div>
+          </div>
+          <div>
+            <div class="pred-cards" id="pred-results-grid"></div>
+            <div class="chart-card" style="margin-top:12px; margin-bottom:0;">
+              <div class="chart-head">
+                <div class="chart-title">Top Feature Contributions (\(\hat{\beta}_{\mathrm{unstd}, j} x_j\))</div>
+                <select id="contrib-model-sel" class="ctrl" aria-label="Model for contribution chart" onchange="computePredictions()">
+                  <option value="ols">OLS</option>
+                  <option value="ridge">Ridge (ℓ₂)</option>
+                  <option value="lasso">Lasso (ℓ₁)</option>
+                </select>
+              </div>
+              <div id="pred-contrib-svg"></div>
+            </div>
+          </div>
+        </div>
+
+        <details>
+          <summary>Full Per-Feature Contributions (\(\hat{\beta}_{0,\mathrm{unstd}}\) and \(\hat{\beta}_{\mathrm{unstd}, j} x_j\))</summary>
+          <div id="pred-contrib-table" class="scroll-table" style="margin-top:8px;"></div>
+        </details>
+      </section>
+
+      <!-- 7. METHODOLOGY AND REFERENCES -->
+      <section class="sec" id="methodology">
+        <div class="sec-head">
+          <h2>7. Methodology &amp; References</h2>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <h3 style="margin-top:0; color:var(--navy);">Protocol</h3>
+            <ul>
+              <li><strong>Splits:</strong> Persisted 80/20 (seed 42) in <code>data/processed/&lt;dataset&gt;/split.json</code>.</li>
+              <li><strong>Leak-Free:</strong> Imputation, encoding, and scaling fit on train data and inside each CV fold only.</li>
+              <li><strong>Penalty (\(\lambda \equiv \alpha\)):</strong> <code>Ridge</code> minimizes \(\|\mathbf{y}-\hat{\mathbf{y}}\|_2^2 + \alpha\|\boldsymbol{\beta}\|_2^2\); <code>Lasso</code> minimizes \(\frac{1}{2n}\|\mathbf{y}-\hat{\mathbf{y}}\|_2^2 + \alpha\|\boldsymbol{\beta}\|_1\).</li>
+              <li><strong>Metrics:</strong> \(\mathrm{RMSE}=\sqrt{\frac{1}{n}\sum_{i=1}^n(y_i-\hat{y}_i)^2}\), \(\mathrm{MAE}=\frac{1}{n}\sum_{i=1}^n|y_i-\hat{y}_i|\), \(R^2=1-\frac{\sum_{i=1}^n(y_i-\hat{y}_i)^2}{\sum_{i=1}^n(y_i-\bar{y})^2}\) (plus LPM metrics for <code>diabetes</code>).</li>
+            </ul>
+          </div>
+          <div>
+            <h3 style="margin-top:0; color:var(--navy);">References</h3>
+            <ol>
+              <li><em>OLS in Matrix Form</em> (normal equations, hat/residual-maker matrices, Gauss-Markov, White covariance).</li>
+              <li>Aldo Solari, <em>Ridge Regression</em>, Statistical Learning, CLAMSES &mdash; Univ. of Milano-Bicocca.</li>
+              <li>Aldo Solari, <em>Sparse Modeling: Best Subset and the Lasso</em>, Statistical Learning, CLAMSES &mdash; Univ. of Milano-Bicocca.</li>
+              <li><em>Derivation of the General LASSO Estimator</em> (subdifferentials, KKT conditions, soft-thresholding).</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <footer class="dash-footer">
+        UCI Regression Studio &middot; Self-contained research workspace (<code>results/</code> &amp; <code>reports/</code>) &middot; Press <code>Esc</code> to close plot previews
+      </footer>
+    </main>
   </div>
-</header>
+</div>
 
-<main class="container">
-  <!-- 1. OVERVIEW -->
-  <section class="sec" id="overview">
-    <div class="sec-head">
-      <h1>1. Overview</h1>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Diagnostic plot preview" onclick="if(event.target===this)closeLightbox()">
+  <div class="lightbox-inner">
+    <div class="lightbox-head">
+      <strong id="lb-title"></strong>
       <div class="toolbar">
-        <a class="ext" href="ols/summary.html">OLS Summary &nearr;</a>
-        <a class="ext" href="ridge/summary.html">Ridge Summary &nearr;</a>
-        <a class="ext" href="lasso/summary.html">Lasso Summary &nearr;</a>
+        <button type="button" class="btn btn-ghost" onclick="stepLightbox(-1)" aria-label="Previous plot">&larr; Prev</button>
+        <button type="button" class="btn btn-ghost" onclick="stepLightbox(1)" aria-label="Next plot">Next &rarr;</button>
+        <button type="button" class="btn btn-ghost" onclick="closeLightbox()">Close (Esc)</button>
       </div>
     </div>
-    <p class="lead">
-      Empirical comparison of Ordinary Least Squares (OLS), Ridge Regression (\(\ell_2\)), and Lasso Regression (\(\ell_1\)) across 10 UCI datasets (30 experiments) using persisted 80/20 splits and training-only preprocessing and hyperparameter tuning.
-    </p>
-
-    <div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-lbl">Datasets</div><div class="kpi-val">{{ master_rows | length }} UCI</div></div>
-      <div class="kpi-card"><div class="kpi-lbl">Model Runs</div><div class="kpi-val">30 (3 &times; 10)</div></div>
-      <div class="kpi-card"><div class="kpi-lbl">Median Best Test R&sup2;</div><div class="kpi-val">{{ "%.4f"|format(global_stats.median_best_r2) }}</div></div>
-      <div class="kpi-card"><div class="kpi-lbl">Best Test R&sup2; Wins (OLS/Ridge/Lasso)</div><div class="kpi-val">{{ global_stats.wins_summary }}</div></div>
-      <div class="kpi-card"><div class="kpi-lbl">Diagnostic Figures</div><div class="kpi-val">{{ global_stats.total_plots }}</div></div>
-    </div>
-
-    <div class="notice">
-      <strong>Unit Discipline:</strong> Raw RMSE and MAE inherit each dataset&rsquo;s target units and must not be compared across different datasets. Compare algorithms within the same dataset row, or use dimensionless Test \(R^2\) across benchmarks.
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Dataset</th>
-            <th>UCI Repo</th>
-            <th>Target (Units)</th>
-            <th>Split / CV</th>
-            <th class="num">Train / Test (p)</th>
-            <th class="num">OLS Test R&sup2; (RMSE)</th>
-            <th class="num">Ridge Test R&sup2; (RMSE, &alpha;*)</th>
-            <th class="num">Lasso Test R&sup2; (RMSE, &alpha;*, Active)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in master_rows %}
-          <tr class="clickable-row" tabindex="0" onclick="jumpToDataset('{{ row.key }}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToDataset('{{ row.key }}');}">
-            <td><strong>{{ row.name }}</strong></td>
-            <td onclick="event.stopPropagation();"><a class="ext" href="{{ row.uci_url }}" target="_blank" rel="noopener noreferrer">UCI {{ row.uci_id }} &nearr;</a></td>
-            <td><code>{{ row.target }}</code> ({{ row.target_units }})</td>
-            <td><code>{{ row.split_strategy }}</code> / {{ row.cv_strategy }}</td>
-            <td class="num">{{ row.n_train }} / {{ row.n_test }} ({{ row.n_features }})</td>
-            <td class="num {% if row.best_model == 'ols' %}best-cell{% endif %}">{{ "%.4f"|format(row.ols_r2) }}<br><small>{{ "%.4g"|format(row.ols_rmse) }}</small></td>
-            <td class="num {% if row.best_model == 'ridge' %}best-cell{% endif %}">{{ "%.4f"|format(row.ridge_r2) }}<br><small>{{ "%.4g"|format(row.ridge_rmse) }} (&alpha;={{ "%.3g"|format(row.ridge_alpha) }})</small></td>
-            <td class="num {% if row.best_model == 'lasso' %}best-cell{% endif %}">{{ "%.4f"|format(row.lasso_r2) }}<br><small>{{ "%.4g"|format(row.lasso_rmse) }} (&alpha;={{ "%.3g"|format(row.lasso_alpha) }}, {{ row.lasso_nz }}/{{ row.n_features }})</small></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- 2. DATASETS -->
-  <section class="sec" id="datasets">
-    <div class="sec-head">
-      <h2>2. Datasets &amp; Experimental Splits</h2>
-    </div>
-    <p class="lead">
-      All transformations (median imputation, one-hot encoding, and predictor standardization) are fit strictly on training observations and separately within each cross-validation fold.
-    </p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Dataset</th>
-            <th>UCI Link</th>
-            <th>Target (Units)</th>
-            <th class="num">Clean Rows</th>
-            <th class="num">Predictors</th>
-            <th>Split &amp; CV Strategy</th>
-            <th>Domain Caveats &amp; Exclusions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for ds in dataset_inventory %}
-          <tr>
-            <td><strong>{{ ds.name }}</strong><br><small><code>{{ ds.key }}</code></small></td>
-            <td><a class="ext" href="{{ ds.uci_url }}" target="_blank" rel="noopener noreferrer">UCI {{ ds.uci_id }} &nearr;</a></td>
-            <td><code>{{ ds.target }}</code> ({{ ds.target_units }})</td>
-            <td class="num">{{ ds.n_clean }}</td>
-            <td class="num">{{ ds.n_encoded }}</td>
-            <td><code>{{ ds.split_strategy }}</code><br><small>{{ ds.cv_strategy }}</small></td>
-            <td>{{ ds.caveat_summary }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- 3. ORDINARY LEAST SQUARES -->
-  <section class="sec" id="ols">
-    <div class="sec-head">
-      <h2>3. Ordinary Least Squares (OLS)</h2>
-      <div class="toolbar">
-        <label for="sel-ols"><strong>Dataset:</strong></label>
-        <select id="sel-ols" class="ctrl" onchange="selectGlobalDataset(this.value)">
-          {% for row in master_rows %}<option value="{{ row.key }}">{{ row.name }}</option>{% endfor %}
-        </select>
-        <button type="button" class="btn btn-ghost" onclick="downloadCoefficientsCSV('ols')">Download Coefficients CSV</button>
-        <button type="button" class="btn btn-ghost" onclick="downloadRunJSON('ols')">Download JSON</button>
-      </div>
-    </div>
-    <p class="lead">
-      OLS fits an unpenalized linear hyperplane minimizing the training residual sum of squares via SVD-based least squares (<code>numpy.linalg.lstsq</code>) on standardized predictors \(\tilde{\mathbf{X}}\) with an unscaled intercept column \(\mathbf{1}\).
-    </p>
-    <div class="math-box">
-      $$\min_{\boldsymbol{\beta} \in \mathbb{R}^{p+1}} \|\mathbf{y} - \tilde{\mathbf{X}}_{\mathrm{aug}}\boldsymbol{\beta}\|_2^2 = \mathbf{e}^\top\mathbf{e}, \qquad \tilde{\mathbf{X}}_{\mathrm{aug}} = [\mathbf{1},\, \tilde{\mathbf{X}}] \in \mathbb{R}^{n \times k}, \quad k = p + 1 \tag{1}$$
-      $$(\tilde{\mathbf{X}}_{\mathrm{aug}}^\top \tilde{\mathbf{X}}_{\mathrm{aug}})\hat{\boldsymbol{\beta}} = \tilde{\mathbf{X}}_{\mathrm{aug}}^\top \mathbf{y} \quad \Longrightarrow \quad \tilde{\mathbf{X}}_{\mathrm{aug}}^\top \mathbf{e} = \mathbf{0} \tag{2}$$
-      <p class="symbol-note">
-        \(\mathbf{y} \in \mathbb{R}^n\): training targets; \(\mathbf{e} = \mathbf{y} - \tilde{\mathbf{X}}_{\mathrm{aug}}\hat{\boldsymbol{\beta}}\): observable sample residuals (distinct from unobservable disturbances \(\boldsymbol{\varepsilon}\)). When \(\operatorname{rank}(\tilde{\mathbf{X}}_{\mathrm{aug}}) < k\), SVD returns the minimum-norm pseudoinverse solution \(\hat{\boldsymbol{\beta}} = \tilde{\mathbf{X}}_{\mathrm{aug}}^{+}\mathbf{y}\).
-      </p>
-    </div>
-    <details>
-      <summary>Expand Matrix Derivation: Residual Maker, Hat Matrix &amp; Gauss-Markov Assumptions</summary>
-      <div class="math-box">
-        $$\mathbf{H} = \tilde{\mathbf{X}}_{\mathrm{aug}}(\tilde{\mathbf{X}}_{\mathrm{aug}}^\top\tilde{\mathbf{X}}_{\mathrm{aug}})^{-1}\tilde{\mathbf{X}}_{\mathrm{aug}}^\top, \quad \mathbf{M} = \mathbf{I}_n - \mathbf{H}, \quad \hat{\mathbf{y}} = \mathbf{H}\mathbf{y}, \quad \mathbf{e} = \mathbf{M}\mathbf{y}$$
-        $$\mathbb{E}[\boldsymbol{\varepsilon}\mid \mathbf{X}] = \mathbf{0},\ \mathbb{E}[\boldsymbol{\varepsilon}\boldsymbol{\varepsilon}^\top \mid \mathbf{X}] = \sigma^2 \mathbf{I}_n \implies \operatorname{Var}(\hat{\boldsymbol{\beta}}) = \sigma^2(\mathbf{X}^\top\mathbf{X})^{-1}, \quad \hat{\sigma}^2 = \frac{\mathbf{e}^\top\mathbf{e}}{n - k}$$
-      </div>
-      <p class="symbol-note">Under homoskedastic, uncorrelated errors and full rank, OLS is BLUE (Gauss-Markov Theorem). Under heteroskedasticity \(\boldsymbol{\Omega} = \operatorname{diag}(\sigma_1^2,\dots,\sigma_n^2)\), classical standard errors require White&rsquo;s sandwich estimator \((\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top \mathbf{e}\mathbf{e}^\top \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\).</p>
-    </details>
-    <div id="mount-ols"></div>
-  </section>
-
-  <!-- 4. RIDGE REGRESSION -->
-  <section class="sec" id="ridge">
-    <div class="sec-head">
-      <h2>4. Ridge Regression (\(\ell_2\) Regularization)</h2>
-      <div class="toolbar">
-        <label for="sel-ridge"><strong>Dataset:</strong></label>
-        <select id="sel-ridge" class="ctrl" onchange="selectGlobalDataset(this.value)">
-          {% for row in master_rows %}<option value="{{ row.key }}">{{ row.name }}</option>{% endfor %}
-        </select>
-        <button type="button" class="btn btn-ghost" onclick="downloadCoefficientsCSV('ridge')">Download Coefficients CSV</button>
-        <button type="button" class="btn btn-ghost" onclick="downloadRunJSON('ridge')">Download JSON</button>
-      </div>
-    </div>
-    <p class="lead">
-      Ridge regression adds a squared \(\ell_2\) penalty on standardized slopes (leaving \(\beta_0\) unpenalized) to shrink variance and stabilize ill-conditioned \(\tilde{\mathbf{X}}^\top\tilde{\mathbf{X}}\). <strong>Ridge shrinks all coefficients smoothly toward zero and does not perform automatic feature elimination.</strong>
-    </p>
-    <div class="math-box">
-      $$\min_{\beta_0 \in \mathbb{R},\, \boldsymbol{\beta} \in \mathbb{R}^p} \|\mathbf{y} - \beta_0\mathbf{1} - \tilde{\mathbf{X}}\boldsymbol{\beta}\|_2^2 + \alpha\|\boldsymbol{\beta}\|_2^2 \quad (\lambda \equiv \alpha \ge 0\text{ in }\texttt{scikit-learn}) \tag{3}$$
-      $$\hat{\boldsymbol{\beta}}_\alpha = (\tilde{\mathbf{X}}^\top\tilde{\mathbf{X}} + \alpha \mathbf{I}_p)^{-1}\tilde{\mathbf{X}}^\top\tilde{\mathbf{y}}, \qquad \hat{\beta}_0 = \bar{y}, \qquad \kappa(\tilde{\mathbf{X}}^\top\tilde{\mathbf{X}} + \alpha\mathbf{I}_p) = \frac{d_{\max}^2 + \alpha}{d_{\min}^2 + \alpha} \tag{4}$$
-      <p class="symbol-note">
-        \(\tilde{\mathbf{y}} = \mathbf{y} - \bar{y}\mathbf{1}\); \(d_1 \ge \dots \ge d_p \ge 0\) are singular values of \(\tilde{\mathbf{X}}\). Note \(\texttt{sklearn.linear\_model.Ridge}\) omits the \(\frac{1}{2n}\) factor, matching Eq. (3) directly.
-      </p>
-    </div>
-    <details>
-      <summary>Expand SVD Shrinkage, Effective Degrees of Freedom &amp; Bias-Variance Trade-off</summary>
-      <div class="math-box">
-        $$\tilde{\mathbf{X}} = \mathbf{U}\mathbf{D}\mathbf{V}^\top \implies \hat{\boldsymbol{\beta}}_\alpha = \sum_{d_j > 0} \mathbf{v}_j \frac{d_j}{d_j^2 + \alpha}\mathbf{u}_j^\top\tilde{\mathbf{y}}, \qquad \operatorname{df}(\alpha) = \operatorname{tr}(\mathbf{R}^\alpha) = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \alpha}$$
-        $$\operatorname{Bias}(\hat{\boldsymbol{\beta}}_\alpha) = -\sum_{j=1}^p \mathbf{v}_j \frac{\alpha}{d_j^2 + \alpha}\langle\mathbf{v}_j,\boldsymbol{\beta}\rangle, \qquad \operatorname{Var}(\hat{\boldsymbol{\beta}}_\alpha) = \sigma^2\sum_{j=1}^p \frac{d_j^2}{(d_j^2+\alpha)^2}\mathbf{v}_j\mathbf{v}_j^\top \preceq \sigma^2(\tilde{\mathbf{X}}^\top\tilde{\mathbf{X}})^{-1}$$
-      </div>
-      <p class="symbol-note">Unstandardized slopes are recovered via \(\hat{\beta}_{\mathrm{unstd}, j} = \hat{\beta}_{\alpha, j} / s_j\) and \(\hat{\beta}_{0,\mathrm{unstd}} = \bar{y} - \sum_{j=1}^p \hat{\beta}_{\mathrm{unstd}, j}\bar{x}_j\). By Theobald&rsquo;s theorem, \(\exists \alpha &gt; 0\) with strictly lower parameter MSE than OLS.</p>
-    </details>
-    <div id="mount-ridge"></div>
-  </section>
-
-  <!-- 5. LASSO REGRESSION -->
-  <section class="sec" id="lasso">
-    <div class="sec-head">
-      <h2>5. Lasso Regression (\(\ell_1\) Regularization)</h2>
-      <div class="toolbar">
-        <label for="sel-lasso"><strong>Dataset:</strong></label>
-        <select id="sel-lasso" class="ctrl" onchange="selectGlobalDataset(this.value)">
-          {% for row in master_rows %}<option value="{{ row.key }}">{{ row.name }}</option>{% endfor %}
-        </select>
-        <button type="button" class="btn btn-ghost" onclick="downloadCoefficientsCSV('lasso')">Download Coefficients CSV</button>
-        <button type="button" class="btn btn-ghost" onclick="downloadRunJSON('lasso')">Download JSON</button>
-      </div>
-    </div>
-    <p class="lead">
-      Lasso penalizes the \(\ell_1\) norm \(\|\boldsymbol{\beta}\|_1 = \sum_{j=1}^p |\beta_j|\), yielding a convex objective that sets weak or redundant predictors exactly to zero via soft-thresholding.
-    </p>
-    <div class="math-box">
-      $$\min_{\beta_0 \in \mathbb{R},\, \boldsymbol{\beta} \in \mathbb{R}^p} \frac{1}{2n}\|\mathbf{y} - \beta_0\mathbf{1} - \tilde{\mathbf{X}}\boldsymbol{\beta}\|_2^2 + \alpha\|\boldsymbol{\beta}\|_1 \quad (\lambda \equiv \alpha \ge 0\text{ in }\texttt{scikit-learn}) \tag{5}$$
-      $$\hat{\beta}_j = \frac{1}{d_j}\mathcal{S}\!\left(\frac{1}{n}\tilde{\mathbf{x}}_j^\top \mathbf{r}^{(-j)},\, \alpha\right), \quad \mathcal{S}(z, \alpha) = \operatorname{sign}(z)\max(|z| - \alpha,\, 0), \quad \alpha_{\max} = \frac{1}{n}\|\tilde{\mathbf{X}}^\top\tilde{\mathbf{y}}\|_\infty \tag{6}$$
-      <p class="symbol-note">
-        Here \(d_j = \frac{1}{n}\|\tilde{\mathbf{x}}_j\|_2^2 = 1\) on standardized training columns, \(\mathbf{r}^{(-j)} = \tilde{\mathbf{y}} - \sum_{k \ne j}\tilde{\mathbf{x}}_k \hat{\beta}_k\) is the partial residual, and \(\texttt{sklearn.linear\_model.Lasso}\) includes the \(\frac{1}{2n}\) scaling matching Eq. (5).
-      </p>
-    </div>
-    <details>
-      <summary>Expand Subdifferential KKT Optimality Conditions &amp; Feature Selection</summary>
-      <div class="math-box">
-        $$\frac{1}{n}\tilde{\mathbf{X}}^\top(\tilde{\mathbf{y}} - \tilde{\mathbf{X}}\hat{\boldsymbol{\beta}}) = \alpha \hat{\mathbf{s}}, \qquad \hat{s}_j \in \partial|\hat{\beta}_j| = \begin{cases} \{+1\}, & \hat{\beta}_j > 0 \\ [-1, +1], & \hat{\beta}_j = 0 \\ \{-1\}, & \hat{\beta}_j < 0 \end{cases} \tag{7}$$
-        $$\left|\frac{1}{n}\tilde{\mathbf{x}}_j^\top \hat{\mathbf{r}}\right| = \alpha \text{ for } \hat{\beta}_j \ne 0, \qquad \left|\frac{1}{n}\tilde{\mathbf{x}}_j^\top \hat{\mathbf{r}}\right| \le \alpha \text{ for } \hat{\beta}_j = 0, \qquad \operatorname{df}(\alpha) = |A(\alpha)|$$
-      </div>
-      <p class="symbol-note">When predictors are highly correlated, multiple subsets can satisfy the KKT correlation bound \(\alpha\), explaining active-set selection variability across CV folds.</p>
-    </details>
-    <div id="mount-lasso"></div>
-  </section>
-
-  <!-- 6. ALGORITHM COMPARISON + INTERACTIVE PREDICTOR -->
-  <section class="sec" id="comparison">
-    <div class="sec-head">
-      <h2>6. Algorithm Comparison &amp; Interactive Predictor</h2>
-      <div class="toolbar">
-        <label for="sel-comp"><strong>Dataset:</strong></label>
-        <select id="sel-comp" class="ctrl" onchange="selectGlobalDataset(this.value)">
-          {% for row in master_rows %}<option value="{{ row.key }}">{{ row.name }}</option>{% endfor %}
-        </select>
-      </div>
-    </div>
-    <div id="mount-comparison"></div>
-
-    <h3 style="margin-top:20px; color:var(--navy);">Interactive Prediction Playground</h3>
-    <p class="lead">Computes live predictions \(\hat{y} = \hat{\beta}_{0,\mathrm{unstd}} + \sum_j \hat{\beta}_{\mathrm{unstd}, j} x_j\) using the fitted unstandardized coefficients for OLS, Ridge, and Lasso.</p>
-    <div class="toolbar">
-      <label for="pred-sample-select"><strong>Sample:</strong></label>
-      <select id="pred-sample-select" class="ctrl" onchange="loadSelectedSample()"></select>
-      <button type="button" class="btn" onclick="computePredictions()">Predict</button>
-      <button type="button" class="btn btn-ghost" onclick="promptInputsSequential()">Prompt Inputs</button>
-      <button type="button" class="btn btn-ghost" onclick="resetPredictorDefaults()">Reset Medians</button>
-      <input type="text" id="pred-filter" class="ctrl" placeholder="Filter predictors..." oninput="filterPredictorFields(this.value)">
-    </div>
-    <div id="pred-inputs-grid" class="input-grid"></div>
-    <div class="pred-cards" id="pred-results-grid"></div>
-    <details>
-      <summary>Per-Feature Contributions (\(\hat{\beta}_{\mathrm{unstd}, j} x_j\))</summary>
-      <div id="pred-contrib-table" class="scroll-table" style="margin-top:8px;"></div>
-    </details>
-  </section>
-
-  <!-- 7. METHODOLOGY AND REFERENCES -->
-  <section class="sec" id="methodology">
-    <div class="sec-head">
-      <h2>7. Methodology &amp; References</h2>
-    </div>
-
-    <div class="two-col">
-      <div>
-        <h3 style="margin-top:0; color:var(--navy);">Experimental Protocol</h3>
-        <ul>
-          <li><strong>Persisted Splits:</strong> 80/20 splits (seed 42) are stored in <code>data/processed/&lt;dataset&gt;/split.json</code> so OLS, Ridge, and Lasso evaluate identical test observations.</li>
-          <li><strong>Zero Leakage:</strong> Imputation, one-hot encoding, and standardization are fit only on training data and separately within each CV fold.</li>
-          <li><strong>Penalty Parameter Mapping:</strong> Mathematical \(\lambda\) corresponds to scikit-learn&rsquo;s <code>alpha</code> argument. Note that <code>Ridge</code> uses unnormalized SSE \(\|\mathbf{y}-\hat{\mathbf{y}}\|_2^2 + \alpha\|\boldsymbol{\beta}\|_2^2\), whereas <code>Lasso</code> uses \(\frac{1}{2n}\|\mathbf{y}-\hat{\mathbf{y}}\|_2^2 + \alpha\|\boldsymbol{\beta}\|_1\).</li>
-          <li><strong>Evaluation Metrics:</strong> \(\mathrm{RMSE} = \sqrt{\frac{1}{n}\sum(y_i - \hat{y}_i)^2}\), \(\mathrm{MAE} = \frac{1}{n}\sum|y_i - \hat{y}_i|\), \(R^2 = 1 - \frac{\sum(y_i - \hat{y}_i)^2}{\sum(y_i - \bar{y})^2}\). For <code>diabetes</code> (LPM), Accuracy/Precision/Recall/F1 (0.50 cutoff), ROC AUC, and out-of-\([0,1]\) rates are reported.</li>
-        </ul>
-      </div>
-      <div>
-        <h3 style="margin-top:0; color:var(--navy);">References</h3>
-        <ol>
-          <li><em>OLS in Matrix Form</em> (Course lecture notes on matrix OLS, normal equations, residual maker/hat matrices, Frisch-Waugh-Lovell theorem, Gauss-Markov theorem, and White robust standard errors).</li>
-          <li>Aldo Solari, <em>Ridge Regression</em>, Statistical Learning, CLAMSES &mdash; University of Milano-Bicocca.</li>
-          <li>Aldo Solari, <em>Sparse Modeling: Best Subset and the Lasso</em>, Statistical Learning, CLAMSES &mdash; University of Milano-Bicocca.</li>
-          <li><em>Derivation of the General LASSO Estimator</em> (Statistical Learning &amp; Convex Optimization notes on Lagrangian duality, subdifferentials, KKT conditions, and coordinate-wise soft-thresholding).</li>
-        </ol>
-      </div>
-    </div>
-  </section>
-</main>
+    <img id="lb-img" src="" alt="">
+    <div class="plot-caption" id="lb-caption"></div>
+  </div>
+</div>
 
 <script>
 const MASTER_SUMMARY = {{ master_json | safe }};
 window.__DATASET_STORE__ = window.__DATASET_STORE__ || {};
 let currentDatasetKey = "{{ master_rows[0].key }}";
+let currentViewKey = "overview";
+let isFocusMode = true;
+let activeSplitFilter = "all";
+let compChartMetric = "test_r2";
 const pendingLoads = {};
+const coefSearchState = {ols: "", ridge: "", lasso: ""};
+const coefSortState = {ols: "mag", ridge: "mag", lasso: "mag"};
+
+const VIEW_LABELS = {
+  overview: "Overview & Benchmarks",
+  datasets: "Datasets & Splits",
+  ols: "OLS Workspace",
+  ridge: "Ridge (ℓ₂) Workspace",
+  lasso: "Lasso (ℓ₁) Workspace",
+  comparison: "Comparison & Predictor",
+  methodology: "Methodology & Refs"
+};
+
+function applyTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  const lbl = document.getElementById("theme-label");
+  if (lbl) lbl.textContent = t === "dark" ? "Light" : "Dark";
+  try { localStorage.setItem("uci_reg_theme", t); } catch (e) {}
+}
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute("data-theme") || "light";
+  applyTheme(cur === "dark" ? "light" : "dark");
+}
+(function(){
+  try {
+    const saved = localStorage.getItem("uci_reg_theme");
+    if (saved === "dark" || saved === "light") applyTheme(saved);
+  } catch (e) {}
+})();
+
+function toggleSidebar(force) {
+  const isMobile = window.innerWidth <= 1024;
+  const btn = document.getElementById("sidebar-toggle");
+  if (isMobile) {
+    const sb = document.getElementById("sidebar");
+    const open = force !== undefined ? Boolean(force) : !sb.classList.contains("open");
+    sb.classList.toggle("open", open);
+    document.getElementById("drawer-backdrop").classList.toggle("open", open);
+    if (btn) btn.setAttribute("aria-expanded", String(open));
+  } else {
+    const collapsed = force !== undefined ? !Boolean(force) : !document.body.classList.contains("sidebar-collapsed");
+    document.body.classList.toggle("sidebar-collapsed", collapsed);
+    if (btn) btn.setAttribute("aria-expanded", String(!collapsed));
+    try { localStorage.setItem("uci_reg_sidebar_collapsed", collapsed ? "1" : "0"); } catch (e) {}
+  }
+}
+(function(){
+  try {
+    if (window.innerWidth > 1024 && localStorage.getItem("uci_reg_sidebar_collapsed") === "1") {
+      document.body.classList.add("sidebar-collapsed");
+    }
+  } catch (e) {}
+})();
+
+function switchView(viewKey) {
+  if (!VIEW_LABELS[viewKey]) viewKey = "overview";
+  currentViewKey = viewKey;
+  document.querySelectorAll(".side-btn").forEach(b => b.classList.toggle("active", b.getAttribute("data-view") === viewKey));
+  document.querySelectorAll("section.sec").forEach(s => s.classList.toggle("active-view", s.id === viewKey));
+  const cv = document.getElementById("crumb-view");
+  if (cv) cv.textContent = VIEW_LABELS[viewKey];
+  if (window.innerWidth <= 1024) toggleSidebar(false);
+  if (!isFocusMode) {
+    const el = document.getElementById(viewKey);
+    if (el) el.scrollIntoView({behavior: "smooth"});
+  } else {
+    window.scrollTo({top: 0, behavior: "smooth"});
+  }
+  triggerMathRender(document.getElementById(viewKey));
+}
+
+function toggleLayoutMode() {
+  isFocusMode = !isFocusMode;
+  document.body.classList.toggle("focus-mode", isFocusMode);
+  const lbl = document.getElementById("layout-mode-label");
+  if (lbl) lbl.textContent = isFocusMode ? "All Sections" : "Focus Tabs";
+  if (isFocusMode) switchView(currentViewKey);
+  else triggerMathRender(document.body);
+}
 
 function triggerMathRender(el) {
   if (typeof renderMathInElement === "function") {
@@ -790,9 +1520,7 @@ function triggerMathRender(el) {
 }
 
 function loadDatasetBundle(dsKey) {
-  if (window.__DATASET_STORE__[dsKey]) {
-    return Promise.resolve(window.__DATASET_STORE__[dsKey]);
-  }
+  if (window.__DATASET_STORE__[dsKey]) return Promise.resolve(window.__DATASET_STORE__[dsKey]);
   if (pendingLoads[dsKey]) return pendingLoads[dsKey];
   pendingLoads[dsKey] = new Promise((resolve, reject) => {
     const s = document.createElement("script");
@@ -828,6 +1556,244 @@ function fmtNum(v) {
   return String(v);
 }
 
+function renderOverviewChart() {
+  const mount = document.getElementById("overview-svg-mount");
+  if (!mount || !MASTER_SUMMARY.length) return;
+  const W = 940, H = 225, padL = 44, padR = 16, padT = 16, padB = 56;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+  const n = MASTER_SUMMARY.length;
+  const minVal = Math.min(0, ...MASTER_SUMMARY.flatMap(r => [r.ols_r2, r.ridge_r2, r.lasso_r2]));
+  const maxVal = 1.0;
+  const span = maxVal - minVal;
+  const yOf = v => padT + ((maxVal - v) / span) * plotH;
+  const y0 = yOf(0);
+  const groupW = plotW / n;
+  const barW = Math.min(14, (groupW - 14) / 3);
+
+  let grid = "";
+  [0, 0.25, 0.5, 0.75, 1.0].forEach(tick => {
+    const yt = yOf(tick);
+    grid += `<line x1="${padL}" y1="${yt.toFixed(1)}" x2="${W - padR}" y2="${yt.toFixed(1)}" stroke="var(--border)" stroke-dasharray="${tick === 0 ? "" : "3,3"}"/>`;
+    grid += `<text x="${padL - 6}" y="${(yt + 3).toFixed(1)}" text-anchor="end" fill="var(--muted)" font-size="10" font-family="JetBrains Mono, monospace">${tick.toFixed(2)}</text>`;
+  });
+
+  let groups = "";
+  MASTER_SUMMARY.forEach((r, i) => {
+    const cx = padL + i * groupW + groupW / 2;
+    const isActive = r.key === currentDatasetKey;
+    const vals = [
+      {v: r.ols_r2, c: "var(--accent-bright)", lbl: "OLS"},
+      {v: r.ridge_r2, c: "var(--ridge-color)", lbl: "Ridge"},
+      {v: r.lasso_r2, c: "var(--lasso-color)", lbl: "Lasso"},
+    ];
+    let bars = "";
+    vals.forEach((it, j) => {
+      const x = cx - 1.5 * barW + j * barW;
+      const yv = yOf(Math.max(minVal, it.v));
+      const bh = Math.max(2, Math.abs(y0 - yv));
+      const topY = Math.min(y0, yv);
+      bars += `<rect x="${x.toFixed(1)}" y="${topY.toFixed(1)}" width="${(barW - 1.5).toFixed(1)}" height="${bh.toFixed(1)}" rx="2" fill="${it.c}"><title>${escHtml(r.name)} — ${it.lbl}: R² = ${it.v.toFixed(4)}</title></rect>`;
+    });
+    const shortName = r.name.length > 13 ? r.name.slice(0, 12) + "…" : r.name;
+    groups += `
+      <g style="cursor:pointer;" onclick="jumpToDataset('${r.key}')" tabindex="0" role="button" aria-label="Inspect ${escHtml(r.name)}">
+        ${isActive ? `<rect x="${(padL + i * groupW + 2).toFixed(1)}" y="${padT}" width="${(groupW - 4).toFixed(1)}" height="${plotH}" rx="4" fill="var(--accent-soft)" stroke="var(--accent-border)"/>` : ""}
+        ${bars}
+        <text x="${cx.toFixed(1)}" y="${H - 36}" text-anchor="end" transform="rotate(-24 ${cx.toFixed(1)} ${H - 36})" fill="${isActive ? "var(--accent)" : "var(--muted)"}" font-size="10" font-weight="${isActive ? "700" : "500"}">${escHtml(shortName)}</text>
+      </g>
+    `;
+  });
+
+  mount.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="225" role="img" aria-label="Grouped Test R squared chart across 10 UCI datasets">${grid}${groups}</svg>`;
+}
+
+/* Exact 2D Quadratic Geometry for Interactive OLS, Ridge & Lasso Simulators */
+const SIM_THETA = -28 * Math.PI / 180;
+const SIM_COS = Math.cos(SIM_THETA), SIM_SIN = Math.sin(SIM_THETA);
+const SIM_L1 = 2.4, SIM_L2 = 0.55;
+const SIM_Q11 = SIM_L1 * SIM_COS * SIM_COS + SIM_L2 * SIM_SIN * SIM_SIN;
+const SIM_Q22 = SIM_L1 * SIM_SIN * SIM_SIN + SIM_L2 * SIM_COS * SIM_COS;
+const SIM_Q12 = (SIM_L1 - SIM_L2) * SIM_COS * SIM_SIN;
+const SIM_B_OLS = [1.85, 1.35];
+const SIM_G0 = SIM_Q11 * SIM_B_OLS[0] + SIM_Q12 * SIM_B_OLS[1];
+const SIM_G1 = SIM_Q12 * SIM_B_OLS[0] + SIM_Q22 * SIM_B_OLS[1];
+const SIM_ALPHA_MAX = Math.max(Math.abs(SIM_G0), Math.abs(SIM_G1));
+
+function simSseLevel(b1, b2) {
+  const d1 = b1 - SIM_B_OLS[0], d2 = b2 - SIM_B_OLS[1];
+  return SIM_Q11 * d1 * d1 + 2 * SIM_Q12 * d1 * d2 + SIM_Q22 * d2 * d2;
+}
+
+function setOlsGeoMode(mode, btn) {
+  document.querySelectorAll("#ols .lab-tab").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  const svg = document.getElementById("ols-geo-svg");
+  const rd = document.getElementById("ols-geo-readout");
+  if (!svg) return;
+  const projHighlight = mode === "proj";
+  const orthHighlight = mode === "orth";
+  // Exact tip-to-tip vector geometry: origin=(85,146), y_hat=(238,146), y=(238,34), e=(238,146)->(238,34)
+  svg.innerHTML = `
+    <defs>
+      <pattern id="g-ols" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M 24 0 L 0 0 0 24" fill="none" stroke="#1e293b" stroke-width="0.7"/></pattern>
+      <marker id="arr-w" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#f8fafc"/></marker>
+      <marker id="arr-b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#60a5fa"/></marker>
+      <marker id="arr-a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><polygon points="0 0,7 3.5,0 7" fill="#fbbf24"/></marker>
+    </defs>
+    <rect width="360" height="195" fill="url(#g-ols)"/>
+    <polygon points="36,162 222,178 324,124 138,108" fill="rgba(30,64,175,0.26)" stroke="${projHighlight ? "#60a5fa" : "#334155"}" stroke-width="${projHighlight ? "2" : "1.2"}"/>
+    <text x="272" y="138" fill="#93c5fd" font-size="10" font-family="JetBrains Mono, monospace">col(X̃_aug)</text>
+    <circle cx="85" cy="146" r="3" fill="#94a3b8"/>
+    <line x1="85" y1="146" x2="233" y2="146" stroke="#60a5fa" stroke-width="${projHighlight ? "3" : "2"}" marker-end="url(#arr-b)"/>
+    <text x="148" y="162" fill="#93c5fd" font-size="11" font-family="JetBrains Mono, monospace" font-weight="700">ŷ = Hy</text>
+    <line x1="238" y1="146" x2="238" y2="39" stroke="#fbbf24" stroke-width="${orthHighlight ? "3" : "1.8"}" stroke-dasharray="${orthHighlight ? "" : "4,3"}" marker-end="url(#arr-a)"/>
+    <text x="247" y="92" fill="#fcd34d" font-size="11" font-family="JetBrains Mono, monospace" font-weight="700">e = y − ŷ</text>
+    <line x1="85" y1="146" x2="234" y2="37" stroke="#f8fafc" stroke-width="2.2" marker-end="url(#arr-w)"/>
+    <text x="144" y="78" fill="#f8fafc" font-size="11" font-family="JetBrains Mono, monospace" font-weight="700">y</text>
+    <polyline points="227,146 227,135 238,135" fill="none" stroke="${orthHighlight ? "#fbbf24" : "#94a3b8"}" stroke-width="1.6"/>
+  `;
+  if (rd) {
+    rd.innerHTML = projHighlight
+      ? `<span>ŷ = X̃_aug β̂ = Hy</span><span>min ‖y − ŷ‖₂²</span>`
+      : `<span>X̃_augᵀ e = 0</span><span>e = My ⊥ ŷ</span>`;
+  }
+}
+
+function solveRidge2D(alpha) {
+  const a11 = SIM_Q11 + alpha, a22 = SIM_Q22 + alpha, a12 = SIM_Q12;
+  const det = a11 * a22 - a12 * a12;
+  return [(a22 * SIM_G0 - a12 * SIM_G1) / det, (-a12 * SIM_G0 + a11 * SIM_G1) / det];
+}
+
+function updateRidgeSim(val) {
+  const s = Number(val) / 100;
+  const alpha = s === 0 ? 0 : (Math.pow(10, s * 2.3) - 1) * 0.18;
+  document.getElementById("ridge-alpha-val").textContent = `α = ${alpha.toFixed(2)}`;
+  const cx = 148, cy = 132, scale = 48;
+  const olsX = cx + SIM_B_OLS[0] * scale, olsY = cy - SIM_B_OLS[1] * scale;
+
+  const [b1, b2] = solveRidge2D(alpha);
+  const bx = cx + b1 * scale, by = cy - b2 * scale;
+  const r = Math.hypot(bx - cx, by - cy);
+  const cVal = simSseLevel(b1, b2);
+  const rx = Math.sqrt(Math.max(0, cVal / SIM_L1)) * scale;
+  const ry = Math.sqrt(Math.max(0, cVal / SIM_L2)) * scale;
+  const rotDeg = (-SIM_THETA * 180 / Math.PI).toFixed(1);
+
+  // Compute exact ridge shrinkage locus curve
+  let locus = "";
+  for (let i = 0; i <= 20; i++) {
+    const ti = i / 20;
+    const ai = ti === 0 ? 0 : (Math.pow(10, ti * 2.8) - 1) * 0.25;
+    const [p1, p2] = solveRidge2D(ai);
+    locus += `${(cx + p1 * scale).toFixed(1)},${(cy - p2 * scale).toFixed(1)} `;
+  }
+
+  const df = (SIM_L1 / (SIM_L1 + alpha) + SIM_L2 / (SIM_L2 + alpha)).toFixed(2);
+  const svg = document.getElementById("ridge-geo-svg");
+  if (svg) {
+    svg.innerHTML = `
+      <defs><pattern id="g-r" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" stroke-width="0.7"/></pattern></defs>
+      <rect width="360" height="185" fill="url(#g-r)"/>
+      <line x1="20" y1="${cy}" x2="340" y2="${cy}" stroke="#334155" stroke-width="1"/>
+      <line x1="${cx}" y1="10" x2="${cx}" y2="175" stroke="#334155" stroke-width="1"/>
+      <polyline points="${locus.trim()}" fill="none" stroke="#475569" stroke-width="1.3" stroke-dasharray="3,3"/>
+      <ellipse cx="${olsX.toFixed(1)}" cy="${olsY.toFixed(1)}" rx="18" ry="38" transform="rotate(${rotDeg} ${olsX.toFixed(1)} ${olsY.toFixed(1)})" fill="none" stroke="rgba(96,165,250,0.22)"/>
+      <ellipse cx="${olsX.toFixed(1)}" cy="${olsY.toFixed(1)}" rx="36" ry="75" transform="rotate(${rotDeg} ${olsX.toFixed(1)} ${olsY.toFixed(1)})" fill="none" stroke="rgba(96,165,250,0.18)"/>
+      <circle cx="${cx}" cy="${cy}" r="${Math.max(2, r).toFixed(1)}" fill="rgba(20,184,166,0.18)" stroke="#2dd4bf" stroke-width="2"/>
+      ${rx > 0.5 ? `<ellipse cx="${olsX.toFixed(1)}" cy="${olsY.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" transform="rotate(${rotDeg} ${olsX.toFixed(1)} ${olsY.toFixed(1)})" fill="none" stroke="#60a5fa" stroke-width="1.8"/>` : ""}
+      <circle cx="${olsX.toFixed(1)}" cy="${olsY.toFixed(1)}" r="4.5" fill="#60a5fa"/>
+      <text x="${(olsX + 8).toFixed(1)}" y="${(olsY + 4).toFixed(1)}" fill="#93c5fd" font-size="10" font-family="JetBrains Mono, monospace">β̂_OLS</text>
+      <circle cx="${bx.toFixed(1)}" cy="${by.toFixed(1)}" r="5.5" fill="#2dd4bf" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="${(bx - 38).toFixed(1)}" y="${(by - 9).toFixed(1)}" fill="#5eead4" font-size="10" font-family="JetBrains Mono, monospace" font-weight="700">β̂_α</text>
+    `;
+  }
+  const rd = document.getElementById("ridge-sim-readout");
+  if (rd) rd.innerHTML = `<span>β̂₁ = ${b1.toFixed(2)}</span><span>β̂₂ = ${b2.toFixed(2)}</span><span>df(α) = ${df} / 2</span>`;
+}
+
+function setLassoVisual(mode, btn) {
+  document.querySelectorAll("#lasso .lab-tab").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  document.getElementById("lasso-art-pane").style.display = mode === "art" ? "block" : "none";
+  document.getElementById("lasso-sim-pane").style.display = mode === "sim" ? "block" : "none";
+  if (mode === "sim") updateLassoSim(document.getElementById("lasso-alpha-slider").value);
+}
+
+function solveLasso2D(alpha) {
+  let b1 = SIM_B_OLS[0], b2 = SIM_B_OLS[1];
+  for (let k = 0; k < 90; k++) {
+    const r1 = SIM_G0 - SIM_Q12 * b2;
+    b1 = Math.sign(r1) * Math.max(0, Math.abs(r1) - alpha) / SIM_Q11;
+    const r2 = SIM_G1 - SIM_Q12 * b1;
+    b2 = Math.sign(r2) * Math.max(0, Math.abs(r2) - alpha) / SIM_Q22;
+  }
+  return [Math.abs(b1) < 1e-6 ? 0 : b1, Math.abs(b2) < 1e-6 ? 0 : b2];
+}
+
+function updateLassoSim(val) {
+  const frac = Number(val) / 100;
+  const alpha = frac * SIM_ALPHA_MAX;
+  document.getElementById("lasso-alpha-val").textContent = `α / α_max = ${frac.toFixed(2)}`;
+  const cx = 148, cy = 132, scale = 48;
+  const olsX = cx + SIM_B_OLS[0] * scale, olsY = cy - SIM_B_OLS[1] * scale;
+
+  const [b1, b2] = solveLasso2D(alpha);
+  const bx = cx + b1 * scale, by = cy - b2 * scale;
+  const l1Rad = (Math.abs(b1) + Math.abs(b2)) * scale;
+  const cVal = simSseLevel(b1, b2);
+  const rx = Math.sqrt(Math.max(0, cVal / SIM_L1)) * scale;
+  const ry = Math.sqrt(Math.max(0, cVal / SIM_L2)) * scale;
+  const rotDeg = (-SIM_THETA * 180 / Math.PI).toFixed(1);
+  const activeCount = (b1 !== 0 ? 1 : 0) + (b2 !== 0 ? 1 : 0);
+
+  let locus = "";
+  for (let i = 0; i <= 20; i++) {
+    const [p1, p2] = solveLasso2D((i / 20) * SIM_ALPHA_MAX);
+    locus += `${(cx + p1 * scale).toFixed(1)},${(cy - p2 * scale).toFixed(1)} `;
+  }
+
+  const svg = document.getElementById("lasso-geo-svg");
+  if (svg) {
+    const pts = `${cx},${(cy - l1Rad).toFixed(1)} ${(cx + l1Rad).toFixed(1)},${cy} ${cx},${(cy + l1Rad).toFixed(1)} ${(cx - l1Rad).toFixed(1)},${cy}`;
+    svg.innerHTML = `
+      <defs><pattern id="g-l" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" stroke-width="0.7"/></pattern></defs>
+      <rect width="360" height="185" fill="url(#g-l)"/>
+      <line x1="20" y1="${cy}" x2="340" y2="${cy}" stroke="#334155" stroke-width="1"/>
+      <line x1="${cx}" y1="10" x2="${cx}" y2="175" stroke="#334155" stroke-width="1"/>
+      <polyline points="${locus.trim()}" fill="none" stroke="#475569" stroke-width="1.3" stroke-dasharray="3,3"/>
+      <ellipse cx="${olsX.toFixed(1)}" cy="${olsY.toFixed(1)}" rx="18" ry="38" transform="rotate(${rotDeg} ${olsX.toFixed(1)} ${olsY.toFixed(1)})" fill="none" stroke="rgba(96,165,250,0.22)"/>
+      <polygon points="${pts}" fill="rgba(245,158,11,0.18)" stroke="#fbbf24" stroke-width="2"/>
+      ${rx > 0.5 ? `<ellipse cx="${olsX.toFixed(1)}" cy="${olsY.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}" transform="rotate(${rotDeg} ${olsX.toFixed(1)} ${olsY.toFixed(1)})" fill="none" stroke="#60a5fa" stroke-width="1.8"/>` : ""}
+      <circle cx="${olsX.toFixed(1)}" cy="${olsY.toFixed(1)}" r="4.5" fill="#60a5fa"/>
+      <text x="${(olsX + 8).toFixed(1)}" y="${(olsY + 4).toFixed(1)}" fill="#93c5fd" font-size="10" font-family="JetBrains Mono, monospace">β̂_OLS</text>
+      <circle cx="${bx.toFixed(1)}" cy="${by.toFixed(1)}" r="5.5" fill="#fbbf24" stroke="#ffffff" stroke-width="1.5"/>
+      <text x="${(bx + 7).toFixed(1)}" y="${(by - 9).toFixed(1)}" fill="#fcd34d" font-size="10" font-family="JetBrains Mono, monospace" font-weight="700">β̂_α</text>
+    `;
+  }
+  const rd = document.getElementById("lasso-sim-readout");
+  if (rd) rd.innerHTML = `<span>β̂₁ = ${b1.toFixed(2)}</span><span>β̂₂ = ${b2.toFixed(2)}${b2 === 0 ? " (ZERO)" : ""}</span><span>|A(α)| = ${activeCount} / 2</span>`;
+}
+
+function setSplitFilter(strategy, btn) {
+  activeSplitFilter = strategy;
+  document.querySelectorAll(".chip-group .chip").forEach(c => c.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  filterMasterRows();
+}
+
+function filterMasterRows() {
+  const q = (document.getElementById("master-search").value || "").trim().toLowerCase();
+  document.querySelectorAll("#master-table tbody tr").forEach(tr => {
+    const sp = tr.getAttribute("data-split") || "";
+    const txt = tr.getAttribute("data-search") || "";
+    const matchSplit = (activeSplitFilter === "all") || (activeSplitFilter === "chronological" ? sp.startsWith("chronological") : sp === activeSplitFilter);
+    const matchText = !q || txt.includes(q);
+    tr.style.display = (matchSplit && matchText) ? "" : "none";
+  });
+}
+
 function renderMetricsTable(m, modelKey, d) {
   const units = escHtml(m.target_units);
   let cvRow = "";
@@ -837,24 +1803,23 @@ function renderMetricsTable(m, modelKey, d) {
   }
   let lpmHtml = "";
   if (m.is_binary_classification && m.test_classification) {
-    const trc = m.train_classification;
     const tec = m.test_classification;
     lpmHtml = `
       <div class="pill-row">
         <span class="pill pill-accent">Test Acc: ${tec.accuracy.toFixed(4)}</span>
         <span class="pill pill-accent">Test F1: ${tec.f1.toFixed(4)}</span>
         <span class="pill pill-accent">Test ROC AUC: ${tec.roc_auc.toFixed(4)}</span>
-        <span class="pill pill-warn">Test Outside [0,1]: ${tec.n_outside_unit_interval}/${m.n_test} (${tec.pct_outside_unit_interval.toFixed(2)}%)</span>
+        <span class="pill pill-warn">Test Outside \\([0,1]\\): ${tec.n_outside_unit_interval}/${m.n_test} (${tec.pct_outside_unit_interval.toFixed(2)}%)</span>
       </div>`;
   }
   return `
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Split</th><th>Detail</th><th class="num">MAE (${units})</th><th class="num">RMSE (${units})</th><th class="num">R&sup2;</th></tr></thead>
+        <thead><tr><th>Split</th><th>Detail</th><th class="num">\\(\\mathrm{MAE}\\) (${units})</th><th class="num">\\(\\mathrm{RMSE}\\) (${units})</th><th class="num">\\(R^2\\)</th></tr></thead>
         <tbody>
-          <tr><td>Train</td><td>n = ${m.n_train}</td><td class="num">${fmtNum(m.train.mae)}</td><td class="num">${fmtNum(m.train.rmse)}</td><td class="num">${m.train.r2.toFixed(4)}</td></tr>
+          <tr><td>Train</td><td>\\(n = ${m.n_train}\\)</td><td class="num">${fmtNum(m.train.mae)}</td><td class="num">${fmtNum(m.train.rmse)}</td><td class="num">${m.train.r2.toFixed(4)}</td></tr>
           ${cvRow}
-          <tr><td><strong>Test (Held-out)</strong></td><td>n = ${m.n_test}</td><td class="num"><strong>${fmtNum(m.test.mae)}</strong></td><td class="num"><strong>${fmtNum(m.test.rmse)}</strong></td><td class="num"><strong>${m.test.r2.toFixed(4)}</strong></td></tr>
+          <tr><td><strong>Test (Held-out)</strong></td><td>\\(n_{\\mathrm{test}} = ${m.n_test}\\)</td><td class="num"><strong>${fmtNum(m.test.mae)}</strong></td><td class="num"><strong>${fmtNum(m.test.rmse)}</strong></td><td class="num"><strong>${m.test.r2.toFixed(4)}</strong></td></tr>
         </tbody>
       </table>
     </div>
@@ -862,74 +1827,22 @@ function renderMetricsTable(m, modelKey, d) {
   `;
 }
 
-function renderAlgorithmWorkspace(bundle, modelKey) {
-  const mount = document.getElementById("mount-" + modelKey);
-  const mb = bundle.models[modelKey];
-  if (!mb) {
-    mount.innerHTML = "<p>No artifacts available.</p>";
-    return;
-  }
-  const m = mb.metrics;
-  const d = mb.diagnostics;
-  const prep = bundle.preprocessing;
-
-  // Config & summary KPIs
-  let kpis = [
-    {lbl: "Test R²", val: m.test.r2.toFixed(4)},
-    {lbl: `Test RMSE (${m.target_units})`, val: fmtNum(m.test.rmse)},
-  ];
-  let configPills = [
-    `Split: ${prep.split_strategy}`,
-    `Features: ${prep.n_encoded_features}`,
-    `Scaling: Train-only StandardScaler`,
-    `Intercept: Unscaled & Unpenalized`,
-  ];
-
-  if (modelKey === "ols") {
-    const la = d.numerical_linear_algebra;
-    const ex = d.exact_algebraic_properties;
-    kpis.push({lbl: "Matrix Rank", val: `${la.matrix_rank} / ${la.n_augmented_columns}`});
-    kpis.push({lbl: "Condition κ (Std)", val: fmtNum(la.condition_number_standardized_with_intercept)});
-    kpis.push({lbl: "Max |Xᵀe|", val: ex.max_abs_Xt_residuals.toExponential(2)});
-    configPills.push("Solver: np.linalg.lstsq (SVD)");
-  } else if (modelKey === "ridge") {
-    const pt = d.penalty_tuning;
-    const sd = d.shrinkage_and_degrees_of_freedom;
-    const ns = d.numerical_stability;
-    kpis.push({lbl: "Selected α (λ)", val: fmtNum(pt.selected_alpha)});
-    kpis.push({lbl: "Effective df(α)", val: `${sd.effective_df_predictors.toFixed(2)} / ${sd.n_predictors}`});
-    kpis.push({lbl: "L2 Ratio vs. OLS", val: sd.l2_norm_ratio_ridge_over_ols.toFixed(4)});
-    kpis.push({lbl: "κ Before → After", val: `${fmtNum(ns.x_centered_eig_condition_ols)} → ${fmtNum(ns.x_centered_eig_condition_ridge)}`});
-    configPills.push(`CV: ${pt.cv_strategy}`, `Grid: 60 alphas [1e-4, 1e5]`);
-  } else if (modelKey === "lasso") {
-    const pt = d.penalty_tuning;
-    const sp = d.sparsity_and_shrinkage;
-    const cvg = d.convergence;
-    kpis.push({lbl: "Selected α (λ)", val: fmtNum(pt.selected_alpha)});
-    kpis.push({lbl: "Selected / Total", val: `${sp.n_nonzero_features} / ${sp.n_total_features}`});
-    kpis.push({lbl: "L1 Ratio vs. OLS", val: sp.l1_norm_ratio_lasso_over_ols.toFixed(4)});
-    kpis.push({lbl: "Converged", val: `${cvg.converged_final ? "Yes" : "No"} (${cvg.n_iter_final} iters)`});
-    configPills.push(`CV: ${pt.cv_strategy}`, `Grid: 60 alphas [α_max, 1e-4·α_max]`);
-  }
-
-  const kpiHtml = kpis.map(k => `<div class="kpi-card"><div class="kpi-lbl">${escHtml(k.lbl)}</div><div class="kpi-val">${escHtml(k.val)}</div></div>`).join("");
-  const pillsHtml = configPills.map(p => `<span class="pill">${escHtml(p)}</span>`).join("");
-
-  // Plots with grounded captions
-  const plotsHtml = mb.plots.map(p => `
-    <div class="plot-card">
-      <img loading="lazy" src="${escHtml(p.src)}" alt="${escHtml(p.title)}">
-      <div class="plot-title">${escHtml(p.title)}</div>
-      <div class="plot-caption">${escHtml(p.caption)}</div>
-    </div>
-  `).join("");
-
-  // Coefficients table
+function buildCoefRowsHtml(mb, modelKey) {
   const hasOls = mb.coef_rows.length > 0 && mb.coef_rows[0].ols_coefficient_standardized !== undefined;
   const hasShrink = mb.coef_rows.length > 0 && mb.coef_rows[0].shrinkage_ratio_vs_ols !== undefined;
   const hasRetained = mb.coef_rows.length > 0 && mb.coef_rows[0].retained !== undefined;
+  const q = (coefSearchState[modelKey] || "").trim().toLowerCase();
+  const sortMode = coefSortState[modelKey] || "mag";
 
-  const coefRowsHtml = mb.coef_rows.map(r => {
+  let rows = mb.coef_rows.filter(r => !q || r.feature.toLowerCase().includes(q) || r.role.toLowerCase().includes(q));
+  if (sortMode === "mag") {
+    rows = [...rows].sort((a, b) => {
+      if (a.role === "intercept") return -1;
+      if (b.role === "intercept") return 1;
+      return Math.abs(b.coefficient_standardized) - Math.abs(a.coefficient_standardized);
+    });
+  }
+  return rows.map(r => {
     const cls = r.role === "intercept" ? "intercept-row" : (hasRetained && !r.retained ? "zero-row" : "");
     return `<tr class="${cls}">
       <td>${escHtml(r.role)}</td>
@@ -941,11 +1854,79 @@ function renderAlgorithmWorkspace(bundle, modelKey) {
       ${hasRetained ? `<td class="num">${r.retained ? "Active" : "Zero (0)"}</td><td class="num">${Number(r.cv_selection_freq).toFixed(2)}</td>` : ""}
     </tr>`;
   }).join("");
+}
 
-  // Diagnostics & narrative
+function updateCoefTable(modelKey) {
+  const bundle = window.__DATASET_STORE__[currentDatasetKey];
+  if (!bundle || !bundle.models[modelKey]) return;
+  const tbody = document.getElementById(`coef-tbody-${modelKey}`);
+  if (tbody) tbody.innerHTML = buildCoefRowsHtml(bundle.models[modelKey], modelKey);
+}
+
+function renderAlgorithmWorkspace(bundle, modelKey) {
+  const mount = document.getElementById("mount-" + modelKey);
+  const mb = bundle.models[modelKey];
+  if (!mb) { mount.innerHTML = "<p>No artifacts available.</p>"; return; }
+  const m = mb.metrics;
+  const d = mb.diagnostics;
+  const prep = bundle.preprocessing;
+
+  let kpis = [
+    {lbl: "Test \\(R^2\\)", val: m.test.r2.toFixed(4)},
+    {lbl: `Test \\(\\mathrm{RMSE}\\) (${m.target_units})`, val: fmtNum(m.test.rmse)},
+  ];
+  let configPills = [
+    `Split: ${prep.split_strategy}`,
+    `p = ${prep.n_encoded_features}`,
+    `Scaling: Train-only StandardScaler`,
+    `Intercept \\(\\beta_0\\): Unscaled & Unpenalized`,
+  ];
+
+  if (modelKey === "ols") {
+    const la = d.numerical_linear_algebra;
+    const ex = d.exact_algebraic_properties;
+    kpis.push({lbl: "Rank / \\(k\\)", val: `${la.matrix_rank} / ${la.n_augmented_columns}`});
+    kpis.push({lbl: "\\(\\kappa(\\tilde{\\mathbf{X}}_{\\mathrm{aug}})\\)", val: fmtNum(la.condition_number_standardized_with_intercept)});
+    kpis.push({lbl: "\\(\\max |\\tilde{\\mathbf{X}}_{\\mathrm{aug}}^\\top \\mathbf{e}|\\)", val: ex.max_abs_Xt_residuals.toExponential(2)});
+    configPills.push("Solver: np.linalg.lstsq (SVD)");
+  } else if (modelKey === "ridge") {
+    const pt = d.penalty_tuning;
+    const sd = d.shrinkage_and_degrees_of_freedom;
+    const ns = d.numerical_stability;
+    kpis.push({lbl: "Selected \\(\\alpha^*\\)", val: fmtNum(pt.selected_alpha)});
+    kpis.push({lbl: "Effective \\(\\operatorname{df}(\\alpha^*)\\)", val: `${sd.effective_df_predictors.toFixed(2)} / ${sd.n_predictors}`});
+    kpis.push({lbl: "\\(\\ell_2\\) Ratio vs. OLS", val: sd.l2_norm_ratio_ridge_over_ols.toFixed(4)});
+    kpis.push({lbl: "\\(\\kappa\\) OLS &rarr; Ridge", val: `${fmtNum(ns.x_centered_eig_condition_ols)} -> ${fmtNum(ns.x_centered_eig_condition_ridge)}`});
+    configPills.push(`CV: ${pt.cv_strategy}`, `Grid: 60 alphas [1e-4, 1e5]`);
+  } else if (modelKey === "lasso") {
+    const pt = d.penalty_tuning;
+    const sp = d.sparsity_and_shrinkage;
+    const cvg = d.convergence;
+    kpis.push({lbl: "Selected \\(\\alpha^*\\)", val: fmtNum(pt.selected_alpha)});
+    kpis.push({lbl: "Active \\(|A(\\alpha^*)| / p\\)", val: `${sp.n_nonzero_features} / ${sp.n_total_features}`});
+    kpis.push({lbl: "\\(\\ell_1\\) Ratio vs. OLS", val: sp.l1_norm_ratio_lasso_over_ols.toFixed(4)});
+    kpis.push({lbl: "Converged", val: `${cvg.converged_final ? "Yes" : "No"} (${cvg.n_iter_final} iters)`});
+    configPills.push(`CV: ${pt.cv_strategy}`, `Grid: 60 alphas [α_max, 1e-4·α_max]`);
+  }
+
+  const kpiHtml = kpis.map(k => `<div class="kpi-card"><div class="kpi-lbl">${k.lbl}</div><div class="kpi-val">${escHtml(k.val)}</div></div>`).join("");
+  const pillsHtml = configPills.map(p => `<span class="pill">${p}</span>`).join("");
+
+  const plotsHtml = mb.plots.map((p, idx) => `
+    <div class="plot-card" data-model="${modelKey}" data-plot-idx="${idx}">
+      <img loading="lazy" src="${escHtml(p.src)}" alt="${escHtml(p.title)}" tabindex="0" role="button" onclick="openLightboxFromCard(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLightboxFromCard(this);}">
+      <div class="plot-title">${escHtml(p.title)}</div>
+      <div class="plot-caption">${escHtml(p.caption)}</div>
+    </div>
+  `).join("");
+
+  const hasOls = mb.coef_rows.length > 0 && mb.coef_rows[0].ols_coefficient_standardized !== undefined;
+  const hasShrink = mb.coef_rows.length > 0 && mb.coef_rows[0].shrinkage_ratio_vs_ols !== undefined;
+  const hasRetained = mb.coef_rows.length > 0 && mb.coef_rows[0].retained !== undefined;
+
   const diagTables = mb.diag_sections.map(([title, items]) => `
-    <h4 style="margin:12px 0 6px; color:var(--navy-2);">${escHtml(title)}</h4>
-    <table>${items.map(([k, v]) => `<tr><td>${escHtml(k)}</td><td class="num">${escHtml(v)}</td></tr>`).join("")}</table>
+    <h4 style="margin:14px 0 6px; color:var(--navy-2);">${escHtml(title)}</h4>
+    <div class="table-wrap"><table>${items.map(([k, v]) => `<tr><td>${escHtml(k)}</td><td class="num">${escHtml(v)}</td></tr>`).join("")}</table></div>
   `).join("");
 
   const interpHtml = mb.interpretations.map(x => `<li>${escHtml(x)}</li>`).join("");
@@ -958,8 +1939,8 @@ function renderAlgorithmWorkspace(bundle, modelKey) {
     const eliminated = sp.eliminated_features.map(x => x.feature).join(", ") || "None";
     lassoSelectionHtml = `
       <div class="notice">
-        <strong>Selected Features (${sp.n_nonzero_features}):</strong> ${escHtml(retained)}<br>
-        <strong>Eliminated Features (${sp.n_zero_features}):</strong> ${escHtml(eliminated)}
+        <strong>Selected Features (\\(|A(\\alpha^*)| = ${sp.n_nonzero_features}\\)):</strong> ${escHtml(retained)}<br>
+        <strong>Eliminated Features (${sp.n_zero_features}, \\(\\hat{\\beta}_j = 0\\)):</strong> ${escHtml(eliminated)}
       </div>`;
   }
 
@@ -974,16 +1955,23 @@ function renderAlgorithmWorkspace(bundle, modelKey) {
     ${lassoSelectionHtml}
     <div class="plots-grid">${plotsHtml}</div>
     <details>
-      <summary>Coefficient Analysis (${mb.coef_rows.length} entries incl. unpenalized intercept)</summary>
-      <div class="scroll-table" style="margin-top:8px;">
+      <summary>Coefficient Analysis (${mb.coef_rows.length} entries incl. unpenalized intercept \\(\\beta_0\\))</summary>
+      <div class="toolbar" style="margin:10px 0 6px;">
+        <input type="search" class="ctrl" placeholder="Filter features..." aria-label="Filter ${modelKey} coefficients" value="${escHtml(coefSearchState[modelKey])}" oninput="coefSearchState['${modelKey}']=this.value;updateCoefTable('${modelKey}')">
+        <select class="ctrl" aria-label="Sort ${modelKey} coefficients" onchange="coefSortState['${modelKey}']=this.value;updateCoefTable('${modelKey}')">
+          <option value="mag" ${coefSortState[modelKey] === "mag" ? "selected" : ""}>Sort by |Coef (Std)|</option>
+          <option value="orig" ${coefSortState[modelKey] === "orig" ? "selected" : ""}>Original Feature Order</option>
+        </select>
+      </div>
+      <div class="scroll-table">
         <table>
           <thead><tr>
-            <th>Role</th><th>Feature</th><th class="num">Coef (Std)</th><th class="num">Coef (Unstd)</th>
-            ${hasOls ? `<th class="num">OLS Coef (Std)</th>` : ""}
-            ${hasShrink ? `<th class="num">Shrinkage Ratio</th>` : ""}
-            ${hasRetained ? `<th class="num">Status</th><th class="num">CV Freq</th>` : ""}
+            <th>Role</th><th>Feature</th><th class="num">\\(\\hat{\\beta}_{\\mathrm{std}}\\)</th><th class="num">\\(\\hat{\\beta}_{\\mathrm{unstd}}\\)</th>
+            ${hasOls ? `<th class="num">\\(\\hat{\\beta}_{\\mathrm{OLS, std}}\\)</th>` : ""}
+            ${hasShrink ? `<th class="num">\\(|\\hat{\\beta}| / |\\hat{\\beta}_{\\mathrm{OLS}}|\\)</th>` : ""}
+            ${hasRetained ? `<th class="num">Active</th><th class="num">CV Freq</th>` : ""}
           </tr></thead>
-          <tbody>${coefRowsHtml}</tbody>
+          <tbody id="coef-tbody-${modelKey}">${buildCoefRowsHtml(mb, modelKey)}</tbody>
         </table>
       </div>
     </details>
@@ -998,6 +1986,82 @@ function renderAlgorithmWorkspace(bundle, modelKey) {
   `;
 }
 
+function setCompChartMetric(metric, btn) {
+  compChartMetric = metric;
+  const bundle = window.__DATASET_STORE__[currentDatasetKey];
+  if (bundle) {
+    renderComparisonSection(bundle);
+    triggerMathRender(document.getElementById("mount-comparison"));
+  }
+}
+
+function renderComparisonSvg(ols, ridge, lasso, dsName, units) {
+  const w = 620, h = 118, left = 98, right = 92, barW = w - left - right;
+  let rows = [];
+  if (compChartMetric === "test_r2") {
+    rows = [
+      {label: "OLS", val: ols.metrics.test.r2, fmt: ols.metrics.test.r2.toFixed(4), color: "var(--accent-bright)"},
+      {label: "Ridge (ℓ₂)", val: ridge.metrics.test.r2, fmt: ridge.metrics.test.r2.toFixed(4), color: "var(--ridge-color)"},
+      {label: "Lasso (ℓ₁)", val: lasso.metrics.test.r2, fmt: lasso.metrics.test.r2.toFixed(4), color: "var(--lasso-color)"},
+    ];
+  } else if (compChartMetric === "test_rmse") {
+    rows = [
+      {label: "OLS", val: ols.metrics.test.rmse, fmt: `${fmtNum(ols.metrics.test.rmse)} ${units}`, color: "var(--accent-bright)"},
+      {label: "Ridge (ℓ₂)", val: ridge.metrics.test.rmse, fmt: `${fmtNum(ridge.metrics.test.rmse)} ${units}`, color: "var(--ridge-color)"},
+      {label: "Lasso (ℓ₁)", val: lasso.metrics.test.rmse, fmt: `${fmtNum(lasso.metrics.test.rmse)} ${units}`, color: "var(--lasso-color)"},
+    ];
+  } else {
+    rows = [
+      {label: "OLS (Tr/Te)", val: ols.metrics.test.r2, val2: ols.metrics.train.r2, fmt: `${ols.metrics.train.r2.toFixed(3)} / ${ols.metrics.test.r2.toFixed(3)}`, color: "var(--accent-bright)"},
+      {label: "Ridge (Tr/Te)", val: ridge.metrics.test.r2, val2: ridge.metrics.train.r2, fmt: `${ridge.metrics.train.r2.toFixed(3)} / ${ridge.metrics.test.r2.toFixed(3)}`, color: "var(--ridge-color)"},
+      {label: "Lasso (Tr/Te)", val: lasso.metrics.test.r2, val2: lasso.metrics.train.r2, fmt: `${lasso.metrics.train.r2.toFixed(3)} / ${lasso.metrics.test.r2.toFixed(3)}`, color: "var(--lasso-color)"},
+    ];
+  }
+
+  const allVals = rows.flatMap(r => r.val2 !== undefined ? [r.val, r.val2] : [r.val]);
+  const minV = compChartMetric === "test_rmse" ? 0 : Math.min(0, ...allVals);
+  const maxV = compChartMetric === "test_rmse" ? Math.max(1e-9, ...allVals) * 1.12 : Math.max(1, ...allVals);
+  const span = Math.max(1e-9, maxV - minV);
+  const zeroX = left + ((0 - minV) / span) * barW;
+
+  let bars = "";
+  rows.forEach((it, idx) => {
+    const y = 12 + idx * 34;
+    const xVal = left + ((it.val - minV) / span) * barW;
+    const x0 = Math.min(zeroX, xVal);
+    const bw = Math.max(3, Math.abs(xVal - zeroX));
+    let trainBar = "";
+    if (it.val2 !== undefined) {
+      const xVal2 = left + ((it.val2 - minV) / span) * barW;
+      trainBar = `<rect x="${Math.min(zeroX, xVal2).toFixed(1)}" y="${y + 2}" width="${Math.max(3, Math.abs(xVal2 - zeroX)).toFixed(1)}" height="7" rx="2" fill="${it.color}" opacity="0.38"/>`;
+    }
+    bars += `
+      <text x="${left - 8}" y="${y + 16}" text-anchor="end" fill="currentColor" font-size="11.5" font-weight="600">${it.label}</text>
+      <rect x="${left}" y="${y + 4}" width="${barW}" height="16" rx="4" fill="var(--muted-surface)" opacity="0.45"/>
+      ${trainBar}
+      <rect x="${x0.toFixed(1)}" y="${it.val2 !== undefined ? y + 11 : y + 4}" width="${bw.toFixed(1)}" height="${it.val2 !== undefined ? 9 : 16}" rx="3" fill="${it.color}"/>
+      <text x="${w - right + 8}" y="${y + 16}" text-anchor="start" fill="currentColor" font-size="11" font-family="JetBrains Mono, monospace" font-weight="700">${escHtml(it.fmt)}</text>
+    `;
+  });
+
+  return `
+    <div class="chart-card">
+      <div class="chart-head">
+        <div class="chart-title">Model Metric Visual — ${escHtml(dsName)}</div>
+        <div class="chip-group" role="group" aria-label="Comparison chart metric">
+          <button type="button" class="chip ${compChartMetric === "test_r2" ? "active" : ""}" onclick="setCompChartMetric('test_r2', this)">Test \\(R^2\\)</button>
+          <button type="button" class="chip ${compChartMetric === "test_rmse" ? "active" : ""}" onclick="setCompChartMetric('test_rmse', this)">Test \\(\\mathrm{RMSE}\\)</button>
+          <button type="button" class="chip ${compChartMetric === "train_test" ? "active" : ""}" onclick="setCompChartMetric('train_test', this)">Train vs. Test \\(R^2\\)</button>
+        </div>
+      </div>
+      <svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img" aria-label="Comparison chart for ${escHtml(dsName)}" style="max-width:700px; display:block; color:var(--navy);">
+        <line x1="${zeroX.toFixed(1)}" y1="6" x2="${zeroX.toFixed(1)}" y2="${h - 8}" stroke="var(--border-strong)" stroke-width="1"/>
+        ${bars}
+      </svg>
+    </div>
+  `;
+}
+
 function renderComparisonSection(bundle) {
   const mount = document.getElementById("mount-comparison");
   const ols = bundle.models.ols;
@@ -1006,19 +2070,21 @@ function renderComparisonSection(bundle) {
   if (!ols || !ridge || !lasso) return;
 
   const units = escHtml(bundle.target_units);
+  const olsRank = ols.diagnostics.numerical_linear_algebra.matrix_rank;
+  const olsK = ols.diagnostics.numerical_linear_algebra.n_augmented_columns;
   const compTable = `
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
             <th>Algorithm</th>
-            <th class="num">Train RMSE</th>
-            <th class="num">Train R&sup2;</th>
-            <th class="num">Test MAE</th>
-            <th class="num">Test RMSE (${units})</th>
-            <th class="num">Test R&sup2;</th>
-            <th class="num">Active / df</th>
-            <th class="num">Selected &alpha;</th>
+            <th class="num">Train \\(\\mathrm{RMSE}\\)</th>
+            <th class="num">Train \\(R^2\\)</th>
+            <th class="num">Test \\(\\mathrm{MAE}\\)</th>
+            <th class="num">Test \\(\\mathrm{RMSE}\\) (${units})</th>
+            <th class="num">Test \\(R^2\\)</th>
+            <th class="num">Effective \\(\\operatorname{df}\\) / Active</th>
+            <th class="num">Selected \\(\\alpha^*\\)</th>
           </tr>
         </thead>
         <tbody>
@@ -1029,27 +2095,27 @@ function renderComparisonSection(bundle) {
             <td class="num">${fmtNum(ols.metrics.test.mae)}</td>
             <td class="num">${fmtNum(ols.metrics.test.rmse)}</td>
             <td class="num"><strong>${ols.metrics.test.r2.toFixed(4)}</strong></td>
-            <td class="num">${ols.diagnostics.numerical_linear_algebra.matrix_rank - 1} (rank-1)</td>
+            <td class="num">\\(\\operatorname{df} = ${olsRank - 1}\\) (rank ${olsRank}/${olsK})</td>
             <td class="num">0 (none)</td>
           </tr>
           <tr>
-            <td><strong>Ridge (L2)</strong></td>
+            <td><strong>Ridge (\\(\\ell_2\\))</strong></td>
             <td class="num">${fmtNum(ridge.metrics.train.rmse)}</td>
             <td class="num">${ridge.metrics.train.r2.toFixed(4)}</td>
             <td class="num">${fmtNum(ridge.metrics.test.mae)}</td>
             <td class="num">${fmtNum(ridge.metrics.test.rmse)}</td>
             <td class="num"><strong>${ridge.metrics.test.r2.toFixed(4)}</strong></td>
-            <td class="num">df = ${ridge.diagnostics.shrinkage_and_degrees_of_freedom.effective_df_predictors.toFixed(2)} (all ${ridge.diagnostics.shrinkage_and_degrees_of_freedom.n_predictors})</td>
+            <td class="num">\\(\\operatorname{df}(\\alpha^*) = ${ridge.diagnostics.shrinkage_and_degrees_of_freedom.effective_df_predictors.toFixed(2)}\\) (all ${ridge.diagnostics.shrinkage_and_degrees_of_freedom.n_predictors})</td>
             <td class="num">${fmtNum(ridge.diagnostics.penalty_tuning.selected_alpha)}</td>
           </tr>
           <tr>
-            <td><strong>Lasso (L1)</strong></td>
+            <td><strong>Lasso (\\(\\ell_1\\))</strong></td>
             <td class="num">${fmtNum(lasso.metrics.train.rmse)}</td>
             <td class="num">${lasso.metrics.train.r2.toFixed(4)}</td>
             <td class="num">${fmtNum(lasso.metrics.test.mae)}</td>
             <td class="num">${fmtNum(lasso.metrics.test.rmse)}</td>
             <td class="num"><strong>${lasso.metrics.test.r2.toFixed(4)}</strong></td>
-            <td class="num">${lasso.diagnostics.sparsity_and_shrinkage.n_nonzero_features} / ${lasso.diagnostics.sparsity_and_shrinkage.n_total_features} active</td>
+            <td class="num">\\(|A(\\alpha^*)| = ${lasso.diagnostics.sparsity_and_shrinkage.n_nonzero_features} / ${lasso.diagnostics.sparsity_and_shrinkage.n_total_features}\\)</td>
             <td class="num">${fmtNum(lasso.diagnostics.penalty_tuning.selected_alpha)}</td>
           </tr>
         </tbody>
@@ -1057,7 +2123,6 @@ function renderComparisonSection(bundle) {
     </div>
   `;
 
-  // Side-by-side standardized coefficients aligned by feature
   const mapByFeat = {};
   const addCoefs = (rows, key) => {
     rows.forEach(r => {
@@ -1084,12 +2149,13 @@ function renderComparisonSection(bundle) {
   `).join("");
 
   mount.innerHTML = `
+    ${renderComparisonSvg(ols, ridge, lasso, bundle.name, bundle.target_units)}
     ${compTable}
     <details>
-      <summary>Side-by-Side Standardized Coefficients (OLS vs. Ridge vs. Lasso)</summary>
+      <summary>Side-by-Side Standardized Coefficients \\(\\hat{\\beta}_{\\mathrm{std}}\\) (OLS vs. Ridge vs. Lasso)</summary>
       <div class="scroll-table" style="margin-top:8px;">
         <table>
-          <thead><tr><th>Feature</th><th class="num">OLS (Std)</th><th class="num">Ridge (Std)</th><th class="num">Lasso (Std)</th></tr></thead>
+          <thead><tr><th>Feature</th><th class="num">OLS \\(\\hat{\\beta}_{\\mathrm{std}}\\)</th><th class="num">Ridge \\(\\hat{\\beta}_{\\mathrm{std}}\\)</th><th class="num">Lasso \\(\\hat{\\beta}_{\\mathrm{std}}\\)</th></tr></thead>
           <tbody>${coefCompRows}</tbody>
         </table>
       </div>
@@ -1221,15 +2287,36 @@ function getEncodedFeatureMap(ds) {
     const el = document.getElementById("inp-" + f.name);
     const rawVal = el ? el.value : String(f.default);
     if (f.kind === "categorical") {
-      f.options.forEach(o => {
-        xMap[f.encoded_prefix + o.value] = (rawVal === o.value) ? 1.0 : 0.0;
-      });
+      f.options.forEach(o => { xMap[f.encoded_prefix + o.value] = (rawVal === o.value) ? 1.0 : 0.0; });
     } else {
       const num = parseFloat(rawVal);
       xMap[f.name] = Number.isFinite(num) ? num : parseFloat(f.default);
     }
   });
   return xMap;
+}
+
+function renderContribSvg(rows, mkey) {
+  const mount = document.getElementById("pred-contrib-svg");
+  if (!mount) return;
+  const top = [...rows].sort((a, b) => Math.abs(b[mkey] || 0) - Math.abs(a[mkey] || 0)).slice(0, 8);
+  const maxAbs = Math.max(1e-9, ...top.map(r => Math.abs(r[mkey] || 0)));
+  const w = 440, rowH = 22, h = top.length * rowH + 12, mid = 220, halfW = 110;
+  let svgRows = "";
+  top.forEach((r, i) => {
+    const v = r[mkey] || 0;
+    const y = 8 + i * rowH;
+    const bw = Math.max(2, (Math.abs(v) / maxAbs) * halfW);
+    const x = v >= 0 ? mid : mid - bw;
+    const col = v >= 0 ? "var(--ridge-color)" : "var(--lasso-color)";
+    const lbl = r.feat.length > 16 ? r.feat.slice(0, 15) + "…" : r.feat;
+    svgRows += `
+      <text x="${mid - halfW - 8}" y="${y + 13}" text-anchor="end" fill="var(--muted)" font-size="10" font-family="JetBrains Mono, monospace">${escHtml(lbl)}</text>
+      <rect x="${x.toFixed(1)}" y="${y + 3}" width="${bw.toFixed(1)}" height="12" rx="2.5" fill="${col}"/>
+      <text x="${mid + halfW + 8}" y="${y + 13}" text-anchor="start" fill="var(--navy)" font-size="10" font-family="JetBrains Mono, monospace">${v >= 0 ? "+" : ""}${v.toFixed(3)}</text>
+    `;
+  });
+  mount.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img" aria-label="Top feature contributions bar chart"><line x1="${mid}" y1="4" x2="${mid}" y2="${h - 4}" stroke="var(--border-strong)"/>${svgRows}</svg>`;
 }
 
 function computePredictions() {
@@ -1244,9 +2331,11 @@ function computePredictions() {
   const observed = sampleIdx !== "" ? ds.samples[Number(sampleIdx)].observed : null;
 
   const contribRows = {};
+  const interceptTerms = {};
   ["ols", "ridge", "lasso"].forEach(mkey => {
     const mw = ds.models[mkey];
     if (!mw) return;
+    interceptTerms[mkey] = mw.intercept;
     let yhat = mw.intercept;
     Object.entries(mw.coefs).forEach(([feat, w]) => {
       const xv = xMap[feat] !== undefined ? xMap[feat] : 0.0;
@@ -1257,7 +2346,7 @@ function computePredictions() {
     });
 
     const card = document.createElement("div");
-    card.className = "pred-card";
+    card.className = "pred-card" + (mkey === "ridge" ? " pred-ridge" : (mkey === "lasso" ? " pred-lasso" : ""));
     let pills = "";
     if (ds.is_binary_classification) {
       const isPos = yhat >= 0.5;
@@ -1270,22 +2359,63 @@ function computePredictions() {
       const err = yhat - observed;
       pills += `<span class="pill">Observed: ${observed.toPrecision(4)} (&Delta; = ${err >= 0 ? "+" : ""}${err.toFixed(3)})</span>`;
     }
+    const labelMap = {ols: "OLS", ridge: "Ridge (ℓ₂)", lasso: "Lasso (ℓ₁)"};
     card.innerHTML = `
-      <div class="kpi-lbl">${mkey.toUpperCase()} &rarr; ${escHtml(ds.target)}</div>
-      <div class="pred-val">${yhat.toFixed(4)} <small style="font-size:0.76rem; color:var(--muted); font-weight:500;">${escHtml(ds.target_units)}</small></div>
+      <div class="kpi-lbl">${labelMap[mkey]} &rarr; ${escHtml(ds.target)}</div>
+      <div class="pred-val">${yhat.toFixed(4)} <small style="font-size:0.74rem; color:var(--muted); font-weight:500;">${escHtml(ds.target_units)}</small></div>
       <div class="pill-row" style="margin:4px 0 0;">${pills}</div>
     `;
     resGrid.appendChild(card);
   });
 
   const rows = Object.values(contribRows).sort((a, b) => Math.abs(b.ols || 0) - Math.abs(a.ols || 0));
-  let tbl = "<table><thead><tr><th>Encoded Feature</th><th class='num'>x_j</th><th class='num'>OLS Term</th><th class='num'>Ridge Term</th><th class='num'>Lasso Term</th></tr></thead><tbody>";
+  const chartM = document.getElementById("contrib-model-sel").value || "ols";
+  renderContribSvg(rows, chartM);
+
+  let tbl = "<table><thead><tr><th>Term / Encoded Feature</th><th class='num'>x_j</th><th class='num'>OLS Term</th><th class='num'>Ridge Term</th><th class='num'>Lasso Term</th></tr></thead><tbody>";
+  tbl += `<tr class="intercept-row"><td><code>intercept (β₀,unstd)</code></td><td class="num">1</td><td class="num">${(interceptTerms.ols || 0).toFixed(4)}</td><td class="num">${(interceptTerms.ridge || 0).toFixed(4)}</td><td class="num">${(interceptTerms.lasso || 0).toFixed(4)}</td></tr>`;
   rows.forEach(r => {
     tbl += `<tr><td><code>${escHtml(r.feat)}</code></td><td class="num">${Number(r.x).toPrecision(5)}</td><td class="num">${(r.ols || 0).toFixed(4)}</td><td class="num">${(r.ridge || 0).toFixed(4)}</td><td class="num">${(r.lasso || 0).toFixed(4)}</td></tr>`;
   });
   tbl += "</tbody></table>";
   document.getElementById("pred-contrib-table").innerHTML = tbl;
 }
+
+// Lightbox modal with Prev/Next navigation
+let lbState = {model: null, idx: 0, lastEl: null};
+function openLightboxFromCard(imgEl) {
+  const card = imgEl.closest(".plot-card");
+  lbState.model = card.getAttribute("data-model");
+  lbState.idx = Number(card.getAttribute("data-plot-idx"));
+  lbState.lastEl = document.activeElement;
+  showLightboxSlide();
+  document.getElementById("lightbox").classList.add("open");
+}
+function showLightboxSlide() {
+  const bundle = window.__DATASET_STORE__[currentDatasetKey];
+  if (!bundle || !bundle.models[lbState.model]) return;
+  const plots = bundle.models[lbState.model].plots;
+  if (!plots.length) return;
+  lbState.idx = (lbState.idx + plots.length) % plots.length;
+  const p = plots[lbState.idx];
+  document.getElementById("lb-img").src = p.src;
+  document.getElementById("lb-img").alt = p.title;
+  document.getElementById("lb-title").textContent = `${lbState.model.toUpperCase()} — ${p.title} (${lbState.idx + 1}/${plots.length})`;
+  document.getElementById("lb-caption").textContent = p.caption;
+  triggerMathRender(document.getElementById("lightbox"));
+}
+function stepLightbox(delta) { lbState.idx += delta; showLightboxSlide(); }
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("open");
+  if (lbState.lastEl) lbState.lastEl.focus();
+}
+document.addEventListener("keydown", e => {
+  const lb = document.getElementById("lightbox");
+  if (!lb.classList.contains("open")) return;
+  if (e.key === "Escape") closeLightbox();
+  else if (e.key === "ArrowRight") stepLightbox(1);
+  else if (e.key === "ArrowLeft") stepLightbox(-1);
+});
 
 // Downloads
 function downloadBlob(filename, content, mime) {
@@ -1299,13 +2429,11 @@ function downloadBlob(filename, content, mime) {
   a.remove();
   URL.revokeObjectURL(url);
 }
-
 function downloadCoefficientsCSV(modelKey) {
   const bundle = window.__DATASET_STORE__[currentDatasetKey];
   if (!bundle || !bundle.models[modelKey]) return;
   downloadBlob(`${modelKey}_${currentDatasetKey}_coefficients.csv`, bundle.models[modelKey].coef_csv, "text/csv;charset=utf-8");
 }
-
 function downloadRunJSON(modelKey) {
   const bundle = window.__DATASET_STORE__[currentDatasetKey];
   if (!bundle || !bundle.models[modelKey]) return;
@@ -1316,10 +2444,19 @@ function downloadRunJSON(modelKey) {
 
 function selectGlobalDataset(dsKey) {
   currentDatasetKey = dsKey;
-  ["sel-ols", "sel-ridge", "sel-lasso", "sel-comp"].forEach(id => {
+  ["sel-global", "sel-ols", "sel-ridge", "sel-lasso", "sel-comp"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = dsKey;
   });
+  document.querySelectorAll("#master-table tbody tr, #sidebar-ds-list .ds-item").forEach(el => {
+    el.classList.toggle("active-row", el.getAttribute("data-ds") === dsKey);
+    el.classList.toggle("active", el.getAttribute("data-ds") === dsKey);
+  });
+  const found = MASTER_SUMMARY.find(r => r.key === dsKey);
+  const cds = document.getElementById("crumb-ds");
+  if (cds && found) cds.textContent = found.name;
+  renderOverviewChart();
+
   loadDatasetBundle(dsKey).then(bundle => {
     renderAlgorithmWorkspace(bundle, "ols");
     renderAlgorithmWorkspace(bundle, "ridge");
@@ -1334,10 +2471,13 @@ function selectGlobalDataset(dsKey) {
 
 function jumpToDataset(dsKey) {
   selectGlobalDataset(dsKey);
-  document.getElementById("comparison").scrollIntoView({behavior: "smooth"});
+  switchView("comparison");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  setOlsGeoMode("proj");
+  updateRidgeSim(35);
+  updateLassoSim(32);
   selectGlobalDataset(currentDatasetKey);
   triggerMathRender(document.body);
 });
